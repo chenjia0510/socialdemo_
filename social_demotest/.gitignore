@@ -1,0 +1,8 @@
+.env
+__pycache__/
+*.pyc
+ping_out.txt
+test_out.txt
+chat_resp.txt
+error.log
+.DS_Store

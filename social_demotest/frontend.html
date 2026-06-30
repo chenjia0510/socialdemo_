@@ -1,0 +1,2118 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 媒人系統 - 通訊版 DEMO</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'], },
+                    colors: {
+                        bgDark: '#0f172a',
+                        textPrimary: '#f8fafc',
+                        textSecondary: '#94a3b8'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #0f172a;
+            background-image: radial-gradient(circle at top right, rgba(139, 92, 246, 0.15), transparent 40%),
+                radial-gradient(circle at bottom left, rgba(56, 189, 248, 0.15), transparent 40%);
+            color: #f8fafc;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .fade-in {
+            animation: fadeIn 0.4s ease-out forwards;
+        }
+
+        .slide-up {
+            animation: slideUp 0.5s ease-out forwards;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .chat-bubble {
+            max-width: 80%;
+            padding: 12px 16px;
+            border-radius: 16px;
+            margin-bottom: 12px;
+            line-height: 1.5;
+            word-wrap: break-word;
+        }
+
+        .bubble-user {
+            background: linear-gradient(135deg, #8b5cf6, #6366f1);
+            color: white;
+            align-self: flex-end;
+            border-bottom-right-radius: 4px;
+        }
+
+        .bubble-other {
+            background: rgba(255, 255, 255, 0.1);
+            color: #f8fafc;
+            align-self: flex-start;
+            border-bottom-left-radius: 4px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        /* Contact item hover */
+        .contact-item {
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .contact-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .contact-active {
+            background: rgba(139, 92, 246, 0.2);
+            border-left: 4px solid #8b5cf6;
+        }
+
+        .typing-indicator span {
+            display: inline-block;
+            width: 6px;
+            height: 6px;
+            background-color: #94a3b8;
+            border-radius: 50%;
+            margin: 0 2px;
+            animation: bounce 1.4s infinite ease-in-out both;
+        }
+
+        .typing-indicator span:nth-child(1) {
+            animation-delay: -0.32s;
+        }
+
+        .typing-indicator span:nth-child(2) {
+            animation-delay: -0.16s;
+        }
+
+        @keyframes bounce {
+
+            0%,
+            80%,
+            100% {
+                transform: scale(0);
+            }
+
+            40% {
+                transform: scale(1);
+            }
+        }
+
+        /* ===== 阿月的像素媒人事務所 ===== */
+        :root {
+            --pixel-ink: #120b25;
+            --pixel-panel: #241640;
+            --pixel-panel-2: #33205a;
+            --pixel-cream: #fff1b8;
+            --pixel-yellow: #ffd166;
+            --pixel-pink: #ff6fae;
+            --pixel-cyan: #55e6d9;
+            --pixel-shadow: #090612;
+        }
+
+        * {
+            border-radius: 0 !important;
+        }
+
+        body {
+            font-family: "Courier New", "Noto Sans TC", monospace !important;
+            background-color: var(--pixel-ink);
+            background-image:
+                linear-gradient(rgba(85, 230, 217, .055) 2px, transparent 2px),
+                linear-gradient(90deg, rgba(85, 230, 217, .055) 2px, transparent 2px),
+                linear-gradient(135deg, #1a1033 0%, #120b25 65%) !important;
+            background-size: 32px 32px, 32px 32px, 100% 100% !important;
+            letter-spacing: .02em;
+        }
+
+        h1, h2, h3, button {
+            font-family: "Courier New", "Noto Sans TC", monospace !important;
+            font-weight: 900 !important;
+        }
+
+        header h1 {
+            color: var(--pixel-yellow) !important;
+            background: none !important;
+            -webkit-text-fill-color: var(--pixel-yellow) !important;
+            text-shadow: 3px 3px 0 #8f3f8f, 6px 6px 0 var(--pixel-shadow);
+            letter-spacing: .08em;
+        }
+
+        .glass-panel {
+            background: var(--pixel-panel) !important;
+            backdrop-filter: none !important;
+            border: 3px solid var(--pixel-cream) !important;
+            box-shadow: 8px 8px 0 var(--pixel-shadow) !important;
+        }
+
+        button {
+            border: 2px solid var(--pixel-cream) !important;
+            box-shadow: 4px 4px 0 var(--pixel-shadow) !important;
+            transition: transform .08s, box-shadow .08s !important;
+        }
+
+        button:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 6px 6px 0 var(--pixel-shadow) !important;
+        }
+
+        button:active {
+            transform: translate(3px, 3px);
+            box-shadow: 1px 1px 0 var(--pixel-shadow) !important;
+        }
+
+        input, select, pre {
+            background: #110a22 !important;
+            border: 2px solid #8a72b8 !important;
+            color: var(--pixel-cream) !important;
+            box-shadow: inset 3px 3px 0 #07040f;
+        }
+
+        .chat-bubble {
+            border: 2px solid var(--pixel-cream);
+            box-shadow: 4px 4px 0 var(--pixel-shadow);
+            clip-path: polygon(0 0, calc(100% - 8px) 0, calc(100% - 8px) 4px, 100% 4px, 100% 100%, 8px 100%, 8px calc(100% - 4px), 0 calc(100% - 4px));
+            padding: 14px 18px;
+        }
+
+        .bubble-user {
+            background: #7d4bd4 !important;
+            border-color: #d8c7ff;
+        }
+
+        .bubble-other {
+            background: var(--pixel-panel-2) !important;
+            border-color: var(--pixel-cyan);
+        }
+
+        .contact-active {
+            background: #4d2c78 !important;
+            border-left: 7px solid var(--pixel-yellow) !important;
+        }
+
+        .contact-item:hover {
+            background: #38225f !important;
+        }
+
+        #header-avatar, #room-avatar, #contacts-list .rounded-full {
+            border: 2px solid var(--pixel-cream);
+            box-shadow: 3px 3px 0 var(--pixel-shadow);
+        }
+
+        ::-webkit-scrollbar {
+            width: 12px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #110a22;
+            border-left: 2px solid #665187;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--pixel-pink);
+            border: 2px solid var(--pixel-cream);
+        }
+
+        .pixel-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 5px 8px;
+            color: var(--pixel-cyan);
+            background: #110a22;
+            border: 2px solid var(--pixel-cyan);
+            box-shadow: 3px 3px 0 var(--pixel-shadow);
+            font-size: 10px;
+            white-space: nowrap;
+        }
+
+        .pixel-status::before {
+            content: "";
+            width: 7px;
+            height: 7px;
+            background: var(--pixel-cyan);
+            animation: pixelBlink 1.2s steps(2, end) infinite;
+        }
+
+        @keyframes pixelBlink {
+            50% { opacity: .25; }
+        }
+
+        #mediator-toast {
+            border: 3px solid var(--pixel-yellow);
+            background: #3c245f;
+            box-shadow: 8px 8px 0 var(--pixel-shadow);
+            color: var(--pixel-cream);
+        }
+
+        .mediator-card {
+            width: min(92%, 560px);
+            background: #3b235f;
+            border: 3px solid var(--pixel-yellow);
+            box-shadow: 6px 6px 0 var(--pixel-shadow);
+            padding: 16px;
+            align-self: flex-start;
+        }
+
+        .mediator-card-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 14px;
+        }
+
+        .mediator-card-actions button {
+            flex: 1 1 180px;
+            padding: 9px 10px;
+            font-size: 12px;
+        }
+
+        #mediator-private-panel {
+            background: #1b1032;
+            border-left: 4px solid var(--pixel-yellow);
+            box-shadow: -8px 0 0 rgba(9, 6, 18, .7);
+        }
+
+        /* ===== 奶油杏桃・輕像素主題 ===== */
+        :root {
+            --warm-cream: #fff8ed; --warm-paper: #fffdf8; --warm-peach: #fde3d3;
+            --warm-apricot: #e9966c; --warm-apricot-dark: #c87553; --warm-cocoa: #573f36;
+            --warm-muted: #8b7063; --warm-line: #e7c9b7; --warm-shadow: rgba(121, 77, 57, .14);
+        }
+        * { border-radius: 7px !important; }
+        body {
+            color: var(--warm-cocoa) !important;
+            background-color: var(--warm-cream) !important;
+            background-image: radial-gradient(#edc8b2 1px, transparent 1px), linear-gradient(135deg, #fffaf2, #ffefe4) !important;
+            background-size: 18px 18px, 100% 100% !important;
+        }
+        header h1 { color: var(--warm-apricot-dark) !important; -webkit-text-fill-color: var(--warm-apricot-dark) !important; text-shadow: 2px 2px 0 #ffe0cc !important; }
+        body .text-white { color: var(--warm-cocoa) !important; }
+        body [class*="text-gray"], body .text-textSecondary { color: var(--warm-muted) !important; }
+        body [class*="bg-black"] { background: rgba(253, 227, 211, .42) !important; }
+        .glass-panel {
+            background: rgba(255, 253, 248, .96) !important; backdrop-filter: blur(8px) !important;
+            border: 1px solid var(--warm-line) !important; box-shadow: 5px 5px 0 var(--warm-shadow) !important;
+        }
+        button {
+            color: var(--warm-cocoa) !important; background: var(--warm-peach) !important;
+            border: 1px solid #d9a98d !important; box-shadow: 2px 2px 0 rgba(121,77,57,.16) !important;
+        }
+        button:hover { transform: translate(-1px,-1px); box-shadow: 3px 3px 0 rgba(121,77,57,.16) !important; }
+        input, select, pre {
+            background: #fffdf9 !important; color: var(--warm-cocoa) !important;
+            border: 1px solid var(--warm-line) !important; box-shadow: inset 0 1px 2px rgba(121,77,57,.06) !important;
+        }
+        .chat-bubble { border: 1px solid var(--warm-line); box-shadow: 2px 2px 0 var(--warm-shadow); clip-path: none; }
+        .bubble-user { background: var(--warm-apricot) !important; color: #fffaf5 !important; border-color: #d5825c !important; }
+        .bubble-other { background: var(--warm-paper) !important; color: var(--warm-cocoa) !important; border-color: var(--warm-line) !important; }
+        .contact-active { background: var(--warm-peach) !important; border-left: 5px solid var(--warm-apricot) !important; }
+        .contact-item:hover { background: #fff0e4 !important; }
+        #header-avatar, #room-avatar, #contacts-list .rounded-full { border: 1px solid #d9a98d; box-shadow: 2px 2px 0 var(--warm-shadow); }
+        ::-webkit-scrollbar-track { background: #fff6ed; border-left: 0; }
+        ::-webkit-scrollbar-thumb { background: #e8b394; border: 2px solid #fff6ed; }
+        .pixel-status { color: #a96749; background: #fff8f0; border: 1px solid #e2bda7; box-shadow: none; }
+        .pixel-status::before { background: var(--warm-apricot); }
+        .mediator-card { background: #fff3e9; color: var(--warm-cocoa); border: 1px solid #e5b99f; box-shadow: 3px 3px 0 var(--warm-shadow); }
+        #profile-dropdown { background: var(--warm-paper) !important; border-color: var(--warm-line) !important; }
+        #mediator-private-panel {
+            left: 16px; right: 16px; bottom: 0; top: auto; width: auto; height: min(45%, 430px);
+            background: #fffaf4; border: 1px solid #dfad91; border-bottom: 0;
+            box-shadow: 0 -8px 24px rgba(121,77,57,.13); border-radius: 12px 12px 0 0 !important;
+        }
+        #mediator-private-trigger {
+            position: absolute; right: 18px; bottom: 82px; z-index: 35;
+            display: flex; align-items: center; gap: 9px; background: #fff3e9 !important;
+            border: 1px solid #dda98a !important; padding: 9px 12px; color: var(--warm-cocoa) !important;
+        }
+        #mediator-private-trigger.hidden { display: none; }
+        .mediator-unread-dot { width: 9px; height: 9px; background: #d85f52; border-radius: 0 !important; }
+        #mediator-toast { background: #fff3e9; color: var(--warm-cocoa); border: 1px solid #dda98a; box-shadow: 4px 4px 0 var(--warm-shadow); }
+        #tone-overlay { background: rgba(87,63,54,.22); }
+        #tone-card { background: #fffaf4; border: 1px solid #dda98a; box-shadow: 7px 7px 0 rgba(121,77,57,.18); }
+        @media (max-width: 720px) {
+            body { padding: 8px !important; }
+            header { margin-bottom: 8px !important; }
+            header p { display: none; }
+            #stage-messenger { gap: 7px; flex-direction: column; }
+            #stage-messenger > div:first-child { width: 100%; height: 112px; min-height: 112px; }
+            #stage-messenger > div:first-child > div:first-child { padding: 6px 9px; }
+            #stage-messenger > div:first-child > div:first-child .flex.gap-2 { display: none; }
+            #stage-messenger > div:first-child > div:last-child { display: none; }
+            #contacts-list { flex-direction: row; overflow-x: auto; overflow-y: hidden; }
+            #contacts-list .contact-item { min-width: 150px; padding: 7px; border-bottom: 0; border-right: 1px solid var(--warm-line); }
+            #contacts-list .contact-item .w-12 { width: 36px; height: 36px; }
+            #stage-messenger > div:nth-child(2) { width: 100%; flex: 1; min-height: 0; }
+            #stage-messenger > div:nth-child(2) > div:first-child { padding: 8px 10px; }
+            #room-messages { padding: 12px; }
+            #mediator-private-panel { left: 6px; right: 6px; height: min(70%, 560px); }
+            #mediator-private-trigger { right: 8px; bottom: 72px; }
+        }
+    </style>
+</head>
+
+<body class="p-4 md:p-6">
+
+    <!-- Header & App Bar -->
+    <header class="relative z-50 flex justify-between items-center mb-6 slide-up">
+        <div>
+            <h1 class="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-violet-400 to-sky-400">
+                阿月媒人事務所
+            </h1>
+            <p class="text-xs text-gray-400 mt-2">[ AI MATCHMAKER / PIXEL EDITION ]</p>
+        </div>
+
+        <!-- Profile & Account Switcher -->
+        <div class="relative z-50">
+            <button onclick="toggleProfileMenu()"
+                class="flex items-center gap-2 hover:bg-white/5 p-1.5 rounded-full transition cursor-pointer">
+                <div class="w-9 h-9 rounded-full bg-gradient-to-tr from-emerald-400 to-teal-500 flex items-center justify-center font-bold text-white shadow"
+                    id="header-avatar">?</div>
+                <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                </svg>
+            </button>
+
+            <div id="profile-dropdown"
+                class="absolute right-0 mt-2 w-72 max-h-[80vh] bg-[#1a1a1a] border border-white/10 rounded-2xl shadow-2xl hidden flex-col overflow-y-auto overflow-x-hidden z-50">
+                <div class="p-4 border-b border-white/10 bg-white/5">
+                    <div class="text-xs text-gray-400 mb-1">當前登入身分</div>
+                    <div class="font-bold text-lg text-emerald-400" id="dropdown-current-user">demo_user</div>
+                </div>
+
+                <div class="p-4 border-b border-white/10">
+                    <div class="text-xs text-sky-400 font-semibold mb-2">我的近期情境</div>
+                    <p id="dropdown-context" class="text-sm text-gray-300">載入中...</p>
+                </div>
+
+                <div class="p-4 border-b border-white/10">
+                    <div class="text-xs text-violet-400 font-semibold mb-2">我的檔案</div>
+                    <p id="dropdown-bf" class="text-sm text-gray-300 leading-relaxed">載入中...</p>
+                </div>
+
+
+                <div class="p-3 bg-black/50 flex flex-col gap-2 border-b border-white/10">
+                    <div class="flex items-center gap-2">
+                        <span class="text-xs text-gray-400 whitespace-nowrap">切換帳號</span>
+                        <select id="user-select" onchange="switchUser()"
+                            class="w-full bg-[#2a2a2a] border border-white/20 text-white text-sm rounded-lg px-2 py-1 focus:outline-none focus:border-violet-500">
+                            <option value="demo_user">demo_user</option>
+                        </select>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-xs text-fuchsia-400 whitespace-nowrap">AI 關心頻率</span>
+                        <select id="frequency-select" onchange="updateProactiveFrequency()"
+                            class="w-full bg-[#2a2a2a] border border-white/20 text-white text-sm rounded-lg px-2 py-1 focus:outline-none focus:border-fuchsia-500">
+                            <option value="none">停用</option>
+                            <option value="60">每 1 分鐘 (測試)</option>
+                            <option value="3600">每 1 小時</option>
+                            <option value="86400">每天</option>
+                        </select>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-xs whitespace-nowrap">阿月口吻</span>
+                        <select id="mediator-tone-select" onchange="updateMediatorTone(this.value)" class="w-full text-sm px-2 py-1">
+                            <option value="friend">熟朋友</option>
+                            <option value="gentle">溫柔姐姐</option>
+                            <option value="enthusiastic">熱心媒婆</option>
+                        </select>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-xs whitespace-nowrap">助攻節奏</span>
+                        <select id="probe-mode-select" onchange="updateProbeMode(this.value)" class="w-full text-sm px-2 py-1">
+                            <option value="balanced">平衡</option>
+                            <option value="active">積極</option>
+                            <option value="manual">只在我要求時</option>
+                        </select>
+                    </div>
+                    <div class="pt-2 border-t border-[#e7c9b7]">
+                        <div class="text-xs font-bold mb-2">阿月記住的事</div>
+                        <div id="profile-memory-list" class="flex flex-wrap gap-1 text-xs"><span class="text-gray-400">還沒有長期偏好</span></div>
+                    </div>
+                    <div class="flex items-center gap-2 mt-2">
+                        <button onclick="redoBigFive()" class="flex-1 text-xs font-bold text-white bg-violet-600 hover:bg-violet-500 py-2 rounded-lg shadow transition">重新基礎測驗</button>
+                        <button onclick="redoDeepProfile()" class="flex-1 text-xs font-bold text-white bg-fuchsia-600 hover:bg-fuchsia-500 py-2 rounded-lg shadow transition">重新深層測驗</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-1 relative flex gap-6 overflow-hidden">
+
+        <!-- ================= STAGE 1: Big Five Matchmaker ================= -->
+        <section id="stage-bigfive" class="w-full flex gap-6 absolute inset-0 transition-opacity duration-500 z-10">
+            <div class="w-2/3 flex flex-col h-full glass-panel rounded-2xl overflow-hidden">
+                <div class="p-4 border-b border-white/10 bg-black/30">
+                    <h2 class="font-semibold text-lg flex items-center gap-2">🔮 專屬性格解析</h2>
+                </div>
+                <div id="bf-messages" class="flex-1 p-6 overflow-y-auto flex flex-col gap-2">
+                    <div class="chat-bubble bubble-other fade-in">你好！我是你的專屬 AI 媒人。為了幫你找到最契合的夥伴，請用幾句話描述一下你自己，平常喜歡做什麼？
+                    </div>
+                </div>
+                <div id="bf-typing" class="hidden px-6 pb-2">
+                    <div class="chat-bubble bubble-other inline-flex items-center p-3">
+                        <div class="typing-indicator flex"><span></span><span></span><span></span></div>
+                    </div>
+                </div>
+                <div class="p-4 bg-black/20 border-t border-white/10">
+                    <form id="bf-form" class="flex gap-3">
+                        <input type="text" id="bf-input" placeholder="回答 AI..." required
+                            class="flex-1 bg-black/30 border border-white/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-violet-500 text-white">
+                        <button type="submit"
+                            class="bg-violet-600 px-6 py-3 rounded-xl font-medium shadow-lg hover:bg-violet-500 transition-colors">送出</button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="w-1/3 flex flex-col gap-4">
+                <div class="glass-panel rounded-2xl p-6 flex-1 flex flex-col">
+                    <h3 class="text-sm text-gray-400 font-semibold mb-4 uppercase tracking-wider">分析進度</h3>
+                    <pre id="bf-json"
+                        class="text-xs text-emerald-400 bg-black/40 p-4 rounded-xl border border-white/5 flex-1 overflow-y-auto w-full whitespace-pre-wrap">尚無資料...</pre>
+                </div>
+                <div
+                    class="glass-panel rounded-2xl p-4 flex justify-between items-center bg-red-900/10 border-red-500/20">
+                    <button onclick="clearSystemData()"
+                        class="text-xs text-red-400 hover:text-red-300 transition w-full py-2 bg-red-500/10 rounded">⚙️
+                        一鍵清空所有資料</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= STAGE 2: Messenger Layout ================= -->
+        <section id="stage-messenger"
+            class="w-full flex gap-6 absolute inset-0 opacity-0 pointer-events-none transition-opacity duration-500 z-0">
+            <!-- Sidebar: Contacts -->
+            <div class="w-1/3 glass-panel rounded-2xl flex flex-col overflow-hidden">
+                <div class="p-4 border-b border-white/10 bg-black/30 flex justify-between items-center">
+                    <h2 class="font-semibold text-lg flex items-center gap-2">💬 聯絡人</h2>
+                    <div class="flex gap-2">
+                        <button onclick="startDeepProfileInChat()" id="btn-deep-profile"
+                            class="text-xs bg-emerald-600 hover:bg-emerald-500 px-3 py-1.5 rounded text-white shadow-lg shadow-emerald-500/20 font-bold transition">🎯 深層分析</button>
+                        <span id="match-readiness-status" class="pixel-status">阿月正在了解你</span>
+                        <button onclick="triggerMatch()" id="btn-match"
+                            class="hidden text-xs bg-fuchsia-600 hover:bg-fuchsia-500 px-3 py-1.5 rounded text-white shadow-lg shadow-fuchsia-500/20 font-bold transition">🌟
+                            請阿月再找找</button>
+                    </div>
+                </div>
+
+                <!-- Contacts List -->
+                <div id="contacts-list" class="flex-1 overflow-y-auto flex flex-col">
+                    <!-- Loaded via JS -->
+                </div>
+
+                <!-- Tools at bottom of Sidebar -->
+                <div class="p-4 bg-black/20 border-t border-white/10 flex flex-col gap-2 relative z-20">
+                    <button onclick="clearSystemData()"
+                        class="text-xs text-red-400 hover:text-red-300 transition w-full py-2 bg-red-500/10 rounded border border-red-500/20">⚙️
+                        一鍵清空所有資料</button>
+                    <button onclick="fetchSeedAndReload(event)"
+                        class="text-xs text-sky-400 hover:text-sky-300 transition w-full py-2 bg-sky-500/10 rounded border border-sky-500/20">🔄
+                        生成十筆資料</button>
+                </div>
+            </div>
+
+            <!-- Main: Chat Room -->
+            <div class="w-2/3 glass-panel rounded-2xl flex flex-col overflow-hidden relative">
+                <!-- Chat Header -->
+                <div class="p-4 border-b border-white/10 bg-black/30 flex items-center gap-3">
+                    <div id="room-avatar"
+                        class="w-10 h-10 rounded-full bg-gradient-to-tr from-violet-500 to-fuchsia-500 flex items-center justify-center font-bold text-lg text-white shadow">
+                        ?</div>
+                    <div>
+                        <h2 id="room-name" class="font-semibold text-lg">-</h2>
+                        <div class="text-xs text-textSecondary flex items-center gap-1">
+                            <span class="w-2 h-2 rounded-full bg-emerald-400 inline-block"></span>
+                            <span>已連線</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Chat History -->
+                <div id="room-messages" class="flex-1 p-6 overflow-y-auto flex flex-col gap-2">
+                    <div class="text-center text-sm text-gray-500 my-10">請從左側點選聯絡人開始對話</div>
+                </div>
+
+                <!-- Typing indicator -->
+                <div id="room-typing" class="hidden px-6 pb-2">
+                    <div class="chat-bubble bubble-other inline-flex items-center p-3">
+                        <div class="typing-indicator flex"><span></span><span></span><span></span></div>
+                    </div>
+                </div>
+
+                <!-- Chat Input -->
+                <div class="p-4 bg-black/20 border-t border-white/10">
+                    <form id="room-form" class="flex gap-3">
+                        <input type="text" id="room-input" placeholder="傳送訊息..." disabled required
+                            class="flex-1 bg-black/30 border border-white/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-violet-500 text-white disabled:opacity-50">
+                        <button type="submit" id="room-submit" disabled
+                            class="bg-violet-600 px-6 py-3 rounded-xl font-medium shadow-lg hover:bg-violet-500 transition disabled:opacity-50">送出</button>
+                    </form>
+                </div>
+
+                <button id="mediator-private-trigger" class="hidden" onclick="openMediatorPrivatePanel()">
+                    <span class="w-8 h-8 bg-[#e9966c] text-white flex items-center justify-center font-bold">月</span>
+                    <span id="mediator-trigger-text" class="text-xs font-bold">問問阿月</span>
+                    <span id="mediator-unread-dot" class="mediator-unread-dot hidden"></span>
+                </button>
+
+                <aside id="mediator-private-panel" class="hidden absolute z-40 flex-col">
+                    <div class="p-3 border-b border-[#e7c9b7] flex items-center gap-3">
+                        <div class="w-9 h-9 bg-[#e9966c] text-white flex items-center justify-center font-bold">月</div>
+                        <div>
+                            <div class="font-bold">阿月悄悄話</div>
+                            <div id="mediator-private-context" class="text-xs text-[#9b6a54]"></div>
+                        </div>
+                        <button onclick="closeMediatorPrivatePanel()" class="ml-auto px-3 py-2">收起</button>
+                    </div>
+                    <div id="mediator-private-messages" class="flex-1 overflow-y-auto p-4 flex flex-col gap-3"></div>
+                    <form id="mediator-private-form" class="p-3 border-t border-[#e7c9b7] flex gap-2">
+                        <input id="mediator-private-input" required placeholder="問阿月關於這個人…" class="flex-1 px-3 py-2 text-sm">
+                        <button class="px-4 py-2">送出</button>
+                    </form>
+                </aside>
+            </div>
+        </section>
+
+        <!-- ================= STAGE 2.5: Deep Profile ================= -->
+        <section id="stage-deep-profile"
+            class="w-full flex gap-6 absolute inset-0 opacity-0 pointer-events-none transition-opacity duration-500 z-0">
+            <div class="w-2/3 flex flex-col h-full glass-panel rounded-2xl overflow-hidden">
+                <div class="p-4 border-b border-white/10 bg-black/30">
+                    <h2 class="font-semibold text-lg flex items-center gap-2">🎯 深層價值觀分析</h2>
+                </div>
+                <div id="dp-messages" class="flex-1 p-6 overflow-y-auto flex flex-col gap-2">
+                    <div class="chat-bubble bubble-other fade-in">讓我們來深入探索你的價值觀和人生方向吧！</div>
+                </div>
+                <div id="dp-typing" class="hidden px-6 pb-2">
+                    <div class="chat-bubble bubble-other inline-flex items-center p-3">
+                        <div class="typing-indicator flex"><span></span><span></span><span></span></div>
+                    </div>
+                </div>
+                <div class="p-4 bg-black/20 border-t border-white/10">
+                    <form id="dp-form" class="flex gap-3">
+                        <input type="text" id="dp-input" placeholder="分享你的深層想法..." required
+                            class="flex-1 bg-black/30 border border-white/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-amber-500 text-white">
+                        <button type="submit"
+                            class="bg-amber-600 px-6 py-3 rounded-xl font-medium shadow-lg hover:bg-amber-500 transition-colors">送出</button>
+                    </form>
+                </div>
+            </div>
+            <div class="w-1/3 flex flex-col gap-4">
+                <div class="glass-panel rounded-2xl p-6 flex-1 flex flex-col">
+                    <h3 class="text-sm text-gray-400 font-semibold mb-4 uppercase tracking-wider">深層分析進度</h3>
+                    <pre id="dp-json"
+                        class="text-xs text-amber-400 bg-black/40 p-4 rounded-xl border border-white/5 flex-1 overflow-y-auto w-full whitespace-pre-wrap">尚無資料...</pre>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Interest Overlay (Test) -->
+    <div id="interest-overlay" class="absolute inset-0 z-50 bg-black/80 flex items-center justify-center p-4 transition-opacity duration-300">
+        <div class="glass-panel p-8 rounded-3xl max-w-md w-full border border-violet-500/50 shadow-2xl shadow-violet-500/20 text-center">
+            <div class="text-3xl mb-4">🎯</div>
+            <h2 class="text-xl font-bold mb-2">測試：填寫註冊興趣</h2>
+            <p class="text-sm text-gray-300 mb-6">模擬 Appwrite 註冊頁面。AI 將根據這個興趣作為性格分析的開場白！</p>
+            <input type="text" id="test-interest-input" placeholder="例如：打籃球、看電影、寫程式..." class="w-full bg-black/50 border border-white/20 rounded-xl px-4 py-3 text-white mb-6 focus:outline-none focus:border-violet-500">
+            <button onclick="startWithInterest()" class="w-full bg-gradient-to-r from-violet-600 to-fuchsia-600 hover:from-violet-500 hover:to-fuchsia-500 py-3 rounded-xl font-bold shadow-lg transition">開始測驗</button>
+        </div>
+    </div>
+
+    <!-- Notification Modal (For Receiver) -->
+    <div id="notif-modal"
+        class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden flex items-center justify-center opacity-0 transition-opacity duration-300 p-4">
+        <div id="notif-content"
+            class="glass-panel p-8 rounded-3xl max-w-md w-full transform scale-95 transition-transform duration-300 border border-fuchsia-500/50 shadow-2xl shadow-fuchsia-500/20">
+            <div class="w-16 h-16 rounded-full bg-fuchsia-500/20 flex items-center justify-center mx-auto mb-4">🔔</div>
+            <h2 class="text-2xl font-bold text-center mb-2">阿月來遞話了！</h2>
+            <p class="text-center text-sm text-gray-300 mb-6">我替你探過口風，對方也願意認識你。</p>
+
+            <div class="bg-black/50 rounded-xl p-4 mb-6 border border-white/5">
+                <div class="text-xs text-gray-500 uppercase font-semibold mb-1">發起人 ID</div>
+                <div id="notif-from" class="font-mono text-lg font-bold text-sky-400 mb-4">loading...</div>
+
+                <div class="text-xs text-gray-500 uppercase font-semibold mb-1">AI 配對理由</div>
+                <p id="notif-reason" class="text-sm leading-relaxed text-gray-200">loading...</p>
+            </div>
+
+            <div class="flex gap-3">
+                <button onclick="showDeclineModal()"
+                    class="flex-1 py-3 bg-white/5 hover:bg-white/10 rounded-xl font-semibold transition">婉拒</button>
+                <button onclick="respondMatch(true)"
+                    class="flex-1 py-3 bg-gradient-to-r from-fuchsia-600 to-violet-600 hover:from-fuchsia-500 hover:to-violet-500 rounded-xl font-bold shadow-lg transition">同意聊天</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Decline Reason Modal -->
+    <div id="decline-modal"
+        class="fixed inset-0 z-[60] bg-black/80 backdrop-blur-sm hidden flex items-center justify-center opacity-0 transition-opacity duration-300 p-4">
+        <div id="decline-content"
+            class="glass-panel p-8 rounded-3xl max-w-md w-full transform scale-95 transition-transform duration-300 border border-red-500/30 shadow-2xl shadow-red-500/10">
+            <div class="w-16 h-16 rounded-full bg-red-500/20 flex items-center justify-center mx-auto mb-4">🤫</div>
+            <h2 class="text-xl font-bold text-center mb-2">能偷偷告訴我們，是哪個部分讓您猶豫了嗎？</h2>
+            <p class="text-center text-sm text-gray-400 mb-6">勾選讓您不舒服的特質（可選，不勾也能直接婉拒）</p>
+
+            <div id="decline-checkboxes" class="space-y-3 mb-6">
+                <!-- Checkboxes will be dynamically generated -->
+            </div>
+
+            <div class="flex gap-3">
+                <button onclick="cancelDecline()"
+                    class="flex-1 py-3 bg-white/5 hover:bg-white/10 rounded-xl font-semibold transition text-gray-300">取消</button>
+                <button onclick="confirmDecline()"
+                    class="flex-1 py-3 bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-500 hover:to-rose-500 rounded-xl font-bold shadow-lg transition">確認婉拒</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 🥚 雙黃蛋 Initiator Match Result Modal -->
+    <div id="initiator-modal"
+        class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden flex items-center justify-center opacity-0 transition-opacity duration-300 p-4">
+        <div id="initiator-content"
+            class="glass-panel p-8 rounded-3xl max-w-4xl w-full transform scale-95 transition-transform duration-300 border border-violet-500/50 shadow-2xl shadow-violet-500/20 max-h-[95vh] flex flex-col">
+            <div class="flex-none text-center">
+                <div class="w-16 h-16 rounded-full bg-violet-500/20 flex items-center justify-center mx-auto mb-4 text-2xl">✨</div>
+                <h2 class="text-2xl font-bold mb-2">阿月的牽線名單</h2>
+                <p class="text-sm text-gray-300 mb-6">不是亂塞名單喔，我替你挑了兩種不同火花。想認識誰，你自己做主。</p>
+            </div>
+
+            <!-- 🥚 雙卡片區域 -->
+            <div id="dual-cards-container" class="flex-1 overflow-y-auto grid grid-cols-2 gap-4 pr-2 min-h-0">
+                <!-- Card A & Card B will be rendered by JS -->
+            </div>
+
+            <!-- Debug Table + Footer -->
+            <div class="flex-none mt-4 space-y-4">
+                <details class="bg-black/30 rounded-xl border border-white/5">
+                    <summary class="px-4 py-3 text-xs text-violet-400 uppercase font-semibold cursor-pointer select-none flex items-center gap-2">
+                        <span>🛠️ 系統驗證資訊 (開發者 Debug)</span>
+                    </summary>
+                    <div class="px-4 pb-4 overflow-x-auto rounded-b-lg">
+                        <table class="w-full text-left text-sm text-gray-300">
+                            <thead class="text-xs text-gray-500 bg-black/50 border-b border-white/5">
+                                <tr>
+                                    <th class="px-4 py-3 font-medium">候選人 ID</th>
+                                    <th class="px-4 py-3 font-medium">相似度</th>
+                                    <th class="px-4 py-3 font-medium">近期情境</th>
+                                    <th class="px-4 py-3 font-medium">性格簡述</th>
+                                </tr>
+                            </thead>
+                            <tbody id="initiator-debug-table" class="divide-y divide-white/5 text-xs"></tbody>
+                        </table>
+                    </div>
+                </details>
+
+                <div id="initiator-footer" class="text-center">
+                    <p class="text-xs text-yellow-400 mb-3 animate-pulse" id="initiator-status-text">請對每位候選人做出決定</p>
+                    <button onclick="closeInitiatorModal()" id="initiator-close-btn"
+                        class="w-full py-3 bg-white/10 hover:bg-white/20 rounded-xl font-semibold transition opacity-50 pointer-events-none">確認並關閉</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="tone-overlay" class="fixed inset-0 z-[90] hidden items-center justify-center p-5">
+        <div id="tone-card" class="w-full max-w-md p-6">
+            <div class="text-xs text-[#a96749] mb-2">先選個相處方式</div>
+            <h2 class="text-xl font-bold mb-2">你喜歡阿月怎麼跟你說話？</h2>
+            <p class="text-sm text-[#8b7063] mb-5">之後隨時可以在個人設定裡換。</p>
+            <div class="grid gap-2">
+                <button onclick="chooseMediatorTone('friend')" class="p-3 text-left">熟朋友｜直接、口語，偶爾吐槽</button>
+                <button onclick="chooseMediatorTone('gentle')" class="p-3 text-left">溫柔姐姐｜細膩、讓人安心</button>
+                <button onclick="chooseMediatorTone('enthusiastic')" class="p-3 text-left">熱心媒婆｜活潑、有點戲</button>
+            </div>
+            <button onclick="chooseMediatorTone('friend')" class="mt-4 w-full p-2 text-sm">先用預設就好</button>
+        </div>
+    </div>
+
+    <button id="mediator-toast" onclick="openMediatorNotification()"
+        class="fixed right-6 bottom-6 z-[70] hidden max-w-sm p-4 text-left">
+        <span class="block text-xs mb-2">阿月有悄悄話</span>
+        <span id="mediator-toast-message" class="block text-sm leading-relaxed"></span>
+        <span id="mediator-toast-action" class="block text-xs mt-3">點我看看</span>
+    </button>
+
+    <!-- Scripts -->
+    <script>
+        // --- State ---
+        let currentUserId = "demo_user";
+        let isStageMessenger = false;
+        let activeContactId = null;
+        let activeMatchId = null; // for notification
+        let activeMatchFromUser = null; // for auto jump to chat
+        let activeMatchBigFive = null; // 候選人 big_five，供婉拒 Checkbox 使用
+        let activeMatchContext = ""; // 候選人情境
+        let activeMatchDistinctiveTags = null; // 候選人 distinctive_tags，供婉拒 Checkbox 使用
+        let userInterest = "";
+        let pendingMediatorNotification = null;
+        
+        // 🥚 雙黃蛋狀態追蹤
+        let activeDraftMatches = []; // [{match_id, matched_user_id, contrast_label, reason, big_five, context, status}]
+        let activeDeclineMatchId = null; // 目前正在婉拒的 match_id
+        let activeDeclineCardIdx = null; // 🥚 直接記住卡片索引，避免 findIndex 找不到
+        let isDeepProfiling = false; // 是否正在深層價值觀分析
+        let hasDeepProfile = false; // 是否已完成深層價值觀分析
+
+        // 🎯 深層價值觀分析
+        async function startDeepProfile() {
+            if (isDeepProfiling) return;
+            isDeepProfiling = true;
+            
+            // 切換到 Big Five 畫面但更改標題
+            switchStage(false);
+            const headerEl = document.querySelector('#stage-bigfive .p-4.border-b h2');
+            const origHeader = headerEl.innerHTML;
+            headerEl.innerHTML = '🎯 深層價值觀分析';
+            
+            const bfMessages = document.getElementById("bf-messages");
+            bfMessages.innerHTML = '';
+            const origJson = document.getElementById("bf-json").innerText;
+            document.getElementById("bf-json").innerText = "尚無深層分析資料...";
+            
+            // 重置輸入
+            const inp = document.getElementById("bf-input");
+            inp.placeholder = "分享你的深層想法...";
+            document.getElementById("bf-typing").classList.remove("hidden");
+            
+            try {
+                const res = await fetch('/api/chat', {
+                    method: 'POST', headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ user_id: currentUserId, message: "我想探索自己的深層價值觀", state: "deep_profile" })
+                });
+                const data = await res.json();
+                document.getElementById("bf-typing").classList.add("hidden");
+                if (res.ok) {
+                    appendBFMessage(data.reply, false);
+                    if (data.deep_profile) {
+                        document.getElementById("bf-json").innerText = JSON.stringify(data.deep_profile, null, 2);
+                    }
+                    if (data.is_complete) {
+                        appendBFMessage("🎉 深層價值觀分析完成！即將返回聊天室...", false);
+                        setTimeout(() => {
+                            isDeepProfiling = false;
+                            headerEl.innerHTML = origHeader;
+                            inp.placeholder = "回答 AI...";
+                            switchStage(true);
+                        }, 3000);
+                    }
+                }
+            } catch (e) {
+                document.getElementById("bf-typing").classList.add("hidden");
+                appendBFMessage("連線錯誤，請重試。", false);
+                isDeepProfiling = false;
+                headerEl.innerHTML = origHeader;
+                inp.placeholder = "回答 AI...";
+            }
+        }
+
+        async function startWithInterest() {
+            const inp = document.getElementById("test-interest-input");
+            userInterest = inp.value.trim();
+            if (!userInterest) userInterest = "無特別興趣";
+            
+            document.getElementById("interest-overlay").classList.add("opacity-0", "pointer-events-none");
+            
+            // Clear default message & show typing
+            document.getElementById("bf-messages").innerHTML = "";
+            document.getElementById("bf-typing").classList.remove("hidden");
+            
+            try {
+                const res = await fetch('/api/chat', {
+                    method: 'POST', headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ 
+                        user_id: currentUserId, 
+                        message: "哈囉！這是我註冊時填寫的興趣，請根據它問我情境題。", 
+                        state: "big_five",
+                        initial_interest: userInterest 
+                    })
+                });
+                const data = await res.json();
+                document.getElementById("bf-typing").classList.add("hidden");
+                if (res.ok) {
+                    appendBFMessage(data.reply, false);
+                    document.getElementById("bf-json").innerText = JSON.stringify(data.big_five, null, 2);
+                } else {
+                    appendBFMessage("系統錯誤，無法初始化 AI。", false);
+                }
+            } catch(e) {
+                document.getElementById("bf-typing").classList.add("hidden");
+                appendBFMessage("連線錯誤，請重試。", false);
+            }
+        }
+
+        // --- DOM Elements ---
+        const stageBigFive = document.getElementById("stage-bigfive");
+        const stageMessenger = document.getElementById("stage-messenger");
+        const stageDeepProfile = document.getElementById("stage-deep-profile");
+
+        // --- Main Switcher ---
+        function switchUser() {
+            const val = document.getElementById("user-select").value;
+            if (!val) return;
+            currentUserId = val;
+            window.location.search = `?user=${currentUserId}`;
+        }
+
+        function getDeepProfileParts(data) {
+            const dp = data.my_deep_profile || {};
+            const values = dp.core_values || dp.values || data.my_dp_values;
+            const future = dp.life_philosophy || dp.ideal_future || data.my_dp_future;
+            return {
+                values: Array.isArray(values) ? values.join('、') : values,
+                future
+            };
+        }
+
+        function renderDropdownProfile(data) {
+            const contextEl = document.getElementById("dropdown-context");
+            const bfEl = document.getElementById("dropdown-bf");
+            const dpSection = document.getElementById("dropdown-dp-section");
+            const dpValuesEl = document.getElementById("dropdown-dp-values");
+            const dpFutureEl = document.getElementById("dropdown-dp-future");
+            const frequencyEl = document.getElementById("frequency-select");
+
+            const profileParts = [];
+            if (data.my_initial_interest) {
+                profileParts.push("🎯 興趣：" + data.my_initial_interest);
+            }
+            if (data.my_bf_summary && data.my_bf_summary !== "尚無性格分析資料") {
+                profileParts.push("🧠 個性：" + data.my_bf_summary);
+            }
+
+            const deepParts = getDeepProfileParts(data);
+            if (deepParts.values) profileParts.push("💎 價值觀：" + deepParts.values);
+            if (deepParts.future) profileParts.push("🌱 未來：" + deepParts.future);
+
+            if (contextEl) contextEl.innerText = data.my_context || "尚無目前情境";
+            if (bfEl) bfEl.innerText = profileParts.length > 0 ? profileParts.join('\n') : "尚無完整資料";
+            if (dpSection) dpSection.classList.toggle("hidden", !(deepParts.values || deepParts.future));
+            if (dpValuesEl) dpValuesEl.innerText = deepParts.values || "無";
+            if (dpFutureEl) dpFutureEl.innerText = deepParts.future || "無";
+            if (frequencyEl) frequencyEl.value = data.proactive_frequency || data.my_proactive_frequency || "none";
+            const toneEl = document.getElementById("mediator-tone-select");
+            if (toneEl) toneEl.value = data.mediator_tone || "friend";
+            const probeEl = document.getElementById("probe-mode-select");
+            if (probeEl) probeEl.value = data.probe_mode || "balanced";
+            renderProfileMemories(data.profile_memories || []);
+
+            hasDeepProfile = Boolean(data.is_deep_complete || deepParts.values || deepParts.future);
+            const deepButton = document.getElementById("btn-deep-profile");
+            if (hasDeepProfile && activeContactId === "ai_assistant" && deepButton) {
+                deepButton.classList.add("hidden");
+            } else if (!hasDeepProfile && deepButton) {
+                deepButton.classList.remove("hidden");
+            }
+        }
+
+        async function toggleProfileMenu() {
+            const menu = document.getElementById("profile-dropdown");
+            menu.classList.toggle("hidden");
+            menu.classList.toggle("flex");
+
+            if (!menu.classList.contains("hidden")) {
+                try {
+                    const res = await fetch(`/api/init?user_id=${currentUserId}`);
+                    if (res.ok) {
+                        const data = await res.json();
+                        renderDropdownProfile(data);
+                    }
+                } catch (e) { }
+            }
+        }
+
+        async function updateProactiveFrequency() {
+            const val = document.getElementById("frequency-select").value;
+            try {
+                await fetch('/api/settings', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ user_id: currentUserId, proactive_frequency: val })
+                });
+            } catch (e) {
+                console.error("Failed to update frequency", e);
+            }
+        }
+
+        function renderProfileMemories(memories) {
+            const list = document.getElementById("profile-memory-list");
+            if (!list) return;
+            list.innerHTML = "";
+            if (!memories.length) {
+                list.innerHTML = '<span class="text-gray-400">還沒有長期偏好</span>';
+                return;
+            }
+            memories.forEach(memory => {
+                const tag = document.createElement("span");
+                tag.className = "inline-flex items-center gap-1 bg-[#fde3d3] border border-[#e7c9b7] px-2 py-1";
+                const prefix = ["dislike", "avoid"].includes(memory.stance) ? "不喜歡 " : "喜歡 ";
+                tag.append(document.createTextNode(prefix + memory.label));
+                const undo = document.createElement("button");
+                undo.type = "button";
+                undo.textContent = "×";
+                undo.title = "撤銷這項記憶";
+                undo.onclick = () => disableProfileMemory(memory.key);
+                tag.appendChild(undo);
+                list.appendChild(tag);
+            });
+        }
+
+        async function disableProfileMemory(key) {
+            await fetch('/api/profile/memories/action', {
+                method: 'POST', headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ user_id: currentUserId, key, action: 'disable' })
+            });
+            const res = await fetch('/api/init?user_id=' + encodeURIComponent(currentUserId));
+            if (res.ok) renderDropdownProfile(await res.json());
+        }
+
+        async function updateProbeMode(mode) {
+            const tone = document.getElementById("mediator-tone-select")?.value || "friend";
+            await fetch('/api/settings/mediator', {
+                method: 'POST', headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ user_id: currentUserId, mediator_tone: tone, probe_mode: mode })
+            });
+        }
+
+        async function updateMediatorTone(tone) {
+            try {
+                await fetch('/api/settings/mediator', {
+                    method: 'POST', headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ user_id: currentUserId, mediator_tone: tone, probe_mode: document.getElementById("probe-mode-select")?.value || "balanced" })
+                });
+                const select = document.getElementById("mediator-tone-select");
+                if (select) select.value = tone;
+            } catch (e) { console.error("Failed to update mediator tone", e); }
+        }
+
+        async function chooseMediatorTone(tone) {
+            await updateMediatorTone(tone);
+            const overlay = document.getElementById("tone-overlay");
+            overlay.classList.add("hidden");
+            overlay.classList.remove("flex");
+        }
+
+        async function redoBigFive() {
+            document.getElementById("profile-dropdown").classList.add("hidden");
+            document.getElementById("profile-dropdown").classList.remove("flex");
+
+            try {
+                await fetch('/api/chat/reset', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ user_id: currentUserId, state: "big_five" })
+                });
+
+                document.getElementById("bf-messages").innerHTML = `<div class="chat-bubble bubble-other fade-in">\u6211\u5011\u91CD\u65B0\u4F86\u4E00\u6B21\u57FA\u790E\u6027\u683C\u6E2C\u9A57\u5427\u3002\u5148\u8DDF\u6211\u804A\u804A\u6700\u8FD1\u8B93\u4F60\u6709\u611F\u89BA\u7684\u4E00\u4EF6\u4E8B\u3002</div>`;
+                document.getElementById("bf-json").innerText = "\u5C1A\u7121\u8CC7\u6599...";
+                switchStage("bigfive");
+            } catch (e) { }
+        }
+
+        async function redoDeepProfile() {
+            document.getElementById("profile-dropdown").classList.add("hidden");
+            document.getElementById("profile-dropdown").classList.remove("flex");
+
+            try {
+                await fetch('/api/chat/reset', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ user_id: currentUserId, state: "deep_profile" })
+                });
+
+                document.getElementById("dp-messages").innerHTML = "";
+                document.getElementById("dp-json").innerText = "\u5C1A\u7121\u8CC7\u6599...";
+                hasDeepProfile = false;
+                switchStage("deep_profile");
+                initDeepProfile();
+            } catch (e) { }
+        }
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function (event) {
+            const container = document.getElementById('profile-dropdown');
+            const button = document.querySelector('button[onclick="toggleProfileMenu()"]');
+            if (container && !container.classList.contains("hidden") && !container.contains(event.target) && !button.contains(event.target)) {
+                container.classList.add("hidden");
+                container.classList.remove("flex");
+            }
+        });
+
+        async function clearSystemData() {
+            if (!confirm("確定要刪除所有資料並重新開始嗎？這會清除所有對話紀錄並自動生成 10 筆假資料。")) return;
+            
+            // 1. 清空所有資料庫
+            await fetch('/api/clear', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ user_id: currentUserId }) });
+            
+            // 2. 自動產生 10 筆假資料
+            await fetch('/api/seed', { method: 'POST' });
+            
+            // 3. 跳回首頁 (預設 demo_user)
+            window.location.href = "/";
+        }
+
+        // --- Helper functions ---
+        function appendBFMessage(text, isUser) {
+            const c = document.getElementById("bf-messages");
+            const div = document.createElement("div");
+            div.className = `chat-bubble ${isUser ? 'bubble-user' : 'bubble-other'} fade-in`;
+            div.innerHTML = text;
+            c.appendChild(div);
+            c.scrollTop = c.scrollHeight;
+        }
+
+        function switchStage(stage) {
+            // Support both boolean (legacy) and string params
+            if (stage === true || stage === 'messenger') {
+                stage = 'messenger';
+            } else if (stage === false || stage === 'bigfive') {
+                stage = 'bigfive';
+            } else if (stage === 'deep_profile') {
+                // Keep as-is
+            }
+
+            // Hide all stages first
+            [stageBigFive, stageMessenger, stageDeepProfile].forEach(el => {
+                el.classList.add("opacity-0", "pointer-events-none");
+                el.classList.remove("z-10");
+            });
+
+            isStageMessenger = (stage === 'messenger');
+
+            if (stage === 'messenger') {
+                stageMessenger.classList.remove("opacity-0", "pointer-events-none");
+                stageMessenger.classList.add("z-10");
+                loadContacts();
+            } else if (stage === 'deep_profile') {
+                stageDeepProfile.classList.remove("opacity-0", "pointer-events-none");
+                stageDeepProfile.classList.add("z-10");
+            } else {
+                stageBigFive.classList.remove("opacity-0", "pointer-events-none");
+                stageBigFive.classList.add("z-10");
+            }
+        }
+
+        // --- Deep Profile Phase ---
+        function appendDPMessage(text, isUser) {
+            const c = document.getElementById("dp-messages");
+            const div = document.createElement("div");
+            div.className = `chat-bubble ${isUser ? 'bubble-user' : 'bubble-other'} fade-in`;
+            div.innerText = text;
+            c.appendChild(div);
+            c.scrollTop = c.scrollHeight;
+        }
+
+        document.getElementById("dp-form").addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const inp = document.getElementById("dp-input");
+            const msg = inp.value.trim();
+            if (!msg) return;
+            inp.value = "";
+            appendDPMessage(msg, true);
+            document.getElementById("dp-typing").classList.remove("hidden");
+
+            try {
+                const res = await fetch('/api/chat', {
+                    method: 'POST', headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ user_id: currentUserId, message: msg, state: "deep_profile" })
+                });
+                const data = await res.json();
+                document.getElementById("dp-typing").classList.add("hidden");
+                if (res.ok) {
+                    document.getElementById("dp-json").innerText = JSON.stringify(data.deep_profile, null, 2);
+                    if (data.is_complete) {
+                        appendDPMessage("你的性格與價值觀分析都已經完成囉！🥳 接下來為您跳轉回聊天室！", false);
+                        setTimeout(() => switchStage('messenger'), 3000);
+                        document.getElementById("btn-deep-profile").classList.add("hidden");
+                    } else {
+                        appendDPMessage(data.reply, false);
+                    }
+                }
+            } catch (e) { }
+        });
+
+        async function startDeepProfileInChat() {
+            if (activeContactId !== "ai_assistant") return;
+            switchStage('deep_profile');
+            if (document.getElementById("dp-messages").children.length <= 1) {
+                // Initialize deep profile conversation
+                document.getElementById("dp-typing").classList.remove("hidden");
+                try {
+                    const res = await fetch('/api/chat', {
+                        method: 'POST', headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ user_id: currentUserId, message: "我想探索自己的深層價值觀", state: "deep_profile" })
+                    });
+                    const data = await res.json();
+                    document.getElementById("dp-typing").classList.add("hidden");
+                    if (res.ok) {
+                        appendDPMessage(data.reply, false);
+                        if (data.deep_profile) {
+                            document.getElementById("dp-json").innerText = JSON.stringify(data.deep_profile, null, 2);
+                        }
+                    }
+                } catch (e) {
+                    document.getElementById("dp-typing").classList.add("hidden");
+                    appendDPMessage("連線錯誤，請重試。", false);
+                }
+            }
+        }
+
+        // --- Big Five Phase ---
+        document.getElementById("bf-form").addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const inp = document.getElementById("bf-input");
+            const msg = inp.value.trim();
+            if (!msg) return;
+            inp.value = "";
+            appendBFMessage(msg, true);
+            document.getElementById("bf-typing").classList.remove("hidden");
+
+            const chatState = isDeepProfiling ? "deep_profile" : "big_five";
+
+            try {
+                const res = await fetch('/api/chat', {
+                    method: 'POST', headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ user_id: currentUserId, message: msg, state: chatState })
+                });
+                const data = await res.json();
+                document.getElementById("bf-typing").classList.add("hidden");
+                if (res.ok) {
+                    if (isDeepProfiling) {
+                        document.getElementById("bf-json").innerText = JSON.stringify(data.deep_profile, null, 2);
+                        if (data.is_complete) {
+                            appendBFMessage("🎉 深層價值觀分析完成！即將返回聊天室...", false);
+                            const headerEl = document.querySelector('#stage-bigfive .p-4.border-b h2');
+                            setTimeout(() => {
+                                isDeepProfiling = false;
+                                headerEl.innerHTML = '🔮 專屬性格解析';
+                                inp.placeholder = "回答 AI...";
+                                switchStage(true);
+                            }, 3000);
+                        } else {
+                            appendBFMessage(data.reply, false);
+                        }
+                    } else {
+                        document.getElementById("bf-json").innerText = JSON.stringify(data.big_five, null, 2);
+                        if (data.is_complete) {
+                            appendBFMessage("太棒了！我已經大概了解你的個性囉。接下來為您開通專屬聊天室，我會在那邊傳訊息給你！", false);
+                            setTimeout(() => switchStage(true), 3000);
+                        } else {
+                            appendBFMessage(data.reply, false);
+                        }
+                    }
+                }
+            } catch (e) { }
+        });
+
+        // --- Messenger Phase ---
+        async function loadContacts() {
+            try {
+                const res = await fetch(`/api/contacts?user_id=${currentUserId}`);
+                const data = await res.json();
+                const list = document.getElementById("contacts-list");
+                list.innerHTML = "";
+                data.contacts.forEach(c => {
+                    const bg = c.role === "system" ? "from-violet-500 to-fuchsia-500" : "from-sky-500 to-indigo-500";
+                    const isSystem = c.role === "system";
+                    const div = document.createElement("div");
+                    div.className = `contact-item p-4 border-b border-white/5 flex items-center gap-3 ${activeContactId === c.id ? 'contact-active' : ''}`;
+                    div.onclick = () => selectContact(c.id, c.name, bg, c.context, c.is_locked);
+                    div.innerHTML = `
+                        <div class="w-12 h-12 rounded-full bg-gradient-to-tr ${bg} flex items-center justify-center font-bold shadow-lg flex-shrink-0 text-white">
+                            ${c.name.substring(0, 2).toUpperCase()}
+                        </div>
+                        <div class="overflow-hidden">
+                            <h3 class="font-semibold text-white whitespace-nowrap overflow-hidden text-ellipsis">${c.name} ${isSystem ? '<span class="text-xs bg-violet-600 rounded px-1 ml-1">官方</span>' : ''}</h3>
+                            <p class="text-xs text-emerald-400 whitespace-nowrap overflow-hidden text-ellipsis" title="${c.context}">情境：${c.context || '交朋友'}</p>
+                        </div>
+                    `;
+                    list.appendChild(div);
+                });
+
+                // Auto select first contact if none is active
+                if (!activeContactId && data.contacts.length > 0) {
+                    const aiContact = data.contacts.find(c => c.id === "ai_assistant") || data.contacts[0];
+                    const bg = aiContact.role === "system" ? "from-violet-500 to-fuchsia-500" : "from-sky-500 to-indigo-500";
+                    selectContact(aiContact.id, aiContact.name, bg, aiContact.context);
+                }
+            } catch (e) { }
+        }
+
+        async function selectContact(id, name, bgClass, contextStr = "交朋友", is_locked = false) {
+            activeContactId = id;
+            closeMediatorPrivatePanel();
+            document.getElementById("room-name").innerText = name;
+            document.getElementById("room-avatar").className = `w-10 h-10 rounded-full bg-gradient-to-tr ${bgClass} flex items-center justify-center font-bold text-lg text-white shadow`;
+            const privateTrigger = document.getElementById("mediator-private-trigger");
+            privateTrigger.classList.toggle("hidden", id === "ai_assistant");
+            if (id !== "ai_assistant") {
+                const isPendingHere = pendingMediatorNotification && pendingMediatorNotification.other_id === id;
+                document.getElementById("mediator-trigger-text").textContent = isPendingHere ? "阿月有悄悄話" : "問問阿月";
+                document.getElementById("mediator-unread-dot").classList.toggle("hidden", !isPendingHere);
+            }
+
+            if (id === "ai_assistant" && !hasDeepProfile) {
+                document.getElementById("btn-deep-profile").classList.remove("hidden");
+            } else {
+                document.getElementById("btn-deep-profile").classList.add("hidden");
+            }
+
+            // UI refresh
+            loadContacts();
+
+            // Enable/disable input based on lock status
+            if (is_locked) {
+                document.getElementById("room-input").disabled = true;
+                document.getElementById("room-submit").disabled = true;
+                document.getElementById("room-input").placeholder = "AI 目前正在休息，等待下次主動聊天...";
+            } else {
+                document.getElementById("room-input").disabled = false;
+                document.getElementById("room-submit").disabled = false;
+                document.getElementById("room-input").placeholder = "傳送訊息...";
+            }
+
+            // Load messages
+            const cm = document.getElementById("room-messages");
+            cm.innerHTML = `<div class="text-center text-gray-500 my-4 text-xs">載入中...</div>`;
+
+            try {
+                const res = await fetch(`/api/messages/${id}?user_id=${currentUserId}`);
+                const data = await res.json();
+                cm.innerHTML = "";
+                if (data.messages.length === 0) {
+                    cm.innerHTML = `<div class="text-center text-gray-500 my-8 text-xs bg-black/20 rounded max-w-sm mx-auto p-4">這裡是你們專屬的聊天空間，開始打招呼吧！</div>`;
+                } else {
+                    data.messages.forEach(m => {
+                        appendRoomMessage(m.content, m.sender_id === currentUserId, m);
+                    });
+                }
+            } catch (e) { }
+        }
+
+        function appendRoomMessage(text, isUser, messageData = {}) {
+            const cm = document.getElementById("room-messages");
+            if (!isUser && messageData.message_type === "mediator_card") {
+                const metadata = messageData.metadata || {};
+                const card = document.createElement("div");
+                card.className = "mediator-card fade-in";
+
+                const badge = document.createElement("div");
+                badge.className = "text-xs text-yellow-300 mb-3 font-bold";
+                badge.textContent = metadata.event_type === "feedback_request"
+                    ? "[ 阿月私下覆盤 ]"
+                    : "[ 阿月牽線提案 ]";
+                card.appendChild(badge);
+
+                const body = document.createElement("div");
+                body.className = "text-sm leading-relaxed whitespace-pre-wrap";
+                body.textContent = text;
+                card.appendChild(body);
+
+                const actions = document.createElement("div");
+                actions.className = "mediator-card-actions";
+                if (["match_proposal", "incoming_match_interest"].includes(metadata.event_type)) {
+                    [
+                        ["有興趣，幫我問問", "bg-emerald-700"],
+                        ["先不要，幫我婉拒", "bg-slate-700"]
+                    ].forEach(([label, cls]) => {
+                        const btn = document.createElement("button");
+                        btn.type = "button";
+                        btn.className = cls;
+                        btn.textContent = label;
+                        btn.onclick = () => {
+                            submitMediatorAction(label);
+                            actions.innerHTML = '<span class="text-xs text-cyan-300">阿月正在處理你的回覆…</span>';
+                        };
+                        actions.appendChild(btn);
+                    });
+                } else if (metadata.event_type === "feedback_request") {
+                    (metadata.actions || []).forEach(action => {
+                        const btn = document.createElement("button");
+                        btn.type = "button";
+                        btn.className = "bg-fuchsia-800";
+                        btn.textContent = action.label;
+                        btn.onclick = () => {
+                            submitMediatorAction(action.value);
+                            actions.innerHTML = '<span class="text-xs text-cyan-300">這段只會留在你和阿月之間。</span>';
+                        };
+                        actions.appendChild(btn);
+                    });
+                }
+                if (actions.childNodes.length) card.appendChild(actions);
+                cm.appendChild(card);
+                cm.scrollTop = cm.scrollHeight;
+                return;
+            }
+
+            const div = document.createElement("div");
+            div.className = `chat-bubble ${isUser ? 'bubble-user' : 'bubble-other'} fade-in whitespace-pre-wrap`;
+            div.innerText = text;
+            cm.appendChild(div);
+            cm.scrollTop = cm.scrollHeight;
+        }
+
+        function appendContextNotice(kind) {
+            const cm = document.getElementById("room-messages");
+            const notice = document.createElement("div");
+            notice.className = "self-center text-xs bg-[#fff3e9] border border-[#e7c9b7] px-3 py-2 flex gap-2 items-center";
+            notice.append(document.createTextNode(kind === "changed" ? "近期情境已更新" : "這段要記成近期情境嗎？"));
+            const btn = document.createElement("button");
+            btn.type = "button";
+            btn.textContent = kind === "changed" ? "復原" : "幫我更新";
+            btn.onclick = async () => {
+                if (kind === "changed") {
+                    await fetch('/api/context/undo', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({user_id:currentUserId})});
+                    notice.textContent = "已復原近期情境";
+                } else {
+                    document.getElementById("room-input").value = "幫我更新近況，沿用剛剛說的內容";
+                    document.getElementById("room-form").requestSubmit();
+                    notice.remove();
+                }
+            };
+            notice.appendChild(btn);
+            cm.appendChild(notice);
+            cm.scrollTop = cm.scrollHeight;
+        }
+
+        function submitMediatorAction(value) {
+            const inp = document.getElementById("room-input");
+            inp.value = value;
+            document.getElementById("room-form").requestSubmit();
+        }
+
+        async function openMediatorPrivatePanel() {
+            if (!activeContactId || activeContactId === "ai_assistant") return;
+            const panel = document.getElementById("mediator-private-panel");
+            const container = document.getElementById("mediator-private-messages");
+            document.getElementById("mediator-private-context").textContent = "關於 " + activeContactId + "，只有你看得到";
+            panel.classList.remove("hidden");
+            panel.classList.add("flex");
+            document.getElementById("mediator-unread-dot").classList.add("hidden");
+            document.getElementById("mediator-trigger-text").textContent = "問問阿月";
+            if (pendingMediatorNotification && pendingMediatorNotification.other_id === activeContactId) pendingMediatorNotification = null;
+            container.innerHTML = '<div class="text-xs text-[#8b7063]">阿月看一下…</div>';
+            try {
+                const res = await fetch('/api/mediator/private/' + encodeURIComponent(activeContactId) + '?user_id=' + encodeURIComponent(currentUserId));
+                const data = await res.json();
+                container.innerHTML = "";
+                (data.messages || []).forEach(message => appendPrivateMessage(message.content, message.sender_id === currentUserId, message));
+            } catch (e) {
+                container.innerHTML = '<div class="text-xs text-red-500">暫時找不到阿月。</div>';
+            }
+        }
+
+        function closeMediatorPrivatePanel() {
+            const panel = document.getElementById("mediator-private-panel");
+            if (!panel) return;
+            panel.classList.add("hidden");
+            panel.classList.remove("flex");
+        }
+
+        function appendPrivateMessage(text, isUser, messageData = {}) {
+            const container = document.getElementById("mediator-private-messages");
+            const bubble = document.createElement("div");
+            bubble.className = "chat-bubble " + (isUser ? 'bubble-user' : 'bubble-other') + " text-sm";
+            const body = document.createElement("div");
+            body.textContent = text;
+            bubble.appendChild(body);
+            const actionsData = messageData.actions || (messageData.metadata && messageData.metadata.actions) || [];
+            if (!isUser && actionsData.length) {
+                const actions = document.createElement("div");
+                actions.className = "mediator-card-actions";
+                actionsData.forEach(action => {
+                    const btn = document.createElement("button");
+                    btn.type = "button";
+                    btn.textContent = action.label;
+                    btn.onclick = () => {
+                        actions.innerHTML = '<span class="text-xs">阿月收到。</span>';
+                        sendPrivateMediatorMessage(action.value);
+                    };
+                    actions.appendChild(btn);
+                });
+                bubble.appendChild(actions);
+            }
+            container.appendChild(bubble);
+            container.scrollTop = container.scrollHeight;
+        }
+
+        async function sendPrivateMediatorMessage(message) {
+            if (!message || !activeContactId || activeContactId === "ai_assistant") return;
+            appendPrivateMessage(message, true);
+            try {
+                const res = await fetch('/api/mediator/private', {
+                    method: 'POST', headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ user_id: currentUserId, other_id: activeContactId, message: message })
+                });
+                const data = await res.json();
+                appendPrivateMessage(res.ok ? data.reply : '⚠️ ' + (data.detail || '阿月暫時無法回覆'), false, data);
+            } catch (e) {
+                appendPrivateMessage("⚠️ 連線中斷，晚點再問我。", false);
+            }
+        }
+
+        document.getElementById("mediator-private-form").addEventListener("submit", async (event) => {
+            event.preventDefault();
+            const input = document.getElementById("mediator-private-input");
+            const message = input.value.trim();
+            if (!message) return;
+            input.value = "";
+            await sendPrivateMediatorMessage(message);
+        });
+
+        document.getElementById("room-form").addEventListener("submit", async (e) => {
+            e.preventDefault();
+            if (!activeContactId) return;
+            const inp = document.getElementById("room-input");
+            const msg = inp.value.trim();
+            if (!msg) return;
+            inp.value = "";
+            appendRoomMessage(msg, true);
+
+            document.getElementById("room-typing").classList.remove("hidden");
+            try {
+                const res = await fetch('/api/direct_chat', {
+                    method: 'POST', headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ user_id: currentUserId, contact_id: activeContactId, message: msg })
+                });
+                const data = await res.json().catch(() => ({}));
+                document.getElementById("room-typing").classList.add("hidden");
+                if (res.ok) {
+                    appendRoomMessage(data.reply, false);
+                    if (activeContactId === "ai_assistant" && data.context_changed) appendContextNotice("changed");
+                    else if (activeContactId === "ai_assistant" && data.context_confirmation_needed) appendContextNotice("confirm");
+                    if (activeContactId === "ai_assistant" && Number.isFinite(data.match_readiness_score)) {
+                        const status = document.getElementById("match-readiness-status");
+                        const score = Math.max(0, Math.min(100, data.match_readiness_score));
+                        status.textContent = score >= 75 ? "媒合訊號已足夠" : `情境信心 ${score}%`;
+                    }
+                    if (data.is_locked) {
+                        document.getElementById("room-input").disabled = true;
+                        document.getElementById("room-submit").disabled = true;
+                        document.getElementById("room-input").placeholder = "AI 目前正在休息，等待下次主動聊天...";
+                        loadContacts();
+                    }
+                } else {
+                    const detail = data.detail || "伺服器暫時無法回覆";
+                    appendRoomMessage(`⚠️ ${detail}`, false);
+                }
+            } catch (e) {
+                document.getElementById("room-typing").classList.add("hidden");
+                appendRoomMessage("⚠️ 連線中斷，請稍後再試。", false);
+            }
+        });
+
+        // --- Matching & Notifications ---
+        async function triggerMatch() {
+            const btn = document.getElementById("btn-match");
+            const oldHtml = btn.innerHTML;
+            btn.innerHTML = "阿月正在找…"; btn.disabled = true;
+            try {
+                const res = await fetch('/api/match/request', {
+                    method: 'POST', headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ user_id: currentUserId, source: 'explicit_next', force_new: true })
+                });
+                const data = await res.json();
+                if (data.status === "queued") appendRoomMessage("好，這次真的排進去了；有沒有找到我都會回來說。", false);
+                else if (data.status === "already_active") appendRoomMessage("手上這條線還沒確認完，先處理它，我再幫你找下一位。", false);
+                else appendRoomMessage("我已經在找了，先別連按門鈴啦。", false);
+            } catch (e) { appendRoomMessage("剛剛沒有成功排入，我晚點再試。", false); }
+            btn.innerHTML = oldHtml; btn.disabled = false;
+        }
+
+        // 🥚 雙黃蛋：渲染雙卡片 Modal
+        function showDualCardsModal(matches, debugInfo) {
+            activeDraftMatches = matches.map(m => ({...m, status: 'draft'})); // 初始 draft
+            const container = document.getElementById("dual-cards-container");
+            container.innerHTML = "";
+            
+            matches.forEach((m, idx) => {
+                const cardLetter = String.fromCharCode(65 + idx); // A, B
+                const bfSummary = m.big_five?.summary || '無';
+                const contrastEmoji = idx === 0 ? '🔥' : '❄️';
+                
+                const card = document.createElement("div");
+                card.className = "bg-black/50 rounded-2xl p-5 border border-white/10 flex flex-col gap-3 transition-all duration-300";
+                card.id = `draft-card-${idx}`;
+                card.innerHTML = `
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-bold px-2 py-1 rounded-full bg-violet-500/20 text-violet-300">${contrastEmoji} ${m.contrast_label || '候選人 ' + cardLetter}</span>
+                        <span id="card-status-${idx}" class="text-xs px-2 py-1 rounded-full bg-yellow-500/20 text-yellow-300">草稿中</span>
+                    </div>
+                    <div class="text-xs text-gray-500 uppercase font-semibold">候選人 ID</div>
+                    <div class="font-mono text-lg font-bold text-sky-400">${m.matched_user_id}</div>
+                    <div class="text-xs text-gray-500 uppercase font-semibold mt-1">AI 推薦理由</div>
+                    <p class="text-sm leading-relaxed text-gray-200 whitespace-pre-wrap flex-1">${m.recommendation_reason || '無'}</p>
+                    ${m.distinctive_tags && m.distinctive_tags.length > 0 ? `<div class="text-xs text-gray-500 mt-1">${m.distinctive_tags.join('、')}</div>` : ''}
+                    <div id="card-actions-${idx}" class="flex gap-2 mt-auto pt-2">
+                        <button onclick="initiatorDeclineDraft(${idx})" class="flex-1 py-2.5 bg-white/5 hover:bg-red-500/20 hover:border-red-500/50 rounded-xl text-sm font-semibold transition border border-white/10">婉拒</button>
+                        <button onclick="initiatorAcceptDraft(${idx})" class="flex-1 py-2.5 bg-gradient-to-r from-violet-600 to-fuchsia-600 hover:from-violet-500 hover:to-fuchsia-500 rounded-xl text-sm font-bold shadow-lg transition">發送邀請</button>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+
+            // Debug table
+            const tbody = document.getElementById("initiator-debug-table");
+            if (tbody) {
+                tbody.innerHTML = "";
+                if (debugInfo && debugInfo.length > 0) {
+                    const matchedIds = matches.map(m => m.matched_user_id);
+                    debugInfo.forEach(d => {
+                        const isMatched = matchedIds.includes(d.user_id);
+                        const tr = document.createElement("tr");
+                        if (isMatched) tr.className = "bg-violet-900/30";
+                        tr.innerHTML = `
+                            <td class="px-4 py-3 ${isMatched ? 'font-bold text-violet-300' : ''}">${d.user_id} ${isMatched ? '<span class="text-xs ml-1 bg-violet-600 px-1 rounded text-white">Selected</span>' : ''}</td>
+                            <td class="px-4 py-3 font-mono ${isMatched ? 'font-bold text-violet-300' : ''}">${d.score}%</td>
+                            <td class="px-4 py-3">${d.context}</td>
+                            <td class="px-4 py-3">${d.big_five_summary}</td>
+                        `;
+                        tbody.appendChild(tr);
+                    });
+                }
+            }
+
+            // Reset footer
+            updateInitiatorFooter();
+
+            // Show modal
+            const modal = document.getElementById("initiator-modal");
+            const content = document.getElementById("initiator-content");
+            modal.classList.remove("hidden");
+            void modal.offsetWidth;
+            modal.classList.remove("opacity-0");
+            content.classList.remove("scale-95");
+        }
+
+        // 🥚 發起者接受草稿 → draft → pending
+        async function initiatorAcceptDraft(idx) {
+            const m = activeDraftMatches[idx];
+            if (!m || m.status !== 'draft') return;
+            
+            // Optimistic UI update
+            m.status = 'pending';
+            updateCardUI(idx, 'pending');
+            updateInitiatorFooter();
+            
+            try {
+                await fetch('/api/match/accept', {
+                    method: 'POST', headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ user_id: currentUserId, match_id: m.match_id })
+                });
+                console.log(`✅ 已發送邀請給 ${m.matched_user_id}`);
+            } catch (e) {
+                console.error('發送邀請失敗:', e);
+                m.status = 'draft'; // rollback
+                updateCardUI(idx, 'draft');
+                updateInitiatorFooter();
+            }
+        }
+
+        // 🥚 發起者婉拒草稿 → draft → declined
+        function initiatorDeclineDraft(idx) {
+            const m = activeDraftMatches[idx];
+            if (!m || m.status !== 'draft') return;
+            
+            // 記住正在婉拒哪張卡（同時記錄 match_id 和卡片索引）
+            activeDeclineMatchId = m.match_id;
+            activeDeclineCardIdx = idx; // 🥚 直接記住索引
+            activeMatchBigFive = m.big_five || {};
+            activeMatchContext = m.current_context || "";
+            activeMatchDistinctiveTags = m.distinctive_tags || [];
+            
+            console.log(`🥚 initiatorDeclineDraft: idx=${idx}, match_id=${m.match_id}`);
+            showInitiatorDeclineModal(idx);
+        }
+
+        function showInitiatorDeclineModal(idx) {
+            const bf = activeMatchBigFive || {};
+            const ctx = activeMatchContext || "";
+            const tags = activeMatchDistinctiveTags || [];
+            const labels = bigFiveToCheckboxLabels(bf, ctx, tags);
+            
+            const container = document.getElementById("decline-checkboxes");
+            container.innerHTML = "";
+            labels.forEach((item, i) => {
+                const id = `decline-reason-${i}`;
+                const div = document.createElement("div");
+                div.className = "flex items-start gap-3 bg-white/5 rounded-xl p-3 hover:bg-white/10 transition cursor-pointer";
+                div.innerHTML = `
+                    <input type="checkbox" id="${id}" name="decline-reason" value="${item.value}" class="mt-1 w-4 h-4 rounded border-gray-600 bg-black/30 text-red-500 focus:ring-red-500/30 accent-red-500">
+                    <label for="${id}" class="text-sm text-gray-200 cursor-pointer select-none">${item.value}</label>
+                `;
+                div.addEventListener("click", function(e) { if (e.target.tagName !== "INPUT") div.querySelector("input").checked = !div.querySelector("input").checked; });
+                container.appendChild(div);
+            });
+            
+            const modal = document.getElementById("decline-modal");
+            const content = document.getElementById("decline-content");
+            modal.classList.remove("hidden");
+            void modal.offsetWidth;
+            modal.classList.remove("opacity-0");
+            content.classList.remove("scale-95");
+        }
+
+        // Override confirmDecline to handle both initiator and receiver contexts
+        async function confirmDecline() {
+            const checkboxes = document.querySelectorAll('input[name="decline-reason"]:checked');
+            const explicitReasons = Array.from(checkboxes).map(cb => cb.value);
+            
+            // Close decline modal
+            const modal = document.getElementById("decline-modal");
+            const content = document.getElementById("decline-content");
+            modal.classList.add("opacity-0");
+            content.classList.add("scale-95");
+            setTimeout(() => modal.classList.add("hidden"), 300);
+            
+            if (activeDeclineMatchId || activeDeclineCardIdx !== null) {
+                // 🥚 發起者婉拒草稿情境 — 用直接記住的索引，不再依賴 findIndex
+                const idx = activeDeclineCardIdx;
+                console.log(`🥚 confirmDecline (initiator): cardIdx=${idx}, match_id=${activeDeclineMatchId}, explicitReasons=`, explicitReasons);
+                
+                try {
+                    console.log("準備發送婉拒理由:", explicitReasons);
+                    await fetch('/api/match/decline', {
+                        method: 'POST', headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ user_id: currentUserId, match_id: activeDeclineMatchId, explicit_reasons: explicitReasons })
+                    });
+                    
+                    if (idx !== null && idx >= 0 && idx < activeDraftMatches.length) {
+                        activeDraftMatches[idx].status = 'declined';
+                        updateCardUI(idx, 'declined');
+                        updateInitiatorFooter();
+                        console.log(`✅ 卡片 ${idx} 已更新為 declined`);
+                    } else {
+                        console.error(`❌ 無效的卡片索引: ${idx}`);
+                    }
+                } catch (e) {
+                    console.error("婉拒 API 失敗:", e);
+                    // 即使 API 失敗，仍然更新 UI（樂觀更新）
+                    if (idx !== null && idx >= 0 && idx < activeDraftMatches.length) {
+                        activeDraftMatches[idx].status = 'declined';
+                        updateCardUI(idx, 'declined');
+                        updateInitiatorFooter();
+                    }
+                }
+                activeDeclineMatchId = null;
+                activeDeclineCardIdx = null;
+                return;
+            }
+            
+            // 原本接收者婉拒情境
+            if (activeMatchId) {
+                try {
+                    console.log("準備發送婉拒理由:", explicitReasons);
+                    await fetch('/api/match/decline', {
+                        method: 'POST', headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ user_id: currentUserId, match_id: activeMatchId, explicit_reasons: explicitReasons })
+                    });
+                    console.log("📝 接收者婉拒回饋已送出:", explicitReasons);
+                } catch (e) { console.error("婉拒失敗:", e); }
+            }
+        }
+
+        // 🥚 更新單張卡片的 UI
+        function updateCardUI(idx, status) {
+            const statusEl = document.getElementById(`card-status-${idx}`);
+            const actionsEl = document.getElementById(`card-actions-${idx}`);
+            const cardEl = document.getElementById(`draft-card-${idx}`);
+            if (!statusEl || !actionsEl) return;
+            
+            const statusConfig = {
+                draft:    { text: '草稿中',     cls: 'bg-yellow-500/20 text-yellow-300' },
+                pending:  { text: '邀請中 ⏳',  cls: 'bg-blue-500/20 text-blue-300' },
+                declined: { text: '已婉拒 ❌',  cls: 'bg-red-500/20 text-red-300' }
+            };
+            const cfg = statusConfig[status] || statusConfig.draft;
+            statusEl.textContent = cfg.text;
+            statusEl.className = `text-xs px-2 py-1 rounded-full ${cfg.cls}`;
+            
+            if (status !== 'draft') {
+                actionsEl.innerHTML = `<div class="text-center text-xs text-gray-500 w-full py-2">${status === 'pending' ? '等待對方回應中...' : '您已婉拒此候選人'}</div>`;
+                cardEl.classList.add('opacity-60');
+            }
+        }
+
+        // 🥚 更新 Modal Footer 狀態
+        function updateInitiatorFooter() {
+            const allDecided = activeDraftMatches.every(m => m.status !== 'draft');
+            const statusText = document.getElementById("initiator-status-text");
+            const closeBtn = document.getElementById("initiator-close-btn");
+            
+            if (allDecided) {
+                statusText.textContent = "✅ 所有決定已下達！";
+                statusText.classList.remove('text-yellow-400', 'animate-pulse');
+                statusText.classList.add('text-emerald-400');
+                closeBtn.classList.remove('opacity-50', 'pointer-events-none');
+            } else {
+                const remaining = activeDraftMatches.filter(m => m.status === 'draft').length;
+                statusText.textContent = `還有 ${remaining} 位候選人等待您的決定`;
+                statusText.classList.add('text-yellow-400', 'animate-pulse');
+                statusText.classList.remove('text-emerald-400');
+                closeBtn.classList.add('opacity-50', 'pointer-events-none');
+            }
+        }
+
+        function closeInitiatorModal() {
+            const modal = document.getElementById("initiator-modal");
+            const content = document.getElementById("initiator-content");
+            modal.classList.add("opacity-0");
+            content.classList.add("scale-95");
+            setTimeout(() => modal.classList.add("hidden"), 300);
+            // 刷新聯絡人列表（可能有新的 pending 配對）
+            if (isStageMessenger) loadContacts();
+        }
+
+        function showMediatorToast(message, payload = null) {
+            const toast = document.getElementById("mediator-toast");
+            document.getElementById("mediator-toast-message").innerText = message;
+            pendingMediatorNotification = payload;
+            document.getElementById("mediator-toast-action").innerText = payload?.surface === "relationship_private"
+                ? "到這段聊天室看看" : "找阿月聊聊";
+            toast.classList.remove("hidden");
+        }
+
+        async function openMediatorChat() {
+            document.getElementById("mediator-toast").classList.add("hidden");
+            if (!isStageMessenger) switchStage(true);
+            await loadContacts();
+            await selectContact("ai_assistant", "媒人阿月", "from-fuchsia-500 to-violet-500", "懂你、牽線，也幫你探口風", false);
+        }
+
+        async function openMediatorNotification() {
+            const payload = pendingMediatorNotification;
+            document.getElementById("mediator-toast").classList.add("hidden");
+            if (!payload || payload.surface !== "relationship_private") return openMediatorChat();
+            if (!isStageMessenger) switchStage(true);
+            await loadContacts();
+            await selectContact(payload.other_id, payload.other_id, "from-orange-300 to-rose-300", "你們的配對聊天室", false);
+            await openMediatorPrivatePanel();
+        }
+
+        function markRelationshipWhisper(payload) {
+            pendingMediatorNotification = payload;
+            if (activeContactId === payload.other_id) {
+                document.getElementById("mediator-private-trigger").classList.remove("hidden");
+                document.getElementById("mediator-trigger-text").textContent = "阿月有悄悄話";
+                document.getElementById("mediator-unread-dot").classList.remove("hidden");
+                const panel = document.getElementById("mediator-private-panel");
+                if (!panel.classList.contains("hidden")) openMediatorPrivatePanel();
+            } else {
+                showMediatorToast("我在你和 " + payload.other_id + " 的聊天室留了話。", payload);
+            }
+        }
+
+        // Notification Polling
+        let isPolling = false;
+        async function checkNotifications() {
+            if (!currentUserId || isPolling) return;
+            isPolling = true;
+            try {
+                const res = await fetch(`/api/notifications?user_id=${currentUserId}`);
+                const data = await res.json();
+                if (data.notifications && data.notifications.length > 0) {
+                    const first = data.notifications[0];
+                    if (document.getElementById("notif-modal").classList.contains("hidden") && document.getElementById("decline-modal").classList.contains("hidden")) {
+                        showNotification(first.match_id, first.from_user, first.receiver_reason || first.reason, first.from_user_big_five || {}, first.from_user_context || "", first.distinctive_tags || first.from_user_distinctive_tags || null);
+                    }
+                }
+            } catch (e) { }
+
+                // Also check for proactive messages
+                try {
+                    const proactRes = await fetch(`/api/proactive_check?user_id=${currentUserId}`);
+                    const proactData = await proactRes.json();
+                    if (proactData.has_new && proactData.message) {
+                        if ((proactData.type || "").startsWith("match_search")) {
+                            const status = document.getElementById("match-readiness-status");
+                            if (status) status.textContent = proactData.type === "match_search_failed" ? "媒合暫時失敗" : "這輪沒有新人選";
+                        }
+                        if (proactData.surface === "relationship_private") {
+                            markRelationshipWhisper(proactData);
+                        } else if (isStageMessenger && activeContactId === "ai_assistant") {
+                            appendRoomMessage(proactData.message, false, {
+                                message_type: ["match_proposal", "incoming_match_interest"].includes(proactData.type) ? "mediator_card" : "text",
+                                metadata: proactData.metadata || {}
+                            });
+                            document.getElementById("room-input").disabled = false;
+                            document.getElementById("room-submit").disabled = false;
+                        } else {
+                            showMediatorToast(proactData.message, proactData);
+                        }
+                        loadContacts();
+                    }
+                } catch (e) { }
+
+            isPolling = false;
+        }
+
+        setInterval(checkNotifications, 5000);
+
+        function showNotification(matchId, fromUser, reason, bigFive, context, distinctiveTags) {
+            activeMatchId = matchId;
+            activeMatchFromUser = fromUser;
+            activeMatchBigFive = bigFive;
+            activeMatchContext = context;
+            activeMatchDistinctiveTags = distinctiveTags || null;
+            document.getElementById("notif-from").innerText = fromUser;
+            document.getElementById("notif-reason").innerText = reason;
+
+            const modal = document.getElementById("notif-modal");
+            const content = document.getElementById("notif-content");
+            modal.classList.remove("hidden");
+            void modal.offsetWidth;
+            modal.classList.remove("opacity-0");
+            content.classList.remove("scale-95");
+        }
+
+        async function respondMatch(accept) {
+            const modal = document.getElementById("notif-modal");
+            const content = document.getElementById("notif-content");
+            modal.classList.add("opacity-0");
+            content.classList.add("scale-95");
+            setTimeout(() => modal.classList.add("hidden"), 300);
+
+            if (accept && activeMatchId) {
+                try {
+                    await fetch('/api/match/accept', {
+                        method: 'POST', headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ user_id: currentUserId, match_id: activeMatchId })
+                    });
+
+                    switchStage(true);
+                    await loadContacts(); // 確保聯絡人清單已更新
+
+                    // 自動跳轉進入該聊天室
+                    const bgClass = "from-sky-500 to-indigo-500";
+                    selectContact(activeMatchFromUser, activeMatchFromUser, bgClass);
+
+                } catch (e) { }
+            } else if (!accept && activeMatchId) {
+                try {
+                    await fetch('/api/match/decline', {
+                        method: 'POST', headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ user_id: currentUserId, match_id: activeMatchId })
+                    });
+                } catch (e) { }
+            }
+        }
+
+        // --- Decline Reason Modal Logic ---
+        function bigFiveToCheckboxLabels(bf, context, distinctiveTags) {
+            const labels = [];
+            const cleanTag = (tag) => String(tag || "")
+                .replace(/^(鮮明特質|近期情境|目前情境|興趣|價值觀|個性|未來規劃|未來)[:：]\s*/g, "")
+                .trim();
+            if (distinctiveTags && distinctiveTags.length > 0) {
+                distinctiveTags.forEach(tag => {
+                    const value = cleanTag(tag);
+                    if (value) labels.push({ value });
+                });
+            }
+            if (labels.length === 0 && context) {
+                labels.push({ value: cleanTag(context) });
+            }
+            return labels;
+        }
+
+        function showDeclineModal() {
+            const bf = activeMatchBigFive || {};
+            const ctx = activeMatchContext || "";
+            const tags = activeMatchDistinctiveTags || [];
+            const labels = bigFiveToCheckboxLabels(bf, ctx, tags);
+
+            const container = document.getElementById("decline-checkboxes");
+            container.innerHTML = "";
+
+            if (labels.length === 0) {
+                container.innerHTML = '<p class="text-sm text-gray-500 text-center">無法載入候選人特質資料</p>';
+            } else {
+                labels.forEach((item, idx) => {
+                    const id = `decline-reason-${idx}`;
+                    const div = document.createElement("div");
+                    div.className = "flex items-start gap-3 bg-white/5 rounded-xl p-3 hover:bg-white/10 transition cursor-pointer";
+                    div.innerHTML = `
+                        <input type="checkbox" id="${id}" name="decline-reason" value="${item.value}"
+                            class="mt-1 w-4 h-4 rounded border-gray-600 bg-black/30 text-red-500 focus:ring-red-500/30 accent-red-500">
+                        <label for="${id}" class="text-sm text-gray-200 cursor-pointer select-none">${item.value}</label>
+                    `;
+                    // Make the whole row clickable
+                    div.addEventListener("click", function(e) {
+                        if (e.target.tagName !== "INPUT") {
+                            const cb = div.querySelector("input[type=checkbox]");
+                            cb.checked = !cb.checked;
+                        }
+                    });
+                    container.appendChild(div);
+                });
+            }
+
+            // Show modal
+            const modal = document.getElementById("decline-modal");
+            const content = document.getElementById("decline-content");
+            modal.classList.remove("hidden");
+            void modal.offsetWidth;
+            modal.classList.remove("opacity-0");
+            content.classList.remove("scale-95");
+
+            // Close notification modal behind
+            const notifModal = document.getElementById("notif-modal");
+            const notifContent = document.getElementById("notif-content");
+            notifModal.classList.add("opacity-0");
+            notifContent.classList.add("scale-95");
+            setTimeout(() => notifModal.classList.add("hidden"), 300);
+        }
+
+        function cancelDecline() {
+            const modal = document.getElementById("decline-modal");
+            const content = document.getElementById("decline-content");
+            modal.classList.add("opacity-0");
+            content.classList.add("scale-95");
+            setTimeout(() => modal.classList.add("hidden"), 300);
+
+            // 🥚 發起者婉拒草稿情境：只需關閉 decline modal，不需重新顯示通知
+            if (activeDeclineMatchId || activeDeclineCardIdx !== null) {
+                activeDeclineMatchId = null;
+                activeDeclineCardIdx = null;
+                return;
+            }
+
+            // 接收者情境：重新顯示通知 modal
+            const notifModal = document.getElementById("notif-modal");
+            const notifContent = document.getElementById("notif-content");
+            notifModal.classList.remove("hidden");
+            void notifModal.offsetWidth;
+            notifModal.classList.remove("opacity-0");
+            notifContent.classList.remove("scale-95");
+        }
+
+
+        // DEV: Generate seed data
+        async function fetchSeedAndReload(e) {
+            if (!confirm("確定要產生十筆假資料嗎？這大約需要幾秒鐘的時間。")) return;
+            const btn = e.target;
+            const old = btn.innerText;
+            btn.innerText = "假資料產生中，請稍候...";
+            btn.disabled = true;
+            try {
+                await fetch('/api/seed', { method: 'POST' });
+                alert("✅ 成功產生十筆假資料！畫面將為您重整。");
+                window.location.reload();
+            } catch (err) {
+                alert("發生錯誤");
+                btn.innerText = old;
+                btn.disabled = false;
+            }
+        }
+
+        // Init Check
+        window.addEventListener("DOMContentLoaded", async () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.has('user')) {
+                currentUserId = urlParams.get('user');
+            }
+
+            try {
+                const res = await fetch(`/api/init?user_id=${currentUserId}`);
+                if (res.ok) {
+                    const data = await res.json();
+
+                    // Populate dropdown
+                    const sel = document.getElementById("user-select");
+                    sel.innerHTML = "";
+                    data.users.forEach(u => {
+                        const opt = document.createElement("option");
+                        opt.value = u;
+                        opt.innerText = u;
+                        if (u === currentUserId) opt.selected = true;
+                        sel.appendChild(opt);
+                    });
+
+                    if (document.getElementById("dropdown-context")) {
+                        document.getElementById("dropdown-current-user").innerText = currentUserId;
+                        document.getElementById("header-avatar").innerText = currentUserId.substring(0, 2).toUpperCase();
+                        renderDropdownProfile(data);
+                    }
+
+                    // Check if complete
+                    if (data.is_complete) {
+                        document.getElementById("interest-overlay").classList.add("hidden");
+                        switchStage(true); // 直入 Messenger
+                        if (!data.mediator_tone_selected) {
+                            const toneOverlay = document.getElementById("tone-overlay");
+                            toneOverlay.classList.remove("hidden");
+                            toneOverlay.classList.add("flex");
+                        }
+                    }
+
+                    // Run first notification check immediately
+                    checkNotifications();
+                }
+            } catch (e) { }
+        });
+    </script>
+</body>
+
+</html>
