@@ -712,7 +712,6 @@
                         <button onclick="closeMediatorPrivatePanel()" class="ml-auto px-3 py-2">收起</button>
                     </div>
                     <div id="mediator-private-messages" class="flex-1 overflow-y-auto p-4 flex flex-col gap-3"></div>
-                    <div id="relationship-game-card" class="hidden mx-3 my-2 p-3 bg-[#fff3e9] border border-[#e7c9b7] text-sm"></div>
                     <div class="private-quick-actions">
                         <button type="button" onclick="sendPrivateMediatorMessage('幫我探探他的口風')">探口風</button>
                         <button type="button" onclick="sendPrivateMediatorMessage('幫我問一件他的有趣小事')">問趣事</button>
@@ -1538,6 +1537,7 @@
             }
             document.getElementById("room-name").innerText = name;
             document.getElementById("room-avatar").className = `w-10 h-10 rounded-full bg-gradient-to-tr ${bgClass} flex items-center justify-center font-bold text-lg text-white shadow`;
+            document.getElementById("room-avatar").style.display = id === "ai_assistant" ? "none" : "flex";
             const privateTrigger = document.getElementById("mediator-private-trigger");
             privateTrigger.classList.remove("whisper-collapsed");
             privateTrigger.classList.toggle("hidden", id === "ai_assistant");
@@ -1575,6 +1575,7 @@
             try {
                 const res = await fetch(`/api/messages/${id}?user_id=${currentUserId}`);
                 const data = await res.json();
+                window.activeMatchProposalId = data.active_match_proposal_id;
                 cm.innerHTML = "";
                 if (data.messages.length === 0) {
                     cm.innerHTML = `<div class="text-center text-gray-500 my-8 text-xs bg-black/20 rounded max-w-sm mx-auto p-4">這裡是你們專屬的聊天空間，開始打招呼吧！</div>`;
@@ -1611,9 +1612,12 @@
                 body.className = "text-sm leading-relaxed whitespace-pre-wrap";
                 if (isProposal && proposal) {
                     const candidateId = proposal.matched_user_id || metadata.other_id || "對方";
-                    body.textContent = metadata.proposal_role === "receiver"
+                    const isReceiver = metadata.proposal_role === "receiver";
+                    const reason = isReceiver ? proposal.receiver_reason : proposal.recommendation_reason;
+                    const fallback = isReceiver
                         ? `欸，@${candidateId} 想認識你，我先來問你本人。`
                         : `欸，我一看到 @${candidateId} 就想到你。`;
+                    body.textContent = reason || fallback;
                 } else {
                     body.textContent = text;
                 }
@@ -1656,20 +1660,28 @@
                 const actions = document.createElement("div");
                 actions.className = "mediator-card-actions";
                 if (isProposal) {
-                    [
-                        ["有興趣，幫我問問", "bg-emerald-700"],
-                        ["先不要，幫我婉拒", "bg-slate-700"]
-                    ].forEach(([label, cls]) => {
-                        const btn = document.createElement("button");
-                        btn.type = "button";
-                        btn.className = cls;
-                        btn.textContent = label;
-                        btn.onclick = () => {
-                            submitMediatorAction(label);
-                            actions.innerHTML = '<span class="text-xs text-cyan-300">阿月正在處理你的回覆…</span>';
-                        };
-                        actions.appendChild(btn);
-                    });
+                    const isProposalActive = proposalMatchId && proposalMatchId === window.activeMatchProposalId;
+                    if (!isProposalActive) {
+                        const span = document.createElement("span");
+                        span.className = "text-xs text-gray-500";
+                        span.textContent = "已完成回覆";
+                        actions.appendChild(span);
+                    } else {
+                        [
+                            ["有興趣，幫我問問", "bg-emerald-700"],
+                            ["先不要，幫我婉拒", "bg-slate-700"]
+                        ].forEach(([label, cls]) => {
+                            const btn = document.createElement("button");
+                            btn.type = "button";
+                            btn.className = cls;
+                            btn.textContent = label;
+                            btn.onclick = () => {
+                                submitMediatorAction(label);
+                                actions.innerHTML = '<span class="text-xs text-cyan-300">阿月正在處理你的回覆…</span>';
+                            };
+                            actions.appendChild(btn);
+                        });
+                    }
                 } else if (metadata.event_type === "feedback_request") {
                     (metadata.actions || []).forEach(action => {
                         const btn = document.createElement("button");
@@ -1820,30 +1832,46 @@
 
         async function loadRelationshipFun() {
             if (!activeContactId || activeContactId === "ai_assistant") return;
-            const card = document.getElementById("relationship-game-card");
             try {
                 const res = await fetch(
                     `/api/relationship/fun/${encodeURIComponent(activeContactId)}?user_id=${encodeURIComponent(currentUserId)}`
                 );
                 if (!res.ok) {
-                    card.classList.add("hidden");
+                    const card = document.getElementById("relationship-game-card");
+                    if (card) card.remove();
                     return;
                 }
                 renderRelationshipFun(await res.json());
             } catch (e) {
-                card.classList.add("hidden");
+                const card = document.getElementById("relationship-game-card");
+                if (card) card.remove();
             }
         }
 
         function renderRelationshipFun(state) {
-            const card = document.getElementById("relationship-game-card");
+            const container = document.getElementById("mediator-private-messages");
+            if (!container) return;
+            let card = document.getElementById("relationship-game-card");
+
             currentRelationshipFunState = state;
+            if (["idle", "expired", "cancelled"].includes(state.status)) {
+                if (card) card.remove();
+                return;
+            }
+
+            if (!card) {
+                card = document.createElement("div");
+                card.id = "relationship-game-card";
+                card.className = "mx-3 my-2 p-3 bg-[#fff3e9] border border-[#e7c9b7] text-sm rounded-lg shadow-sm fade-in";
+                container.appendChild(card);
+            }
+
             if (state.status !== previousRelationshipQuizStatus) {
                 relationshipQuizExpanded = state.status !== "completed";
                 previousRelationshipQuizStatus = state.status;
             }
             card.innerHTML = "";
-            card.classList.remove("hidden");
+
             const header = document.createElement("div");
             header.className = "flex items-center gap-2";
             const title = document.createElement("div");
@@ -1853,7 +1881,7 @@
             if (state.status === "completed") {
                 const toggle = document.createElement("button");
                 toggle.type = "button";
-                toggle.className = "px-2 py-1 text-xs";
+                toggle.className = "px-2 py-1 text-xs text-[#8b7063] hover:text-[#6f4f43]";
                 toggle.setAttribute("aria-label", relationshipQuizExpanded ? "收合默契測驗" : "展開默契測驗");
                 toggle.textContent = relationshipQuizExpanded ? "收合 ▲" : "查看 ▼";
                 toggle.onclick = () => {
@@ -1864,34 +1892,23 @@
             }
             card.appendChild(header);
 
-            if (["idle", "expired", "cancelled"].includes(state.status)) {
-                const text = document.createElement("p");
-                text.className = "text-xs text-[#8b7063] mt-2 mb-2";
-                text.textContent = "三題輕鬆選擇題；只公開相同答案，不公開不同答案。";
-                const button = document.createElement("button");
-                button.type = "button";
-                button.textContent = "邀他一起玩";
-                button.onclick = startRelationshipQuiz;
-                card.append(text, button);
-                return;
-            }
-
             if (state.status === "active" && state.my_completed) {
                 const text = document.createElement("p");
                 text.className = "text-xs text-[#8b7063] mt-2";
                 text.textContent = "你的答案收好了，等對方完成就揭曉共同答案。";
                 card.appendChild(text);
+                container.scrollTop = container.scrollHeight;
                 return;
             }
 
             if (state.status === "active") {
                 (state.questions || []).forEach(question => {
                     const label = document.createElement("label");
-                    label.className = "block text-xs mt-2 mb-2";
+                    label.className = "block text-xs mt-2 mb-2 text-[#6f4f43]";
                     label.textContent = question.text;
                     const select = document.createElement("select");
                     select.dataset.quizQuestion = question.id;
-                    select.className = "block w-full mt-1 px-2 py-1";
+                    select.className = "block w-full mt-1 px-2 py-1 bg-white border border-[#e7c9b7] rounded text-sm text-[#5c3e35]";
                     question.options.forEach(option => {
                         const item = document.createElement("option");
                         item.value = option;
@@ -1903,9 +1920,11 @@
                 });
                 const submit = document.createElement("button");
                 submit.type = "button";
+                submit.className = "mt-2 w-full py-1.5 bg-[#e9966c] text-white rounded text-xs font-bold hover:bg-[#d8855b]";
                 submit.textContent = "送出我的答案";
                 submit.onclick = submitRelationshipQuiz;
                 card.appendChild(submit);
+                container.scrollTop = container.scrollHeight;
                 return;
             }
 
@@ -1916,12 +1935,17 @@
                 const common = (result.matches || []).map(item => item.answer).join("、");
                 text.textContent = `你們中了 ${result.match_count}/${result.total} 題${common ? "：" + common : "，不一樣也很有得聊"}`;
                 card.appendChild(text);
-                if (!relationshipQuizExpanded) return;
+                if (!relationshipQuizExpanded) {
+                    container.scrollTop = container.scrollHeight;
+                    return;
+                }
                 const button = document.createElement("button");
                 button.type = "button";
+                button.className = "mt-2 w-full py-1.5 bg-[#e9966c] text-white rounded text-xs font-bold hover:bg-[#d8855b]";
                 button.textContent = state.topic_box?.drawn_date ? "查看今日話題" : "抽今日話題盲盒";
                 button.onclick = drawRelationshipTopic;
                 card.appendChild(button);
+                container.scrollTop = container.scrollHeight;
             }
         }
 
@@ -2064,6 +2088,16 @@
                 document.getElementById("room-typing").classList.add("hidden");
                 if (res.ok) {
                     appendRoomMessage(data.reply, false);
+                    if (data.mode === "proposal_response" || data.new_status) {
+                        window.activeMatchProposalId = null;
+                        const cards = document.querySelectorAll(".mediator-card[data-match-id]");
+                        cards.forEach(card => {
+                            const actions = card.querySelector(".mediator-card-actions");
+                            if (actions) {
+                                actions.innerHTML = '<span class="text-xs text-gray-500">已完成回覆</span>';
+                            }
+                        });
+                    }
                     if (activeContactId === "ai_assistant" && data.context_changed) appendContextNotice("changed");
                     else if (activeContactId === "ai_assistant" && data.context_confirmation_needed) appendContextNotice("confirm");
                     if (activeContactId === "ai_assistant" && Number.isFinite(data.match_readiness_score)) {
@@ -2600,6 +2634,9 @@
                         if (proactData.surface === "relationship_private") {
                             markRelationshipWhisper(proactData);
                         } else if (isStageMessenger && activeContactId === "ai_assistant") {
+                            if (["match_proposal", "incoming_match_interest"].includes(proactData.type) && proactData.metadata && proactData.metadata.match_id) {
+                                window.activeMatchProposalId = proactData.metadata.match_id;
+                            }
                             appendRoomMessage(proactData.message, false, {
                                 message_type: ["match_proposal", "incoming_match_interest"].includes(proactData.type) ? "mediator_card" : "text",
                                 metadata: proactData.metadata || {}

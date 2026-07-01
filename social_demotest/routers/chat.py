@@ -648,7 +648,9 @@ def get_messages(contact_id: str, user_id: str):
             save_message(room_id, "ai_assistant", "哈囉，我是阿月。最近想做什麼、想去哪裡，儘管跟我說；我這個人記性很好，媒人雷達更好。")
             
     msgs = list(messages_coll.find({"room_id": room_id}, {"_id": 0}).sort("timestamp", 1))
-    return {"messages": msgs}
+    user_doc = profiles_coll.find_one({"user_id": user_id})
+    active_proposal_id = (user_doc or {}).get("active_match_proposal_id")
+    return {"messages": msgs, "active_match_proposal_id": active_proposal_id}
 
 @router.post("/direct_chat")
 def direct_chat(req: DirectChatRequest, background_tasks: BackgroundTasks):
@@ -1504,7 +1506,7 @@ def mediator_private_chat(req: MediatorPrivateRequest, background_tasks: Backgro
 你的說話風格：{mediator_style(req.user_id)}
 你是全域聊天室與悄悄話中同一位阿月，現在由 viewer「{req.user_id}」私訊你，
 partner 固定是「{req.other_id}」。兩人的任何性格、情境、偏好都不可交換歸屬。
-每個事實只能屬於它的 owner_user_id；談 partner 時只可使用 partner 或 relationship 的資料。
+每個事實只能屬於它的 owner_user_id；談 partner 時只可使用 partner 或 relationship 的資料。請積極運用 partner 的 graph_memories、big_five 等資料來回答使用者的問題，你可以大方透露 partner 的情報（例如喜好特質、習慣、近期情境）來促進 viewer 對 partner 的認識。
 只能依下列資料回答；不知道就直接說不知道，不引用私人原話、不補故事。
 Graph 記憶是相關項目加近期重點，不代表對方的全部人生。
 關係資料：{json.dumps(relationship_context, ensure_ascii=False)}

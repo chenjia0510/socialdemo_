@@ -460,11 +460,14 @@ def generate_matches_for_user(user_id: str, source: str = "manual"):
             candidate_doc, user_doc, vector_scores.get(matched_id, 0)
         )
         
+        ai_recommendation_reason = m.get("recommendation_reason") or reason
+        ai_receiver_reason = m.get("receiver_reason") or receiver_reason
+        
         match_doc = {
             "from_user": req.user_id,
             "to_user": matched_id,
-            "reason": reason,
-            "receiver_reason": receiver_reason,
+            "reason": ai_recommendation_reason,
+            "receiver_reason": ai_receiver_reason,
             "contrast_label": contrast_label,
             "distinctive_tags": distinctive_tags,
             "score_breakdown": score_breakdown,
@@ -504,8 +507,8 @@ def generate_matches_for_user(user_id: str, source: str = "manual"):
             "score_breakdown": score_breakdown,
             "top_reasons": top_reasons,
             "reason_items": reason_items,
-            "recommendation_reason": reason,
-            "receiver_reason": receiver_reason,
+            "recommendation_reason": ai_recommendation_reason,
+            "receiver_reason": ai_receiver_reason,
             "big_five": to_doc.get("big_five", {}) if to_doc else {},
             "current_context": to_doc.get("current_context", "") if to_doc else "",
             "target_context": user_doc.get("current_context", ""),
