@@ -124,6 +124,15 @@ def clear_data(req: ClearRequest):
     profiles_coll.delete_many({})
     matches_coll.delete_many({})
     messages_coll.delete_many({})
+    
+    # 嘗試通知 9001 埠口的 Agent 清空 Neo4j Graph
+    try:
+        resp = requests.post("http://127.0.0.1:9001/api/clear_graph", timeout=10)
+        resp.raise_for_status()
+        print("🧠 已成功通知 Agent 清空 Neo4j Graph")
+    except Exception as e:
+        print(f"⚠️ 通知 Agent 清空 Neo4j Graph 失敗: {e}")
+        
     return {"status": "success"}
 
 @router.get("/notifications")

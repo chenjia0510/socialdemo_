@@ -408,6 +408,21 @@ class MemoryActionRequest(BaseModel):
 def _neo4j_config():
     return (os.getenv("NEO4J_URI"), (os.getenv("NEO4J_USERNAME"), os.getenv("NEO4J_PASSWORD")), os.getenv("NEO4J_DATABASE", "neo4j"))
 
+@app.post("/api/clear_graph")
+async def clear_graph_endpoint():
+    print("🧹 收到清空 Neo4j Graph 請求！")
+    URI, AUTH, DATABASE = _neo4j_config()
+    try:
+        with GraphDatabase.driver(URI, auth=AUTH) as driver:
+            driver.verify_connectivity()
+            with driver.session(database=DATABASE) as session:
+                session.run("MATCH (n) DETACH DELETE n").consume()
+        print("✅ Neo4j Graph 已完全清空！")
+        return {"status": "success", "message": "Neo4j Graph已完全清空"}
+    except Exception as e:
+        print(f"❌ 清空 Neo4j Graph 失敗: {e}")
+        return {"status": "error", "message": str(e)}
+
 @app.post("/api/memory/observe")
 async def observe_memory(req: MemoryObserveRequest):
     prompt = f"""
