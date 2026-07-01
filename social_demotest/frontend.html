@@ -375,9 +375,10 @@
         .mediator-card { background: #fff3e9; color: var(--warm-cocoa); border: 1px solid #e5b99f; box-shadow: 3px 3px 0 var(--warm-shadow); }
         #profile-dropdown { background: var(--warm-paper) !important; border-color: var(--warm-line) !important; }
         #mediator-private-panel {
-            left: 16px; right: 16px; bottom: 0; top: auto; width: auto; height: min(45%, 430px);
-            background: #fffaf4; border: 1px solid #dfad91; border-bottom: 0;
-            box-shadow: 0 -8px 24px rgba(121,77,57,.13); border-radius: 12px 12px 0 0 !important;
+            left: auto; right: 18px; bottom: 76px; top: auto; width: min(360px, calc(100% - 36px));
+            height: min(480px, calc(100% - 110px)); background: #fffaf4;
+            border: 1px solid #dfad91; box-shadow: 0 10px 32px rgba(121,77,57,.18);
+            border-radius: 14px !important;
         }
         #mediator-private-trigger {
             position: absolute; right: 18px; bottom: 82px; z-index: 35;
@@ -386,9 +387,74 @@
         }
         #mediator-private-trigger.hidden { display: none; }
         .mediator-unread-dot { width: 9px; height: 9px; background: #d85f52; border-radius: 0 !important; }
-        #mediator-toast { background: #fff3e9; color: var(--warm-cocoa); border: 1px solid #dda98a; box-shadow: 4px 4px 0 var(--warm-shadow); }
+        #mediator-toast {
+            background: #fff3e9; color: var(--warm-cocoa); border: 1px solid #dda98a;
+            box-shadow: 4px 4px 0 var(--warm-shadow);
+            transition: opacity .3s ease, transform .3s ease, width .3s ease;
+        }
+        #mediator-toast > .mediator-toast-main {
+            display: block; width: 100%; padding: 0 28px 0 0; text-align: left;
+            background: transparent !important; border: 0 !important;
+            box-shadow: none !important; color: inherit !important;
+        }
+        #mediator-toast > #mediator-toast-close {
+            background: transparent !important; border: 0 !important;
+            box-shadow: none !important;
+        }
+        #mediator-toast.toast-collapsed { width: 48px; height: 48px; padding: 7px; border-radius: 50% !important; }
+        #mediator-toast.toast-collapsed #mediator-toast-label,
+        #mediator-toast.toast-collapsed #mediator-toast-message,
+        #mediator-toast.toast-collapsed #mediator-toast-action,
+        #mediator-toast.toast-collapsed #mediator-toast-close { display: none; }
+        #mediator-toast.toast-collapsed button:first-child {
+            width: 100%; height: 100%; padding: 0; display: grid; place-items: center;
+        }
+        #mediator-toast.toast-collapsed button:first-child::before { content: "月"; font-weight: 700; }
+        #mediator-toast.toast-collapsed #mediator-toast-dot {
+            display: block; position: absolute; right: 2px; top: 2px;
+        }
+        #mediator-private-trigger.whisper-collapsed { width: 46px; height: 46px; padding: 6px; justify-content: center; }
+        #mediator-private-trigger.whisper-collapsed #mediator-trigger-text { display: none; }
+        #mediator-private-trigger.whisper-collapsed .mediator-unread-dot {
+            display: block; position: absolute; right: 2px; top: 2px;
+        }
         #tone-overlay { background: rgba(87,63,54,.22); }
         #tone-card { background: #fffaf4; border: 1px solid #dda98a; box-shadow: 7px 7px 0 rgba(121,77,57,.18); }
+        .onboarding-step { min-height: 230px; }
+        .onboarding-illustration {
+            width: 58px; height: 58px; display: grid; place-items: center; margin-bottom: 14px;
+            background: #fde3d3; border: 1px solid #d9a98d; font-size: 28px;
+        }
+        .onboarding-tone.selected { background: #e9966c !important; color: white !important; }
+        #match-progress-card {
+            margin: 10px 14px 0; padding: 10px 12px; background: #fff3e9;
+            border: 1px solid #e5b99f; box-shadow: 2px 2px 0 var(--warm-shadow);
+        }
+        #match-progress-card.has-proposal { cursor: pointer; }
+        #match-progress-card.has-proposal:hover { background: #ffeadc; }
+        #match-progress-track { height: 5px; background: #f4d7c5; overflow: hidden; }
+        #match-progress-bar { height: 100%; width: 0; background: var(--warm-apricot); transition: width .25s ease; }
+        .proposal-contexts, .proposal-reasons {
+            margin-top: 10px; padding: 9px 10px; background: #fffaf4;
+            border: 1px solid #e7c9b7; font-size: 12px; line-height: 1.55;
+        }
+        .proposal-contexts > div + div { margin-top: 4px; }
+        .proposal-reasons { background: #fffdf8; }
+        .proposal-score { margin-top: 9px; color: #a96749; font-size: 12px; font-weight: 700; }
+        #mention-menu {
+            position: absolute; left: 0; bottom: calc(100% + 7px); width: min(320px, 90vw);
+            max-height: 190px; overflow-y: auto; background: #fffdf8; border: 1px solid var(--warm-line);
+            box-shadow: 4px 4px 14px var(--warm-shadow); z-index: 60; padding: 5px;
+        }
+        .mention-option { width: 100%; padding: 8px 10px; text-align: left; box-shadow: none !important; border: 0 !important; }
+        .mention-chip { background: #fde3d3; border: 1px solid #d9a98d; padding: 4px 8px; font-size: 12px; }
+        .private-quick-actions { display: flex; gap: 6px; padding: 8px 10px; overflow-x: auto; border-bottom: 1px solid var(--warm-line); }
+        .private-quick-actions button { white-space: nowrap; padding: 6px 8px; font-size: 11px; }
+        .memory-notice {
+            position: absolute; left: 50%; bottom: 86px; transform: translateX(-50%);
+            z-index: 65; background: #fff3e9; border: 1px solid #dda98a; padding: 8px 12px;
+            box-shadow: 3px 3px 0 var(--warm-shadow); font-size: 12px;
+        }
         @media (max-width: 720px) {
             body { padding: 8px !important; }
             header { margin-bottom: 8px !important; }
@@ -404,7 +470,7 @@
             #stage-messenger > div:nth-child(2) { width: 100%; flex: 1; min-height: 0; }
             #stage-messenger > div:nth-child(2) > div:first-child { padding: 8px 10px; }
             #room-messages { padding: 12px; }
-            #mediator-private-panel { left: 6px; right: 6px; height: min(70%, 560px); }
+            #mediator-private-panel { left: 6px; right: 6px; bottom: 68px; width: auto; height: min(70%, 560px); }
             #mediator-private-trigger { right: 8px; bottom: 72px; }
         }
     </style>
@@ -463,9 +529,9 @@
                         <select id="frequency-select" onchange="updateProactiveFrequency()"
                             class="w-full bg-[#2a2a2a] border border-white/20 text-white text-sm rounded-lg px-2 py-1 focus:outline-none focus:border-fuchsia-500">
                             <option value="none">停用</option>
-                            <option value="60">每 1 分鐘 (測試)</option>
-                            <option value="3600">每 1 小時</option>
-                            <option value="86400">每天</option>
+                            <option value="60">聊天結束 1 分鐘後 (測試)</option>
+                            <option value="3600">聊天結束 1 小時後</option>
+                            <option value="86400">聊天結束隔天</option>
                         </select>
                     </div>
                     <div class="flex items-center gap-2">
@@ -492,6 +558,7 @@
                         <button onclick="redoBigFive()" class="flex-1 text-xs font-bold text-white bg-violet-600 hover:bg-violet-500 py-2 rounded-lg shadow transition">重新基礎測驗</button>
                         <button onclick="redoDeepProfile()" class="flex-1 text-xs font-bold text-white bg-fuchsia-600 hover:bg-fuchsia-500 py-2 rounded-lg shadow transition">重新深層測驗</button>
                     </div>
+                    <button onclick="replayOnboarding()" class="w-full text-xs py-2 mt-2">再看一次使用教學</button>
                 </div>
             </div>
         </div>
@@ -549,7 +616,7 @@
                     <div class="flex gap-2">
                         <button onclick="startDeepProfileInChat()" id="btn-deep-profile"
                             class="text-xs bg-emerald-600 hover:bg-emerald-500 px-3 py-1.5 rounded text-white shadow-lg shadow-emerald-500/20 font-bold transition">🎯 深層分析</button>
-                        <span id="match-readiness-status" class="pixel-status">阿月正在了解你</span>
+                        <span id="match-readiness-status" class="pixel-status">再聊聊</span>
                         <button onclick="triggerMatch()" id="btn-match"
                             class="hidden text-xs bg-fuchsia-600 hover:bg-fuchsia-500 px-3 py-1.5 rounded text-white shadow-lg shadow-fuchsia-500/20 font-bold transition">🌟
                             請阿月再找找</button>
@@ -562,14 +629,15 @@
                 </div>
 
                 <!-- Tools at bottom of Sidebar -->
-                <div class="p-4 bg-black/20 border-t border-white/10 flex flex-col gap-2 relative z-20">
-                    <button onclick="clearSystemData()"
-                        class="text-xs text-red-400 hover:text-red-300 transition w-full py-2 bg-red-500/10 rounded border border-red-500/20">⚙️
-                        一鍵清空所有資料</button>
-                    <button onclick="fetchSeedAndReload(event)"
-                        class="text-xs text-sky-400 hover:text-sky-300 transition w-full py-2 bg-sky-500/10 rounded border border-sky-500/20">🔄
-                        生成十筆資料</button>
-                </div>
+                <details class="p-3 bg-black/20 border-t border-white/10 relative z-20">
+                    <summary class="text-xs cursor-pointer text-[#8b7063]">Demo 工具</summary>
+                    <div class="flex flex-col gap-2 mt-3">
+                        <button onclick="clearSystemData()"
+                            class="text-xs text-red-400 w-full py-2">一鍵清空所有資料</button>
+                        <button onclick="fetchSeedAndReload(event)"
+                            class="text-xs text-sky-400 w-full py-2">生成十筆資料</button>
+                    </div>
+                </details>
             </div>
 
             <!-- Main: Chat Room -->
@@ -588,6 +656,22 @@
                     </div>
                 </div>
 
+                <div id="match-progress-card" class="hidden" onclick="openActiveProposalCard()">
+                    <div class="flex items-center gap-2">
+                        <span class="text-sm">🧭</span>
+                        <div class="min-w-0 flex-1">
+                            <div id="match-progress-title" class="text-xs font-bold">阿月準備中</div>
+                            <div id="match-progress-detail" class="text-[11px] text-[#8b7063] mt-1">尚未開始搜尋</div>
+                        </div>
+                        <span id="match-progress-state" class="text-[10px] text-[#a96749]"></span>
+                    </div>
+                    <div id="match-progress-track" class="mt-2"><div id="match-progress-bar"></div></div>
+                    <div id="match-confirm-actions" class="hidden mt-3 flex gap-2">
+                        <button type="button" onclick="confirmMatchSearch()" class="flex-1 text-xs py-2">開始找</button>
+                        <button type="button" onclick="cancelMatchSearch()" class="flex-1 text-xs py-2">先不用</button>
+                    </div>
+                </div>
+
                 <!-- Chat History -->
                 <div id="room-messages" class="flex-1 p-6 overflow-y-auto flex flex-col gap-2">
                     <div class="text-center text-sm text-gray-500 my-10">請從左側點選聯絡人開始對話</div>
@@ -602,7 +686,9 @@
 
                 <!-- Chat Input -->
                 <div class="p-4 bg-black/20 border-t border-white/10">
-                    <form id="room-form" class="flex gap-3">
+                    <div id="mention-chip-row" class="hidden mb-2 flex-wrap items-center gap-2"></div>
+                    <form id="room-form" class="flex gap-3 relative">
+                        <div id="mention-menu" class="hidden"></div>
                         <input type="text" id="room-input" placeholder="傳送訊息..." disabled required
                             class="flex-1 bg-black/30 border border-white/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-violet-500 text-white disabled:opacity-50">
                         <button type="submit" id="room-submit" disabled
@@ -626,6 +712,14 @@
                         <button onclick="closeMediatorPrivatePanel()" class="ml-auto px-3 py-2">收起</button>
                     </div>
                     <div id="mediator-private-messages" class="flex-1 overflow-y-auto p-4 flex flex-col gap-3"></div>
+                    <div id="relationship-game-card" class="hidden mx-3 my-2 p-3 bg-[#fff3e9] border border-[#e7c9b7] text-sm"></div>
+                    <div class="private-quick-actions">
+                        <button type="button" onclick="sendPrivateMediatorMessage('幫我探探他的口風')">探口風</button>
+                        <button type="button" onclick="sendPrivateMediatorMessage('幫我問一件他的有趣小事')">問趣事</button>
+                        <button type="button" onclick="sendPrivateMediatorMessage('幫我們協調約會')">協調約會</button>
+                        <button type="button" onclick="sendPrivateMediatorMessage('你看完我們最近聊天，有什麼觀察？')">看最近聊天</button>
+                        <button type="button" onclick="startRelationshipQuiz()">默契小測驗</button>
+                    </div>
                     <form id="mediator-private-form" class="p-3 border-t border-[#e7c9b7] flex gap-2">
                         <input id="mediator-private-input" required placeholder="問阿月關於這個人…" class="flex-1 px-3 py-2 text-sm">
                         <button class="px-4 py-2">送出</button>
@@ -776,24 +870,48 @@
 
     <div id="tone-overlay" class="fixed inset-0 z-[90] hidden items-center justify-center p-5">
         <div id="tone-card" class="w-full max-w-md p-6">
-            <div class="text-xs text-[#a96749] mb-2">先選個相處方式</div>
-            <h2 class="text-xl font-bold mb-2">你喜歡阿月怎麼跟你說話？</h2>
-            <p class="text-sm text-[#8b7063] mb-5">之後隨時可以在個人設定裡換。</p>
-            <div class="grid gap-2">
-                <button onclick="chooseMediatorTone('friend')" class="p-3 text-left">熟朋友｜直接、口語，偶爾吐槽</button>
-                <button onclick="chooseMediatorTone('gentle')" class="p-3 text-left">溫柔姐姐｜細膩、讓人安心</button>
-                <button onclick="chooseMediatorTone('enthusiastic')" class="p-3 text-left">熱心媒婆｜活潑、有點戲</button>
+            <div class="text-xs text-[#a96749] mb-3">第一次來，30 秒認識阿月</div>
+            <section class="onboarding-step" data-onboarding-step="0">
+                <div class="onboarding-illustration">☕</div>
+                <h2 class="text-xl font-bold mb-3">先像朋友一樣聊近況</h2>
+                <p class="text-sm text-[#8b7063] leading-relaxed">跟阿月說最近想做什麼、什麼時間方便、喜歡怎樣的相處。資料夠清楚時，她會主動替你留意；你也能直接說「幫我找下一位」。</p>
+            </section>
+            <section class="onboarding-step hidden" data-onboarding-step="1">
+                <div class="onboarding-illustration">@</div>
+                <h2 class="text-xl font-bold mb-3">一起聊你配到的人</h2>
+                <p class="text-sm text-[#8b7063] leading-relaxed">輸入 @ 就能選一位或多位配對對象。阿月會使用確實存在的資料與共享聊天，不知道的事就說不知道。</p>
+            </section>
+            <section class="onboarding-step hidden" data-onboarding-step="2">
+                <div class="onboarding-illustration">🌙</div>
+                <h2 class="text-xl font-bold mb-3">需要時，私下找阿月助攻</h2>
+                <p class="text-sm text-[#8b7063] leading-relaxed mb-4">進入雙人聊天室後，可打開阿月悄悄話，請她探口風、問趣事、看最近聊天或協調約會。</p>
+                <div class="text-xs font-bold mb-2">你喜歡阿月怎麼說話？</div>
+                <div class="grid grid-cols-3 gap-2">
+                    <button data-onboarding-tone="friend" onclick="selectOnboardingTone('friend')" class="onboarding-tone p-2 text-xs">熟朋友</button>
+                    <button data-onboarding-tone="gentle" onclick="selectOnboardingTone('gentle')" class="onboarding-tone p-2 text-xs">溫柔姐姐</button>
+                    <button data-onboarding-tone="enthusiastic" onclick="selectOnboardingTone('enthusiastic')" class="onboarding-tone p-2 text-xs">熱心媒婆</button>
+                </div>
+            </section>
+            <div class="flex items-center gap-2 mt-5 pt-4 border-t border-[#e7c9b7]">
+                <button id="onboarding-skip" onclick="skipOnboarding()" class="px-3 py-2 text-xs">跳過</button>
+                <span id="onboarding-progress" class="text-xs text-[#8b7063]">1 / 3</span>
+                <button id="onboarding-back" onclick="previousOnboardingStep()" class="hidden ml-auto px-3 py-2 text-xs">上一步</button>
+                <button id="onboarding-next" onclick="nextOnboardingStep()" class="ml-auto px-4 py-2 text-sm">下一步</button>
             </div>
-            <button onclick="chooseMediatorTone('friend')" class="mt-4 w-full p-2 text-sm">先用預設就好</button>
         </div>
     </div>
 
-    <button id="mediator-toast" onclick="openMediatorNotification()"
-        class="fixed right-6 bottom-6 z-[70] hidden max-w-sm p-4 text-left">
-        <span class="block text-xs mb-2">阿月有悄悄話</span>
-        <span id="mediator-toast-message" class="block text-sm leading-relaxed"></span>
-        <span id="mediator-toast-action" class="block text-xs mt-3">點我看看</span>
-    </button>
+    <div id="mediator-toast"
+        class="fixed right-6 bottom-6 z-[70] hidden max-w-sm p-3 text-left">
+        <button type="button" onclick="openMediatorNotification()" class="mediator-toast-main">
+            <span id="mediator-toast-label" class="block text-xs mb-2">阿月有悄悄話</span>
+            <span id="mediator-toast-message" class="block text-sm leading-relaxed"></span>
+            <span id="mediator-toast-action" class="block text-xs mt-3">點我看看</span>
+            <span id="mediator-toast-dot" class="mediator-unread-dot hidden"></span>
+        </button>
+        <button type="button" id="mediator-toast-close" onclick="dismissMediatorNotification(event)"
+            aria-label="收起通知" class="absolute right-2 top-2 px-2 py-1 text-xs">×</button>
+    </div>
 
     <!-- Scripts -->
     <script>
@@ -808,6 +926,19 @@
         let activeMatchDistinctiveTags = null; // 候選人 distinctive_tags，供婉拒 Checkbox 使用
         let userInterest = "";
         let pendingMediatorNotification = null;
+        let acceptedContacts = [];
+        let mentionedOtherIds = [];
+        let matchStatusTimer = null;
+        let onboardingStep = 0;
+        let selectedOnboardingTone = "friend";
+        let currentUserContext = "";
+        let privateMediatorSending = false;
+        let mediatorToastTimer = null;
+        let whisperCollapseTimer = null;
+        let currentRelationshipFunState = null;
+        let currentActiveProposalCard = null;
+        let relationshipQuizExpanded = false;
+        let previousRelationshipQuizStatus = null;
         
         // 🥚 雙黃蛋狀態追蹤
         let activeDraftMatches = []; // [{match_id, matched_user_id, contrast_label, reason, big_five, context, status}]
@@ -946,7 +1077,8 @@
             if (deepParts.values) profileParts.push("💎 價值觀：" + deepParts.values);
             if (deepParts.future) profileParts.push("🌱 未來：" + deepParts.future);
 
-            if (contextEl) contextEl.innerText = data.my_context || "尚無目前情境";
+            currentUserContext = data.my_context || "";
+            if (contextEl) contextEl.innerText = currentUserContext || "尚無目前情境";
             if (bfEl) bfEl.innerText = profileParts.length > 0 ? profileParts.join('\n') : "尚無完整資料";
             if (dpSection) dpSection.classList.toggle("hidden", !(deepParts.values || deepParts.future));
             if (dpValuesEl) dpValuesEl.innerText = deepParts.values || "無";
@@ -1008,7 +1140,10 @@
                 const tag = document.createElement("span");
                 tag.className = "inline-flex items-center gap-1 bg-[#fde3d3] border border-[#e7c9b7] px-2 py-1";
                 const prefix = ["dislike", "avoid"].includes(memory.stance) ? "不喜歡 " : "喜歡 ";
-                tag.append(document.createTextNode(prefix + memory.label));
+                const cleanLabel = String(memory.label || "").replace(
+                    /^(喜歡|不喜歡|避免|需要|偏好|討厭)\s*[：:、，,]?\s*/, ""
+                );
+                tag.append(document.createTextNode(prefix + cleanLabel));
                 const undo = document.createElement("button");
                 undo.type = "button";
                 undo.textContent = "×";
@@ -1052,6 +1187,93 @@
             const overlay = document.getElementById("tone-overlay");
             overlay.classList.add("hidden");
             overlay.classList.remove("flex");
+        }
+
+        function openOnboarding(step = 0, tone = null) {
+            onboardingStep = Math.max(0, Math.min(2, step));
+            if (tone) selectedOnboardingTone = tone;
+            const overlay = document.getElementById("tone-overlay");
+            overlay.classList.remove("hidden");
+            overlay.classList.add("flex");
+            renderOnboarding();
+        }
+
+        function renderOnboarding() {
+            document.querySelectorAll("[data-onboarding-step]").forEach(section => {
+                section.classList.toggle(
+                    "hidden", Number(section.dataset.onboardingStep) !== onboardingStep
+                );
+            });
+            document.getElementById("onboarding-progress").textContent = `${onboardingStep + 1} / 3`;
+            document.getElementById("onboarding-back").classList.toggle("hidden", onboardingStep === 0);
+            document.getElementById("onboarding-next").textContent =
+                onboardingStep === 2 ? "開始聊天" : "下一步";
+            document.querySelectorAll("[data-onboarding-tone]").forEach(button => {
+                button.classList.toggle(
+                    "selected", button.dataset.onboardingTone === selectedOnboardingTone
+                );
+            });
+        }
+
+        function selectOnboardingTone(tone) {
+            selectedOnboardingTone = tone;
+            renderOnboarding();
+        }
+
+        function previousOnboardingStep() {
+            if (onboardingStep > 0) {
+                onboardingStep -= 1;
+                renderOnboarding();
+            }
+        }
+
+        async function nextOnboardingStep() {
+            if (onboardingStep < 2) {
+                onboardingStep += 1;
+                renderOnboarding();
+                return;
+            }
+            await updateMediatorTone(selectedOnboardingTone);
+            await finishOnboarding();
+        }
+
+        async function finishOnboarding() {
+            try {
+                await fetch('/api/onboarding/complete', {
+                    method: 'POST', headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({user_id: currentUserId})
+                });
+            } catch (e) {}
+            const overlay = document.getElementById("tone-overlay");
+            overlay.classList.add("hidden");
+            overlay.classList.remove("flex");
+        }
+
+        async function skipOnboarding() {
+            await finishOnboarding();
+        }
+
+        function replayOnboarding() {
+            const profile = document.getElementById("profile-dropdown");
+            profile.classList.add("hidden");
+            profile.classList.remove("flex");
+            openOnboarding(0, document.getElementById("mediator-tone-select")?.value || "friend");
+        }
+
+        async function enterMessengerAfterProfile() {
+            switchStage(true);
+            try {
+                const res = await fetch(`/api/init?user_id=${encodeURIComponent(currentUserId)}`);
+                if (!res.ok) return;
+                const data = await res.json();
+                renderDropdownProfile(data);
+                selectedOnboardingTone = data.mediator_tone || "friend";
+                if (!data.onboarding_completed) {
+                    requestAnimationFrame(() => openOnboarding(0, selectedOnboardingTone));
+                }
+            } catch (e) {
+                console.error("Unable to initialize Messenger onboarding", e);
+            }
         }
 
         async function redoBigFive() {
@@ -1248,7 +1470,7 @@
                                 isDeepProfiling = false;
                                 headerEl.innerHTML = '🔮 專屬性格解析';
                                 inp.placeholder = "回答 AI...";
-                                switchStage(true);
+                                enterMessengerAfterProfile();
                             }, 3000);
                         } else {
                             appendBFMessage(data.reply, false);
@@ -1257,7 +1479,7 @@
                         document.getElementById("bf-json").innerText = JSON.stringify(data.big_five, null, 2);
                         if (data.is_complete) {
                             appendBFMessage("太棒了！我已經大概了解你的個性囉。接下來為您開通專屬聊天室，我會在那邊傳訊息給你！", false);
-                            setTimeout(() => switchStage(true), 3000);
+                            setTimeout(() => enterMessengerAfterProfile(), 3000);
                         } else {
                             appendBFMessage(data.reply, false);
                         }
@@ -1271,6 +1493,7 @@
             try {
                 const res = await fetch(`/api/contacts?user_id=${currentUserId}`);
                 const data = await res.json();
+                acceptedContacts = (data.contacts || []).filter(c => c.role === "user");
                 const list = document.getElementById("contacts-list");
                 list.innerHTML = "";
                 data.contacts.forEach(c => {
@@ -1302,10 +1525,21 @@
 
         async function selectContact(id, name, bgClass, contextStr = "交朋友", is_locked = false) {
             activeContactId = id;
+            clearMention();
             closeMediatorPrivatePanel();
+            const progressCard = document.getElementById("match-progress-card");
+            progressCard.classList.toggle("hidden", id !== "ai_assistant");
+            document.getElementById("match-readiness-status").classList.toggle(
+                "hidden", id !== "ai_assistant"
+            );
+            if (id !== "ai_assistant" && matchStatusTimer) {
+                clearInterval(matchStatusTimer);
+                matchStatusTimer = null;
+            }
             document.getElementById("room-name").innerText = name;
             document.getElementById("room-avatar").className = `w-10 h-10 rounded-full bg-gradient-to-tr ${bgClass} flex items-center justify-center font-bold text-lg text-white shadow`;
             const privateTrigger = document.getElementById("mediator-private-trigger");
+            privateTrigger.classList.remove("whisper-collapsed");
             privateTrigger.classList.toggle("hidden", id === "ai_assistant");
             if (id !== "ai_assistant") {
                 const isPendingHere = pendingMediatorNotification && pendingMediatorNotification.other_id === id;
@@ -1318,6 +1552,7 @@
             } else {
                 document.getElementById("btn-deep-profile").classList.add("hidden");
             }
+            if (id === "ai_assistant") refreshMatchStatus();
 
             // UI refresh
             loadContacts();
@@ -1355,8 +1590,15 @@
             const cm = document.getElementById("room-messages");
             if (!isUser && messageData.message_type === "mediator_card") {
                 const metadata = messageData.metadata || {};
+                const isProposal = ["match_proposal", "incoming_match_interest"].includes(metadata.event_type);
+                const proposal = (metadata.matches || [])[0];
+                const proposalMatchId = metadata.match_id || proposal?.match_id;
+                if (isProposal && proposalMatchId && document.querySelector(
+                    `.mediator-card[data-match-id="${proposalMatchId}"]`
+                )) return;
                 const card = document.createElement("div");
                 card.className = "mediator-card fade-in";
+                if (proposalMatchId) card.dataset.matchId = proposalMatchId;
 
                 const badge = document.createElement("div");
                 badge.className = "text-xs text-yellow-300 mb-3 font-bold";
@@ -1367,12 +1609,53 @@
 
                 const body = document.createElement("div");
                 body.className = "text-sm leading-relaxed whitespace-pre-wrap";
-                body.textContent = text;
+                if (isProposal && proposal) {
+                    const candidateId = proposal.matched_user_id || metadata.other_id || "對方";
+                    body.textContent = metadata.proposal_role === "receiver"
+                        ? `欸，@${candidateId} 想認識你，我先來問你本人。`
+                        : `欸，我一看到 @${candidateId} 就想到你。`;
+                } else {
+                    body.textContent = text;
+                }
                 card.appendChild(body);
+
+                if (proposal) {
+                    const contextCompare = document.createElement("div");
+                    contextCompare.className = "proposal-contexts";
+                    const targetContext = proposal.target_context || currentUserContext || "尚無近期情境";
+                    const candidateContext = proposal.current_context || "尚無近期情境";
+                    const candidateId = proposal.matched_user_id || metadata.other_id || "對方";
+                    const ownRow = document.createElement("div");
+                    ownRow.textContent = `你的近期｜${targetContext}`;
+                    const otherRow = document.createElement("div");
+                    otherRow.textContent = `@${candidateId}｜${candidateContext}`;
+                    contextCompare.append(ownRow, otherRow);
+                    card.appendChild(contextCompare);
+
+                    const reasonItems = (proposal.reason_items || [])
+                        .filter(item => item.kind !== "context_pair" && item.text)
+                        .map(item => item.text);
+                    const reasons = (reasonItems.length ? reasonItems : (proposal.top_reasons || []))
+                        .filter(reason => reason && !reason.includes("最近提到"))
+                        .slice(0, 2);
+                    if (reasons.length) {
+                        const reasonBox = document.createElement("div");
+                        reasonBox.className = "proposal-reasons";
+                        reasonBox.textContent = `阿月看中的點｜${reasons.join("・")}`;
+                        card.appendChild(reasonBox);
+                    }
+                }
+                if (proposal && proposal.score_breakdown) {
+                    const score = document.createElement("div");
+                    score.className = "proposal-score";
+                    const total = Math.round(Number(proposal.score_breakdown.total || 0));
+                    score.textContent = `相配度 ${total}%`;
+                    card.appendChild(score);
+                }
 
                 const actions = document.createElement("div");
                 actions.className = "mediator-card-actions";
-                if (["match_proposal", "incoming_match_interest"].includes(metadata.event_type)) {
+                if (isProposal) {
                     [
                         ["有興趣，幫我問問", "bg-emerald-700"],
                         ["先不要，幫我婉拒", "bg-slate-700"]
@@ -1446,18 +1729,30 @@
             if (!activeContactId || activeContactId === "ai_assistant") return;
             const panel = document.getElementById("mediator-private-panel");
             const container = document.getElementById("mediator-private-messages");
+            if (whisperCollapseTimer) clearTimeout(whisperCollapseTimer);
+            whisperCollapseTimer = null;
+            document.getElementById("mediator-private-trigger").classList.remove("whisper-collapsed");
+            if (panel.classList.contains("hidden")) {
+                previousRelationshipQuizStatus = null;
+                relationshipQuizExpanded = false;
+            }
             document.getElementById("mediator-private-context").textContent = "關於 " + activeContactId + "，只有你看得到";
             panel.classList.remove("hidden");
             panel.classList.add("flex");
             document.getElementById("mediator-unread-dot").classList.add("hidden");
             document.getElementById("mediator-trigger-text").textContent = "問問阿月";
-            if (pendingMediatorNotification && pendingMediatorNotification.other_id === activeContactId) pendingMediatorNotification = null;
+            if (pendingMediatorNotification && pendingMediatorNotification.other_id === activeContactId) {
+                pendingMediatorNotification = null;
+                document.getElementById("mediator-toast").classList.add("hidden");
+                document.getElementById("mediator-toast").classList.remove("toast-collapsed");
+            }
             container.innerHTML = '<div class="text-xs text-[#8b7063]">阿月看一下…</div>';
             try {
                 const res = await fetch('/api/mediator/private/' + encodeURIComponent(activeContactId) + '?user_id=' + encodeURIComponent(currentUserId));
                 const data = await res.json();
                 container.innerHTML = "";
                 (data.messages || []).forEach(message => appendPrivateMessage(message.content, message.sender_id === currentUserId, message));
+                await loadRelationshipFun();
             } catch (e) {
                 container.innerHTML = '<div class="text-xs text-red-500">暫時找不到阿月。</div>';
             }
@@ -1474,6 +1769,14 @@
             const container = document.getElementById("mediator-private-messages");
             const bubble = document.createElement("div");
             bubble.className = "chat-bubble " + (isUser ? 'bubble-user' : 'bubble-other') + " text-sm";
+            const eventType = messageData.event_type || (messageData.metadata && messageData.metadata.event_type);
+            if (!isUser && eventType && eventType !== "text") {
+                const label = document.createElement("div");
+                label.className = "text-[10px] font-bold text-[#a96749] mb-1";
+                label.textContent = ["feedback_request", "probe_question"].includes(eventType)
+                    ? "阿月正在探口風" : eventType === "probe_result" ? "阿月帶回消息" : "阿月助攻進度";
+                bubble.appendChild(label);
+            }
             const body = document.createElement("div");
             body.textContent = text;
             bubble.appendChild(body);
@@ -1500,6 +1803,7 @@
         async function sendPrivateMediatorMessage(message) {
             if (!message || !activeContactId || activeContactId === "ai_assistant") return;
             appendPrivateMessage(message, true);
+            privateMediatorSending = true;
             try {
                 const res = await fetch('/api/mediator/private', {
                     method: 'POST', headers: { 'Content-Type': 'application/json' },
@@ -1509,7 +1813,152 @@
                 appendPrivateMessage(res.ok ? data.reply : '⚠️ ' + (data.detail || '阿月暫時無法回覆'), false, data);
             } catch (e) {
                 appendPrivateMessage("⚠️ 連線中斷，晚點再問我。", false);
+            } finally {
+                privateMediatorSending = false;
             }
+        }
+
+        async function loadRelationshipFun() {
+            if (!activeContactId || activeContactId === "ai_assistant") return;
+            const card = document.getElementById("relationship-game-card");
+            try {
+                const res = await fetch(
+                    `/api/relationship/fun/${encodeURIComponent(activeContactId)}?user_id=${encodeURIComponent(currentUserId)}`
+                );
+                if (!res.ok) {
+                    card.classList.add("hidden");
+                    return;
+                }
+                renderRelationshipFun(await res.json());
+            } catch (e) {
+                card.classList.add("hidden");
+            }
+        }
+
+        function renderRelationshipFun(state) {
+            const card = document.getElementById("relationship-game-card");
+            currentRelationshipFunState = state;
+            if (state.status !== previousRelationshipQuizStatus) {
+                relationshipQuizExpanded = state.status !== "completed";
+                previousRelationshipQuizStatus = state.status;
+            }
+            card.innerHTML = "";
+            card.classList.remove("hidden");
+            const header = document.createElement("div");
+            header.className = "flex items-center gap-2";
+            const title = document.createElement("div");
+            title.className = "font-bold text-[#6f4f43] flex-1";
+            title.textContent = "🎲 阿月的默契小測驗";
+            header.appendChild(title);
+            if (state.status === "completed") {
+                const toggle = document.createElement("button");
+                toggle.type = "button";
+                toggle.className = "px-2 py-1 text-xs";
+                toggle.setAttribute("aria-label", relationshipQuizExpanded ? "收合默契測驗" : "展開默契測驗");
+                toggle.textContent = relationshipQuizExpanded ? "收合 ▲" : "查看 ▼";
+                toggle.onclick = () => {
+                    relationshipQuizExpanded = !relationshipQuizExpanded;
+                    renderRelationshipFun(currentRelationshipFunState);
+                };
+                header.appendChild(toggle);
+            }
+            card.appendChild(header);
+
+            if (["idle", "expired", "cancelled"].includes(state.status)) {
+                const text = document.createElement("p");
+                text.className = "text-xs text-[#8b7063] mt-2 mb-2";
+                text.textContent = "三題輕鬆選擇題；只公開相同答案，不公開不同答案。";
+                const button = document.createElement("button");
+                button.type = "button";
+                button.textContent = "邀他一起玩";
+                button.onclick = startRelationshipQuiz;
+                card.append(text, button);
+                return;
+            }
+
+            if (state.status === "active" && state.my_completed) {
+                const text = document.createElement("p");
+                text.className = "text-xs text-[#8b7063] mt-2";
+                text.textContent = "你的答案收好了，等對方完成就揭曉共同答案。";
+                card.appendChild(text);
+                return;
+            }
+
+            if (state.status === "active") {
+                (state.questions || []).forEach(question => {
+                    const label = document.createElement("label");
+                    label.className = "block text-xs mt-2 mb-2";
+                    label.textContent = question.text;
+                    const select = document.createElement("select");
+                    select.dataset.quizQuestion = question.id;
+                    select.className = "block w-full mt-1 px-2 py-1";
+                    question.options.forEach(option => {
+                        const item = document.createElement("option");
+                        item.value = option;
+                        item.textContent = option;
+                        select.appendChild(item);
+                    });
+                    label.appendChild(select);
+                    card.appendChild(label);
+                });
+                const submit = document.createElement("button");
+                submit.type = "button";
+                submit.textContent = "送出我的答案";
+                submit.onclick = submitRelationshipQuiz;
+                card.appendChild(submit);
+                return;
+            }
+
+            if (state.status === "completed") {
+                const result = state.result || {match_count: 0, total: 3, matches: []};
+                const text = document.createElement("p");
+                text.className = "text-xs text-[#8b7063] mt-2 mb-2";
+                const common = (result.matches || []).map(item => item.answer).join("、");
+                text.textContent = `你們中了 ${result.match_count}/${result.total} 題${common ? "：" + common : "，不一樣也很有得聊"}`;
+                card.appendChild(text);
+                if (!relationshipQuizExpanded) return;
+                const button = document.createElement("button");
+                button.type = "button";
+                button.textContent = state.topic_box?.drawn_date ? "查看今日話題" : "抽今日話題盲盒";
+                button.onclick = drawRelationshipTopic;
+                card.appendChild(button);
+            }
+        }
+
+        async function startRelationshipQuiz() {
+            if (!activeContactId || activeContactId === "ai_assistant") return;
+            const res = await fetch('/api/relationship/quiz/start', {
+                method: 'POST', headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({user_id: currentUserId, other_id: activeContactId})
+            });
+            const data = await res.json();
+            if (!res.ok) return appendPrivateMessage("⚠️ " + (data.detail || "暫時不能開始測驗"), false);
+            renderRelationshipFun(data);
+        }
+
+        async function submitRelationshipQuiz() {
+            const answers = {};
+            document.querySelectorAll("[data-quiz-question]").forEach(select => {
+                answers[select.dataset.quizQuestion] = select.value;
+            });
+            const res = await fetch('/api/relationship/quiz/answer', {
+                method: 'POST', headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({user_id: currentUserId, other_id: activeContactId, answers})
+            });
+            const data = await res.json();
+            if (!res.ok) return appendPrivateMessage("⚠️ " + (data.detail || "答案沒有送出"), false);
+            renderRelationshipFun(data);
+        }
+
+        async function drawRelationshipTopic() {
+            const res = await fetch('/api/relationship/topic', {
+                method: 'POST', headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({user_id: currentUserId, other_id: activeContactId})
+            });
+            const data = await res.json();
+            if (!res.ok) return appendPrivateMessage("⚠️ " + (data.detail || "盲盒還不能開"), false);
+            appendPrivateMessage("今日話題：" + data.topic, false, {event_type: "topic_box"});
+            await loadRelationshipFun();
         }
 
         document.getElementById("mediator-private-form").addEventListener("submit", async (event) => {
@@ -1521,21 +1970,96 @@
             await sendPrivateMediatorMessage(message);
         });
 
+        function clearMention() {
+            mentionedOtherIds = [];
+            renderMentionChips();
+        }
+
+        function chooseMention(contact) {
+            if (!mentionedOtherIds.includes(contact.id)) mentionedOtherIds.push(contact.id);
+            renderMentionChips();
+            document.getElementById("mention-menu").classList.add("hidden");
+            const input = document.getElementById("room-input");
+            input.value = input.value.replace(/(^|\s)@[^\s]*$/, "$1");
+            input.focus();
+        }
+
+        function removeMention(otherId) {
+            mentionedOtherIds = mentionedOtherIds.filter(id => id !== otherId);
+            renderMentionChips();
+        }
+
+        function renderMentionChips() {
+            const row = document.getElementById("mention-chip-row");
+            row.innerHTML = "";
+            row.classList.toggle("hidden", mentionedOtherIds.length === 0);
+            row.classList.toggle("flex", mentionedOtherIds.length > 0);
+            mentionedOtherIds.forEach(otherId => {
+                const chip = document.createElement("span");
+                chip.className = "mention-chip inline-flex items-center gap-1";
+                chip.append(document.createTextNode("@" + otherId));
+                const remove = document.createElement("button");
+                remove.type = "button";
+                remove.className = "px-1 py-0 text-xs";
+                remove.textContent = "×";
+                remove.setAttribute("aria-label", "移除 @" + otherId);
+                remove.onclick = () => removeMention(otherId);
+                chip.appendChild(remove);
+                row.appendChild(chip);
+            });
+        }
+
+        function refreshMentionMenu() {
+            const input = document.getElementById("room-input");
+            const menu = document.getElementById("mention-menu");
+            if (activeContactId !== "ai_assistant") {
+                menu.classList.add("hidden");
+                return;
+            }
+            const match = input.value.match(/(^|\s)@([^\s]*)$/);
+            if (!match) {
+                menu.classList.add("hidden");
+                return;
+            }
+            const query = match[2].toLowerCase();
+            const options = acceptedContacts.filter(c =>
+                c.id.toLowerCase().includes(query) && !mentionedOtherIds.includes(c.id)
+            );
+            menu.innerHTML = "";
+            options.forEach(contact => {
+                const button = document.createElement("button");
+                button.type = "button";
+                button.className = "mention-option";
+                button.textContent = `@${contact.id}`;
+                button.onclick = () => chooseMention(contact);
+                menu.appendChild(button);
+            });
+            menu.classList.toggle("hidden", options.length === 0);
+        }
+
+        document.getElementById("room-input").addEventListener("input", refreshMentionMenu);
+
         document.getElementById("room-form").addEventListener("submit", async (e) => {
             e.preventDefault();
             if (!activeContactId) return;
             const inp = document.getElementById("room-input");
             const msg = inp.value.trim();
             if (!msg) return;
+            const outgoingMentions = [...mentionedOtherIds];
+            const displayMsg = `${outgoingMentions.map(id => "@" + id).join(" ")} ${msg}`.trim();
             inp.value = "";
-            appendRoomMessage(msg, true);
+            appendRoomMessage(displayMsg, true);
 
             document.getElementById("room-typing").classList.remove("hidden");
             try {
                 const res = await fetch('/api/direct_chat', {
                     method: 'POST', headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ user_id: currentUserId, contact_id: activeContactId, message: msg })
+                    body: JSON.stringify({
+                        user_id: currentUserId, contact_id: activeContactId, message: msg,
+                        mentioned_other_ids: activeContactId === "ai_assistant" ? outgoingMentions : []
+                    })
                 });
+                clearMention();
                 const data = await res.json().catch(() => ({}));
                 document.getElementById("room-typing").classList.add("hidden");
                 if (res.ok) {
@@ -1544,8 +2068,7 @@
                     else if (activeContactId === "ai_assistant" && data.context_confirmation_needed) appendContextNotice("confirm");
                     if (activeContactId === "ai_assistant" && Number.isFinite(data.match_readiness_score)) {
                         const status = document.getElementById("match-readiness-status");
-                        const score = Math.max(0, Math.min(100, data.match_readiness_score));
-                        status.textContent = score >= 75 ? "媒合訊號已足夠" : `情境信心 ${score}%`;
+                        status.textContent = data.match_readiness_state === "ready" ? "阿月有方向" : "再聊聊";
                     }
                     if (data.is_locked) {
                         document.getElementById("room-input").disabled = true;
@@ -1564,6 +2087,91 @@
         });
 
         // --- Matching & Notifications ---
+        const matchStageView = {
+            idle: ["還沒開始找", "跟阿月說說近況，或直接請她找下一位", 0],
+            awaiting_confirmation: ["等你點頭", "阿月還沒開始找；確認後才會翻名單", 5],
+            queued: ["已排入媒合", "阿月正在整理你的條件", 10],
+            searching: ["正在開始搜尋", "這次是真的有啟動，不是口頭說說", 20],
+            loading_profile: ["讀取你的資料", "整理近期情境與偏好", 30],
+            vector_search: ["搜尋候選人", "從近期情境相近的人開始找", 50],
+            graph_check: ["檢查雙方偏好", "比對 Graph 記憶與地雷", 70],
+            writing_reason: ["整理推薦理由", "阿月正在把共通點講成人話", 88],
+            waiting_user: ["找到一位了", "等你決定要不要請阿月牽線", 100],
+            found: ["找到一位了", "推薦即將送到聊天室", 100],
+            waiting_other: ["已替你問對方", "現在等對方本人回覆", 100],
+            incoming_decision: ["有人想認識你", "阿月沒有替你答應，點這裡看看", 100],
+            completed: ["雙方都點頭了", "聊天室已經開好", 100],
+            no_candidates: ["這輪沒有新人選", "阿月沒有硬湊，之後可再試", 100],
+            failed: ["媒合暫時失敗", "錯誤已留下，可再試一次", 100],
+            cancelled: ["這條線已收起", "想找下一位時可以直接說", 100]
+        };
+
+        async function refreshMatchStatus() {
+            if (!currentUserId) return;
+            try {
+                const response = await fetch(`/api/match/status?user_id=${encodeURIComponent(currentUserId)}`);
+                const data = await response.json();
+                const search = data.match_search || {status: "idle"};
+                const stage = search.status || "idle";
+                const view = matchStageView[stage] || [stage, "阿月正在處理", 35];
+                const card = document.getElementById("match-progress-card");
+                const shouldShow = activeContactId === "ai_assistant";
+                card.classList.toggle("hidden", !shouldShow);
+                currentActiveProposalCard = data.active_proposal_card || null;
+                card.classList.toggle("has-proposal", Boolean(currentActiveProposalCard));
+                card.setAttribute(
+                    "aria-label",
+                    currentActiveProposalCard ? "開啟阿月牽線提案" : "媒合進度"
+                );
+                document.getElementById("match-progress-title").textContent = view[0];
+                document.getElementById("match-progress-detail").textContent =
+                    search.error ? `${view[1]}：${search.error}` : view[1];
+                document.getElementById("match-progress-state").textContent =
+                    ["waiting_user", "waiting_other", "incoming_decision", "found"].includes(stage) && search.other_id
+                        ? `@${search.other_id}` : "";
+                document.getElementById("match-progress-bar").style.width = view[2] + "%";
+                document.getElementById("match-confirm-actions").classList.toggle(
+                    "hidden", stage !== "awaiting_confirmation"
+                );
+                const activeStages = ["queued", "searching", "loading_profile", "vector_search", "graph_check", "writing_reason"];
+                if (activeStages.includes(stage)) {
+                    if (!matchStatusTimer) matchStatusTimer = setInterval(refreshMatchStatus, 2000);
+                } else if (matchStatusTimer) {
+                    clearInterval(matchStatusTimer);
+                    matchStatusTimer = null;
+                }
+            } catch (e) {}
+        }
+
+        function openActiveProposalCard() {
+            const proposal = currentActiveProposalCard;
+            if (!proposal || activeContactId !== "ai_assistant") return;
+            const existing = document.querySelector(
+                `.mediator-card[data-match-id="${proposal.match_id}"]`
+            );
+            if (existing) {
+                existing.scrollIntoView({behavior: "smooth", block: "center"});
+                return;
+            }
+            appendRoomMessage(proposal.opening, false, {
+                message_type: "mediator_card",
+                metadata: {
+                    event_type: proposal.event_type,
+                    match_id: proposal.match_id,
+                    other_id: proposal.other_id,
+                    proposal_role: proposal.proposal_role,
+                    matches: [{
+                        match_id: proposal.match_id,
+                        matched_user_id: proposal.other_id,
+                        target_context: proposal.your_context,
+                        current_context: proposal.other_context,
+                        top_reasons: proposal.reasons || [],
+                        score_breakdown: {total: proposal.score || 0}
+                    }]
+                }
+            });
+        }
+
         async function triggerMatch() {
             const btn = document.getElementById("btn-match");
             const oldHtml = btn.innerHTML;
@@ -1571,14 +2179,44 @@
             try {
                 const res = await fetch('/api/match/request', {
                     method: 'POST', headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ user_id: currentUserId, source: 'explicit_next', force_new: true })
+                    body: JSON.stringify({ user_id: currentUserId, source: 'explicit_next', force_new: true, confirmed: false })
                 });
-                const data = await res.json();
-                if (data.status === "queued") appendRoomMessage("好，這次真的排進去了；有沒有找到我都會回來說。", false);
+                let data = await res.json();
+                refreshMatchStatus();
+                if (data.status === "awaiting_confirmation") {
+                    appendRoomMessage(data.message || "要我現在幫你翻翻名單嗎？", false);
+                }
+                else if (data.status === "queued") appendRoomMessage("好，這次真的排進去了；有沒有找到我都會回來說。", false);
                 else if (data.status === "already_active") appendRoomMessage("手上這條線還沒確認完，先處理它，我再幫你找下一位。", false);
                 else appendRoomMessage("我已經在找了，先別連按門鈴啦。", false);
             } catch (e) { appendRoomMessage("剛剛沒有成功排入，我晚點再試。", false); }
             btn.innerHTML = oldHtml; btn.disabled = false;
+        }
+
+        async function confirmMatchSearch() {
+            const res = await fetch('/api/match/request', {
+                method: 'POST', headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    user_id: currentUserId, source: 'explicit_next',
+                    force_new: true, confirmed: true
+                })
+            });
+            const data = await res.json();
+            if (data.status === "queued") {
+                appendRoomMessage("好，我現在真的開始翻名單；有沒有找到都會回來說。", false);
+            } else if (data.status === "already_active") {
+                appendRoomMessage("手上已經有一條線，我們先處理那位。", false);
+            }
+            refreshMatchStatus();
+        }
+
+        async function cancelMatchSearch() {
+            await fetch('/api/match/cancel', {
+                method: 'POST', headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({user_id: currentUserId, source: 'explicit_next'})
+            });
+            appendRoomMessage("好，那這次先不找。", false);
+            refreshMatchStatus();
         }
 
         // 🥚 雙黃蛋：渲染雙卡片 Modal
@@ -1831,11 +2469,55 @@
             pendingMediatorNotification = payload;
             document.getElementById("mediator-toast-action").innerText = payload?.surface === "relationship_private"
                 ? "到這段聊天室看看" : "找阿月聊聊";
-            toast.classList.remove("hidden");
+            toast.classList.remove("hidden", "toast-collapsed");
+            document.getElementById("mediator-toast-dot").classList.add("hidden");
+            if (mediatorToastTimer) clearTimeout(mediatorToastTimer);
+            mediatorToastTimer = setTimeout(() => dismissMediatorNotification(), 8000);
+        }
+
+        function dismissMediatorNotification(event = null) {
+            if (event) event.stopPropagation();
+            if (mediatorToastTimer) clearTimeout(mediatorToastTimer);
+            mediatorToastTimer = null;
+            const toast = document.getElementById("mediator-toast");
+            if (!pendingMediatorNotification) {
+                toast.classList.add("hidden");
+                return;
+            }
+            toast.classList.add("toast-collapsed");
+            document.getElementById("mediator-toast-dot").classList.remove("hidden");
+        }
+
+        function showMemoryNotice(payload) {
+            const old = document.querySelector(".memory-notice");
+            if (old) old.remove();
+            const notice = document.createElement("div");
+            notice.className = "memory-notice";
+            notice.textContent = payload.message || "阿月記住了一件事";
+            if (payload.memory && payload.memory.key) {
+                const undo = document.createElement("button");
+                undo.type = "button";
+                undo.className = "ml-2 px-2 py-1";
+                undo.textContent = "復原";
+                undo.onclick = async () => {
+                    await fetch('/api/profile/memories/action', {
+                        method: 'POST', headers: {'Content-Type':'application/json'},
+                        body: JSON.stringify({
+                            user_id: currentUserId, key: payload.memory.key, action: "disable"
+                        })
+                    });
+                    notice.textContent = "已復原";
+                };
+                notice.appendChild(undo);
+            }
+            document.body.appendChild(notice);
+            setTimeout(() => notice.remove(), 4500);
         }
 
         async function openMediatorChat() {
+            if (mediatorToastTimer) clearTimeout(mediatorToastTimer);
             document.getElementById("mediator-toast").classList.add("hidden");
+            document.getElementById("mediator-toast").classList.remove("toast-collapsed");
             if (!isStageMessenger) switchStage(true);
             await loadContacts();
             await selectContact("ai_assistant", "媒人阿月", "from-fuchsia-500 to-violet-500", "懂你、牽線，也幫你探口風", false);
@@ -1843,7 +2525,9 @@
 
         async function openMediatorNotification() {
             const payload = pendingMediatorNotification;
+            if (mediatorToastTimer) clearTimeout(mediatorToastTimer);
             document.getElementById("mediator-toast").classList.add("hidden");
+            document.getElementById("mediator-toast").classList.remove("toast-collapsed");
             if (!payload || payload.surface !== "relationship_private") return openMediatorChat();
             if (!isStageMessenger) switchStage(true);
             await loadContacts();
@@ -1854,9 +2538,14 @@
         function markRelationshipWhisper(payload) {
             pendingMediatorNotification = payload;
             if (activeContactId === payload.other_id) {
-                document.getElementById("mediator-private-trigger").classList.remove("hidden");
+                const trigger = document.getElementById("mediator-private-trigger");
+                trigger.classList.remove("hidden", "whisper-collapsed");
                 document.getElementById("mediator-trigger-text").textContent = "阿月有悄悄話";
                 document.getElementById("mediator-unread-dot").classList.remove("hidden");
+                if (whisperCollapseTimer) clearTimeout(whisperCollapseTimer);
+                whisperCollapseTimer = setTimeout(() => {
+                    trigger.classList.add("whisper-collapsed");
+                }, 8000);
                 const panel = document.getElementById("mediator-private-panel");
                 if (!panel.classList.contains("hidden")) openMediatorPrivatePanel();
             } else {
@@ -1866,6 +2555,16 @@
 
         // Notification Polling
         let isPolling = false;
+        function conversationIsActive() {
+            const roomInput = document.getElementById("room-input");
+            const privateInput = document.getElementById("mediator-private-input");
+            const roomTyping = document.getElementById("room-typing");
+            return privateMediatorSending
+                || Boolean(roomInput && document.activeElement === roomInput && roomInput.value.trim())
+                || Boolean(privateInput && document.activeElement === privateInput && privateInput.value.trim())
+                || Boolean(roomTyping && !roomTyping.classList.contains("hidden"));
+        }
+
         async function checkNotifications() {
             if (!currentUserId || isPolling) return;
             isPolling = true;
@@ -1882,13 +2581,22 @@
 
                 // Also check for proactive messages
                 try {
-                    const proactRes = await fetch(`/api/proactive_check?user_id=${currentUserId}`);
+                    const busy = conversationIsActive();
+                    const proactRes = await fetch(
+                        `/api/proactive_check?user_id=${encodeURIComponent(currentUserId)}&conversation_active=${busy}`
+                    );
                     const proactData = await proactRes.json();
                     if (proactData.has_new && proactData.message) {
+                        if (proactData.surface === "ephemeral_notice") {
+                            showMemoryNotice(proactData);
+                            isPolling = false;
+                            return;
+                        }
                         if ((proactData.type || "").startsWith("match_search")) {
                             const status = document.getElementById("match-readiness-status");
                             if (status) status.textContent = proactData.type === "match_search_failed" ? "媒合暫時失敗" : "這輪沒有新人選";
                         }
+                        refreshMatchStatus();
                         if (proactData.surface === "relationship_private") {
                             markRelationshipWhisper(proactData);
                         } else if (isStageMessenger && activeContactId === "ai_assistant") {
@@ -2100,11 +2808,8 @@
                     if (data.is_complete) {
                         document.getElementById("interest-overlay").classList.add("hidden");
                         switchStage(true); // 直入 Messenger
-                        if (!data.mediator_tone_selected) {
-                            const toneOverlay = document.getElementById("tone-overlay");
-                            toneOverlay.classList.remove("hidden");
-                            toneOverlay.classList.add("flex");
-                        }
+                        selectedOnboardingTone = data.mediator_tone || "friend";
+                        if (!data.onboarding_completed) openOnboarding(0, selectedOnboardingTone);
                     }
 
                     // Run first notification check immediately

@@ -16,6 +16,7 @@ class MatchRequest(BaseModel):
     user_id: str
     source: str = "manual"
     force_new: bool = False
+    confirmed: bool = False
 
 class ClearRequest(BaseModel):
     user_id: str
@@ -30,11 +31,20 @@ class DirectChatRequest(BaseModel):
     contact_id: str
     message: str
     chat_type: str = "direct"  # "direct", "deep_profile"
+    mentioned_other_id: str | None = None
+    mentioned_other_ids: list[str] | None = None
 
 class MediatorPrivateRequest(BaseModel):
     user_id: str
     other_id: str
     message: str
+
+class RelationshipGameRequest(BaseModel):
+    user_id: str
+    other_id: str
+
+class RelationshipQuizAnswerRequest(RelationshipGameRequest):
+    answers: dict[str, str]
 
 class SettingsRequest(BaseModel):
     user_id: str
@@ -49,6 +59,7 @@ class MediatorProbeRequest(BaseModel):
     user_id: str
     other_id: str
     force: bool = False
+    kind: str | None = None
 
 class ProfileMemoryActionRequest(BaseModel):
     user_id: str

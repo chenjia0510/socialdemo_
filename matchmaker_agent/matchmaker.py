@@ -36,7 +36,16 @@ class MatchmakerAgent:
                     "contrast_label": "用 4-6 個字描述這位候選人的性格風格（如：外向活潑型）",
                     "recommendation_reason": "一段約 50 字的推薦理由，以『你』稱呼發起者、以『他/她』稱呼候選人，溫暖、幽默且一針見血",
                     "receiver_reason": "一段約 50 字的理由，但視角反轉：以『你』稱呼候選人（接收者），說明『有人因為你的什麼特質加上他現在想做什麼，所以想認識你』，語氣溫暖且真誠",
-                    "distinctive_tags": ["請輸出 5-6 個短句；必須綜合候選人的 current_context、initial_interest、big_five.summary 與 deep_profile（價值觀、關係需求、壓力因應、未來想像），萃取最特殊、強烈、具主導性、或可能成為他人拒絕理由的具體特徵/狀態。範例：面對衝突時直接表達情緒、實力至上主義、掌控欲較強、近期去非洲看秀體驗不佳。格式限制：陣列裡只能放精煉短句，絕對不要加『鮮明特質：』『近期情境：』『興趣：』『價值觀：』等任何前綴分類詞。"]
+                    "distinctive_tags": ["請輸出 5-6 個短句；必須綜合候選人的 current_context、initial_interest、big_five.summary 與 deep_profile（價值觀、關係需求、壓力因應、未來想像），萃取最特殊、強烈、具主導性、或可能成為他人拒絕理由的具體特徵/狀態。範例：面對衝突時直接表達情緒、實力至上主義、掌控欲較強、近期去非洲看秀體驗不佳。格式限制：陣列裡只能放精煉短句，絕對不要加『鮮明特質：』『近期情境：』『興趣：』『價值觀：』等任何前綴分類詞。"],
+                    "score_breakdown": {
+                        "context": 0,
+                        "graph": 0,
+                        "values": 0,
+                        "personality": 0,
+                        "conversation": 0,
+                        "total": 0
+                    },
+                    "top_reasons": ["三個最具體的相配原因"]
                 }
             ]
         }
@@ -58,6 +67,11 @@ class MatchmakerAgent:
         [DEEP_PROFILE_PLACEHOLDER]
 
         【⚠️ 決策鐵則】
+        每位候選人的 graph_memory 是候選人自己的偏好與地雷，必須與目標用戶雙向檢查。
+        任一方的明確 DISLIKES_TRAIT 命中對方特質時不得推薦。
+        對其餘候選人按以下權重評分，各分項 0～100：近期情境 30%、雙方 Graph 25%、
+        深層價值觀 20%、Big Five 15%、立即可聊話題 10%。total 必須是加權總分。
+        top_reasons 只放三個資料中明確存在的理由，不可補故事。
         如果過往記憶中包含 [DISLIKES_TRAIT]，請「絕對避免」選擇具有該特質的候選人，即使他們的相似度分數很高！這是最高扣分項目！
         請在「推薦理由 (recommendation_reason)」中，主動提及你是因為參考了過往記憶（例如：「記得你之前說過不喜歡太外向的，所以我幫你挑了...」），讓使用者感受到你有在學習！"""
 

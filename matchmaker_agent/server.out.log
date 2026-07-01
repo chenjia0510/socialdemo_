@@ -1,338 +1,345 @@
-[TIMING][9001 /api/match] start target=_codex_flow_9a0f455 candidates=5
-📥 收到 V1 系統傳來的配對請求！
-🧠 媒婆正在閱讀卷宗與圖譜記憶、進行多維度思考中...
-✅ [Neo4j 讀取] 連線驗證成功 (user=_codex_flow_9a0f455)
-[TIMING][9001 /api/match] Neo4j user memory: 0.929s lines=0
-[TIMING][9001 /api/match] get_user_graph_memory wrapper: 0.931s
-📂 提煉出的記憶：
-目前圖庫中尚無該使用者的偏好或地雷紀錄。
-✅ [Neo4j 全域法則] 連線驗證成功
-[TIMING][9001 /api/match] Neo4j global rules: 0.706s rules=3
-[TIMING][9001 /api/match] get_global_rules wrapper: 0.707s
-🌐 全域法則：
-- [相似型] 高盡責性且內向特質的人，在面對非正式或具幽默感的情境時，傾向與同樣具備高組織力且性格穩健的對象建立穩定連結。 (信心度：1)
-- [互補型] 內斂且具備高親和力的穩定型人格，在尋求具備特定目標的活動時，適合與外向、具備高行動力且能主導溝通的探索型人格配對，形成穩定的「執行-引領」互補關係。 (信心度：1)
-- [互補型] 外向且情感表達豐富的人，在面臨情感波動或展現脆弱性的情境時，適合與內斂、高責任感且具備穩定傾聽特質的人配對，以形成情感表達與承接的互補關係。 (信心度：1)
-🧠 媒婆正在閱讀卷宗與圖譜記憶、進行多維度思考中...
-[TIMING][MatchmakerAgent.match] before LLM system_chars=2137 payload_chars=2309 candidates=5
-[TIMING][MatchmakerAgent.match] LLM call: 22.743s output_chars=533
-[TIMING][MatchmakerAgent.match] total: 22.744s
-[TIMING][9001 /api/match] agent.match LLM wrapper: 22.745s raw_chars=533
-Agent matched ids: ['seed_user_05']
-[TIMING][9001 /api/match] parse/return matches: 0.000s
-[TIMING][9001 /api/match] total: 24.386s
-INFO:     127.0.0.1:52030 - "POST /api/match HTTP/1.1" 200 OK
-🌐 收到全域反思請求！正在從成功配對中歸納通用法則...
-🧠 媒婆正在從成功配對中歸納全域法則...
-🧠 全域反思原始回覆:
-{
-    "abstract_rule": "高开放性、高亲和性的人，在寻求安静文化氛围的活动中，适合与同样高开放性、高亲和性的人配對",
-    "category": "相似型"
-}
-✨ 歸納出法則：[相似型] 高开放性、高亲和性的人，在寻求安静文化氛围的活动中，适合与同样高开放性、高亲和性的人配對
-✅ [Neo4j 全域法則寫入] 連線驗證成功！
-✅ 全域法則已寫入/更新：[相似型] 高开放性、高亲和性的人，在寻求安静文化氛围的活动中，适合与同样高开放性、高亲和性的人配對
-INFO:     127.0.0.1:48288 - "POST /api/global_reflection HTTP/1.1" 200 OK
-[TIMING][9001 /api/match] start target=demo_user candidates=5
-📥 收到 V1 系統傳來的配對請求！
-🧠 媒婆正在閱讀卷宗與圖譜記憶、進行多維度思考中...
-✅ [Neo4j 讀取] 連線驗證成功 (user=demo_user)
-[TIMING][9001 /api/match] Neo4j user memory: 0.893s lines=17
-[TIMING][9001 /api/match] get_user_graph_memory wrapper: 0.895s
-📂 提煉出的記憶：
-[DISLIKES_TRAIT] 遇到特質「創意探索」的對象。原因：使用者明確勾選此特質作為婉拒理由
-[DISLIKES_TRAIT] 遇到特質「愛打籃球」的對象。原因：使用者明確勾選此動態標籤作為婉拒理由，顯示目前不偏好以此為主要活動或互動需求的對象。
-[DISLIKES_TRAIT] 遇到特質「行動至上」的對象。原因：使用者明確勾選為婉拒理由，不偏好過度強調行動而可能忽略情感交流的作風。
-[DISLIKES_TRAIT] 遇到特質「極度嚴謹」的對象。原因：使用者明確勾選為婉拒理由，不偏好過於嚴肅、缺乏彈性或給人壓力的性格。
-[DISLIKES_TRAIT] 遇到特質「效率至上」的對象。原因：使用者明確勾選為婉拒理由，不偏好在人際互動中過度追求效率的模式。
-[DISLIKES_TRAIT] 遇到特質「過度自主」的對象。原因：使用者明確勾選為婉拒理由，可能偏好較多情感連結或相互依賴的關係。
-[DISLIKES_TRAIT] 遇到特質「籃球運動」的對象。原因：使用者明確勾選「近期有籃球運動需求」作為婉拒理由
-[DISLIKES_TRAIT] 遇到特質「極強行動力」的對象。原因：使用者婉拒行動力極強且不喜歡受嚴謹束縛的對象
-[DISLIKES_TRAIT] 遇到特質「不喜束縛」的對象。原因：使用者婉拒不喜歡過於嚴謹束縛的對象
-[DISLIKES_TRAIT] 遇到特質「探索性格」的對象。原因：使用者婉拒追求自我成長與新鮮體驗的探索型人格
-[DISLIKES_TRAIT] 遇到特質「探索性格」的對象。原因：使用者婉拒了追求自我成長與新鮮體驗的探索型人格
-[DISLIKES_TRAIT] 遇到特質「強行動力」的對象。原因：使用者婉拒了行動力極強且不喜歡嚴謹束縛的對象
-[DISLIKES_TRAIT] 遇到特質「正面衝突」的對象。原因：明確勾選不喜歡面對偏見與欺凌會直接正面回擊的特質
-[DISLIKES_TRAIT] 遇到特質「社交能量」的對象。原因：明確勾選不喜歡性格活潑且具備極高社交能量的對象
-[DISLIKES_TRAIT] 遇到特質「重視可靠與誠實」的對象。原因：使用者明確勾選此標籤作為婉拒原因，表示不喜歡對方過於強調可靠與誠實
-[DISLIKES_TRAIT] 遇到特質「週末去圖書館」的對象。原因：使用者明確勾選此標籤作為婉拒原因，表示不喜歡對方週末去圖書館的習慣
-[DISLIKES_TRAIT] 遇到特質「深思熟慮」的對象。原因：使用者明確勾選此標籤作為婉拒原因，表示不喜歡對方過於深思熟慮的風格
-✅ [Neo4j 全域法則] 連線驗證成功
-[TIMING][9001 /api/match] Neo4j global rules: 0.631s rules=3
-[TIMING][9001 /api/match] get_global_rules wrapper: 0.634s
-🌐 全域法則：
-- [相似型] 高盡責性且內向特質的人，在面對非正式或具幽默感的情境時，傾向與同樣具備高組織力且性格穩健的對象建立穩定連結。 (信心度：1)
-- [互補型] 內斂且具備高親和力的穩定型人格，在尋求具備特定目標的活動時，適合與外向、具備高行動力且能主導溝通的探索型人格配對，形成穩定的「執行-引領」互補關係。 (信心度：1)
-- [互補型] 外向且情感表達豐富的人，在面臨情感波動或展現脆弱性的情境時，適合與內斂、高責任感且具備穩定傾聽特質的人配對，以形成情感表達與承接的互補關係。 (信心度：1)
-🧠 媒婆正在閱讀卷宗與圖譜記憶、進行多維度思考中...
-[TIMING][MatchmakerAgent.match] before LLM system_chars=3184 payload_chars=3540 candidates=5
-[TIMING][MatchmakerAgent.match] LLM call: 4.253s output_chars=462
-[TIMING][MatchmakerAgent.match] total: 4.269s
-[TIMING][9001 /api/match] agent.match LLM wrapper: 4.270s raw_chars=462
-Agent matched ids: ['seed_user_01']
-[TIMING][9001 /api/match] parse/return matches: 0.001s
-[TIMING][9001 /api/match] total: 5.807s
-INFO:     127.0.0.1:23428 - "POST /api/match HTTP/1.1" 200 OK
-🌐 收到全域反思請求！正在從成功配對中歸納通用法則...
-🧠 媒婆正在從成功配對中歸納全域法則...
-🧠 全域反思原始回覆:
-{
-    "abstract_rule": "高神經質、內向但真實的人，適合與高外向性、低神經質、高開放性的開朗者配對，能互補情緒需求與生活體驗。",
-    "category": "互補型"
-}
-✨ 歸納出法則：[互補型] 高神經質、內向但真實的人，適合與高外向性、低神經質、高開放性的開朗者配對，能互補情緒需求與生活體驗。
-✅ [Neo4j 全域法則寫入] 連線驗證成功！
-✅ 全域法則已寫入/更新：[互補型] 高神經質、內向但真實的人，適合與高外向性、低神經質、高開放性的開朗者配對，能互補情緒需求與生活體驗。
-INFO:     127.0.0.1:44466 - "POST /api/global_reflection HTTP/1.1" 200 OK
-[TIMING][9001 /api/match] start target=demo_user candidates=5
-📥 收到 V1 系統傳來的配對請求！
-🧠 媒婆正在閱讀卷宗與圖譜記憶、進行多維度思考中...
-✅ [Neo4j 讀取] 連線驗證成功 (user=demo_user)
-[TIMING][9001 /api/match] Neo4j user memory: 0.865s lines=17
-[TIMING][9001 /api/match] get_user_graph_memory wrapper: 0.869s
-📂 提煉出的記憶：
-[DISLIKES_TRAIT] 遇到特質「創意探索」的對象。原因：使用者明確勾選此特質作為婉拒理由
-[DISLIKES_TRAIT] 遇到特質「愛打籃球」的對象。原因：使用者明確勾選此動態標籤作為婉拒理由，顯示目前不偏好以此為主要活動或互動需求的對象。
-[DISLIKES_TRAIT] 遇到特質「行動至上」的對象。原因：使用者明確勾選為婉拒理由，不偏好過度強調行動而可能忽略情感交流的作風。
-[DISLIKES_TRAIT] 遇到特質「極度嚴謹」的對象。原因：使用者明確勾選為婉拒理由，不偏好過於嚴肅、缺乏彈性或給人壓力的性格。
-[DISLIKES_TRAIT] 遇到特質「效率至上」的對象。原因：使用者明確勾選為婉拒理由，不偏好在人際互動中過度追求效率的模式。
-[DISLIKES_TRAIT] 遇到特質「過度自主」的對象。原因：使用者明確勾選為婉拒理由，可能偏好較多情感連結或相互依賴的關係。
-[DISLIKES_TRAIT] 遇到特質「籃球運動」的對象。原因：使用者明確勾選「近期有籃球運動需求」作為婉拒理由
-[DISLIKES_TRAIT] 遇到特質「極強行動力」的對象。原因：使用者婉拒行動力極強且不喜歡受嚴謹束縛的對象
-[DISLIKES_TRAIT] 遇到特質「不喜束縛」的對象。原因：使用者婉拒不喜歡過於嚴謹束縛的對象
-[DISLIKES_TRAIT] 遇到特質「探索性格」的對象。原因：使用者婉拒追求自我成長與新鮮體驗的探索型人格
-[DISLIKES_TRAIT] 遇到特質「探索性格」的對象。原因：使用者婉拒了追求自我成長與新鮮體驗的探索型人格
-[DISLIKES_TRAIT] 遇到特質「強行動力」的對象。原因：使用者婉拒了行動力極強且不喜歡嚴謹束縛的對象
-[DISLIKES_TRAIT] 遇到特質「正面衝突」的對象。原因：明確勾選不喜歡面對偏見與欺凌會直接正面回擊的特質
-[DISLIKES_TRAIT] 遇到特質「社交能量」的對象。原因：明確勾選不喜歡性格活潑且具備極高社交能量的對象
-[DISLIKES_TRAIT] 遇到特質「重視可靠與誠實」的對象。原因：使用者明確勾選此標籤作為婉拒原因，表示不喜歡對方過於強調可靠與誠實
-[DISLIKES_TRAIT] 遇到特質「週末去圖書館」的對象。原因：使用者明確勾選此標籤作為婉拒原因，表示不喜歡對方週末去圖書館的習慣
-[DISLIKES_TRAIT] 遇到特質「深思熟慮」的對象。原因：使用者明確勾選此標籤作為婉拒原因，表示不喜歡對方過於深思熟慮的風格
-✅ [Neo4j 全域法則] 連線驗證成功
-[TIMING][9001 /api/match] Neo4j global rules: 0.773s rules=3
-[TIMING][9001 /api/match] get_global_rules wrapper: 0.776s
-🌐 全域法則：
-- [相似型] 高盡責性且內向特質的人，在面對非正式或具幽默感的情境時，傾向與同樣具備高組織力且性格穩健的對象建立穩定連結。 (信心度：1)
-- [互補型] 內斂且具備高親和力的穩定型人格，在尋求具備特定目標的活動時，適合與外向、具備高行動力且能主導溝通的探索型人格配對，形成穩定的「執行-引領」互補關係。 (信心度：1)
-- [互補型] 外向且情感表達豐富的人，在面臨情感波動或展現脆弱性的情境時，適合與內斂、高責任感且具備穩定傾聽特質的人配對，以形成情感表達與承接的互補關係。 (信心度：1)
-🧠 媒婆正在閱讀卷宗與圖譜記憶、進行多維度思考中...
-[TIMING][MatchmakerAgent.match] before LLM system_chars=3184 payload_chars=3563 candidates=5
-[TIMING][MatchmakerAgent.match] LLM call: 37.038s output_chars=575
-[TIMING][MatchmakerAgent.match] total: 37.054s
-[TIMING][9001 /api/match] agent.match LLM wrapper: 37.055s raw_chars=575
-Agent matched ids: ['seed_user_05']
-[TIMING][9001 /api/match] parse/return matches: 0.001s
-[TIMING][9001 /api/match] total: 38.707s
-INFO:     127.0.0.1:47478 - "POST /api/match HTTP/1.1" 200 OK
-🌐 收到全域反思請求！正在從成功配對中歸納通用法則...
-🧠 媒婆正在從成功配對中歸納全域法則...
-🧠 全域反思原始回覆:
-{
-            "abstract_rule": "高開放性但低盡責性且偏好個人空間的人，在計畫戶外活動時，適合與高外向性、中等盡責性且果斷行動力強的人配對，藉由對方的主動性與社交能量促成活動執行",
-            "category": "互補型"
-        }
-✨ 歸納出法則：[互補型] 高開放性但低盡責性且偏好個人空間的人，在計畫戶外活動時，適合與高外向性、中等盡責性且果斷行動力強的人配對，藉由對方的主動性與社交能量促成活動執行
-✅ [Neo4j 全域法則寫入] 連線驗證成功！
-✅ 全域法則已寫入/更新：[互補型] 高開放性但低盡責性且偏好個人空間的人，在計畫戶外活動時，適合與高外向性、中等盡責性且果斷行動力強的人配對，藉由對方的主動性與社交能量促成活動執行
-INFO:     127.0.0.1:57669 - "POST /api/global_reflection HTTP/1.1" 200 OK
-INFO:     127.0.0.1:19738 - "POST /api/memory/observe HTTP/1.1" 404 Not Found
-INFO:     127.0.0.1:22909 - "POST /api/memory/observe HTTP/1.1" 404 Not Found
-INFO:     127.0.0.1:1899 - "POST /api/memory/observe HTTP/1.1" 404 Not Found
-INFO:     127.0.0.1:26234 - "POST /api/memory/action HTTP/1.1" 404 Not Found
-INFO:     127.0.0.1:63931 - "POST /api/memory/observe HTTP/1.1" 404 Not Found
-INFO:     127.0.0.1:37724 - "POST /api/memory/observe HTTP/1.1" 404 Not Found
-INFO:     127.0.0.1:57437 - "POST /api/memory/observe HTTP/1.1" 404 Not Found
-INFO:     127.0.0.1:41084 - "POST /api/memory/observe HTTP/1.1" 404 Not Found
-INFO:     127.0.0.1:31298 - "POST /api/memory/observe HTTP/1.1" 404 Not Found
-INFO:     127.0.0.1:41064 - "POST /api/memory/observe HTTP/1.1" 404 Not Found
-INFO:     127.0.0.1:29002 - "POST /api/memory/observe HTTP/1.1" 404 Not Found
-INFO:     127.0.0.1:24895 - "POST /api/memory/observe HTTP/1.1" 404 Not Found
-[TIMING][9001 /api/match] start target=demo_user candidates=5
-📥 收到 V1 系統傳來的配對請求！
-🧠 媒婆正在閱讀卷宗與圖譜記憶、進行多維度思考中...
-✅ [Neo4j 讀取] 連線驗證成功 (user=demo_user)
-[TIMING][9001 /api/match] Neo4j user memory: 0.956s lines=18
-[TIMING][9001 /api/match] get_user_graph_memory wrapper: 0.959s
-📂 提煉出的記憶：
-[DISLIKES_TRAIT] 遇到特質「創意探索」的對象。原因：使用者明確勾選此特質作為婉拒理由
-[DISLIKES_TRAIT] 遇到特質「愛打籃球」的對象。原因：使用者明確勾選此動態標籤作為婉拒理由，顯示目前不偏好以此為主要活動或互動需求的對象。
-[DISLIKES_TRAIT] 遇到特質「行動至上」的對象。原因：使用者明確勾選為婉拒理由，不偏好過度強調行動而可能忽略情感交流的作風。
-[DISLIKES_TRAIT] 遇到特質「極度嚴謹」的對象。原因：使用者明確勾選為婉拒理由，不偏好過於嚴肅、缺乏彈性或給人壓力的性格。
-[DISLIKES_TRAIT] 遇到特質「效率至上」的對象。原因：使用者明確勾選為婉拒理由，不偏好在人際互動中過度追求效率的模式。
-[DISLIKES_TRAIT] 遇到特質「過度自主」的對象。原因：使用者明確勾選為婉拒理由，可能偏好較多情感連結或相互依賴的關係。
-[DISLIKES_TRAIT] 遇到特質「籃球運動」的對象。原因：使用者明確勾選「近期有籃球運動需求」作為婉拒理由
-[DISLIKES_TRAIT] 遇到特質「極強行動力」的對象。原因：使用者婉拒行動力極強且不喜歡受嚴謹束縛的對象
-[DISLIKES_TRAIT] 遇到特質「不喜束縛」的對象。原因：使用者婉拒不喜歡過於嚴謹束縛的對象
-[DISLIKES_TRAIT] 遇到特質「探索性格」的對象。原因：使用者婉拒追求自我成長與新鮮體驗的探索型人格
-[DISLIKES_TRAIT] 遇到特質「探索性格」的對象。原因：使用者婉拒了追求自我成長與新鮮體驗的探索型人格
-[DISLIKES_TRAIT] 遇到特質「強行動力」的對象。原因：使用者婉拒了行動力極強且不喜歡嚴謹束縛的對象
-[DISLIKES_TRAIT] 遇到特質「正面衝突」的對象。原因：明確勾選不喜歡面對偏見與欺凌會直接正面回擊的特質
-[DISLIKES_TRAIT] 遇到特質「社交能量」的對象。原因：明確勾選不喜歡性格活潑且具備極高社交能量的對象
-[DISLIKES_TRAIT] 遇到特質「重視可靠與誠實」的對象。原因：使用者明確勾選此標籤作為婉拒原因，表示不喜歡對方過於強調可靠與誠實
-[DISLIKES_TRAIT] 遇到特質「週末去圖書館」的對象。原因：使用者明確勾選此標籤作為婉拒原因，表示不喜歡對方週末去圖書館的習慣
-[DISLIKES_TRAIT] 遇到特質「深思熟慮」的對象。原因：使用者明確勾選此標籤作為婉拒原因，表示不喜歡對方過於深思熟慮的風格
-[DISLIKES_TRAIT] 遇到特質「抽菸」的對象。原因：None
-✅ [Neo4j 全域法則] 連線驗證成功
-[TIMING][9001 /api/match] Neo4j global rules: 0.665s rules=3
-[TIMING][9001 /api/match] get_global_rules wrapper: 0.666s
-🌐 全域法則：
-- [相似型] 高盡責性且內向特質的人，在面對非正式或具幽默感的情境時，傾向與同樣具備高組織力且性格穩健的對象建立穩定連結。 (信心度：1)
-- [互補型] 內斂且具備高親和力的穩定型人格，在尋求具備特定目標的活動時，適合與外向、具備高行動力且能主導溝通的探索型人格配對，形成穩定的「執行-引領」互補關係。 (信心度：1)
-- [互補型] 外向且情感表達豐富的人，在面臨情感波動或展現脆弱性的情境時，適合與內斂、高責任感且具備穩定傾聽特質的人配對，以形成情感表達與承接的互補關係。 (信心度：1)
-🧠 媒婆正在閱讀卷宗與圖譜記憶、進行多維度思考中...
-[TIMING][MatchmakerAgent.match] before LLM system_chars=3221 payload_chars=3954 candidates=5
-[TIMING][MatchmakerAgent.match] LLM call: 41.770s output_chars=612
-[TIMING][MatchmakerAgent.match] total: 41.772s
-[TIMING][9001 /api/match] agent.match LLM wrapper: 41.772s raw_chars=612
-Agent matched ids: ['seed_user_08']
-[TIMING][9001 /api/match] parse/return matches: 0.000s
-[TIMING][9001 /api/match] total: 43.414s
-INFO:     127.0.0.1:64665 - "POST /api/match HTTP/1.1" 200 OK
-INFO:     127.0.0.1:23458 - "POST /api/memory/observe HTTP/1.1" 404 Not Found
-INFO:     127.0.0.1:36094 - "POST /api/memory/observe HTTP/1.1" 404 Not Found
-🌐 收到全域反思請求！正在從成功配對中歸納通用法則...
-🧠 媒婆正在從成功配對中歸納全域法則...
-🧠 全域反思原始回覆:
-{
-    "abstract_rule": "高神經質且需要大量私人空間與安靜環境的人，適合與低外向、高盡責性、高親和性的人配對，以提供穩定的陪伴與傾聽支持。",
-    "category": "互補型"
-}
-✨ 歸納出法則：[互補型] 高神經質且需要大量私人空間與安靜環境的人，適合與低外向、高盡責性、高親和性的人配對，以提供穩定的陪伴與傾聽支持。
-✅ [Neo4j 全域法則寫入] 連線驗證成功！
-✅ 全域法則已寫入/更新：[互補型] 高神經質且需要大量私人空間與安靜環境的人，適合與低外向、高盡責性、高親和性的人配對，以提供穩定的陪伴與傾聽支持。
-INFO:     127.0.0.1:44269 - "POST /api/global_reflection HTTP/1.1" 200 OK
-INFO:     127.0.0.1:3488 - "POST /api/memory/observe HTTP/1.1" 404 Not Found
-INFO:     127.0.0.1:38908 - "POST /api/memory/observe HTTP/1.1" 404 Not Found
-INFO:     127.0.0.1:3136 - "POST /api/memory/observe HTTP/1.1" 404 Not Found
-INFO:     127.0.0.1:59864 - "POST /api/memory/observe HTTP/1.1" 404 Not Found
-INFO:     127.0.0.1:1525 - "POST /api/memory/observe HTTP/1.1" 404 Not Found
-INFO:     127.0.0.1:65177 - "POST /api/memory/observe HTTP/1.1" 404 Not Found
-INFO:     127.0.0.1:17865 - "POST /api/memory/observe HTTP/1.1" 404 Not Found
-INFO:     127.0.0.1:17866 - "POST /api/memory/observe HTTP/1.1" 404 Not Found
-INFO:     127.0.0.1:29557 - "POST /api/memory/observe HTTP/1.1" 404 Not Found
-INFO:     127.0.0.1:24608 - "POST /api/memory/observe HTTP/1.1" 404 Not Found
-INFO:     127.0.0.1:34078 - "POST /api/memory/observe HTTP/1.1" 404 Not Found
-[TIMING][9001 /api/match] start target=demo_user candidates=5
-📥 收到 V1 系統傳來的配對請求！
-🧠 媒婆正在閱讀卷宗與圖譜記憶、進行多維度思考中...
-✅ [Neo4j 讀取] 連線驗證成功 (user=demo_user)
-[TIMING][9001 /api/match] Neo4j user memory: 0.887s lines=18
-[TIMING][9001 /api/match] get_user_graph_memory wrapper: 0.889s
-📂 提煉出的記憶：
-[DISLIKES_TRAIT] 遇到特質「創意探索」的對象。原因：使用者明確勾選此特質作為婉拒理由
-[DISLIKES_TRAIT] 遇到特質「愛打籃球」的對象。原因：使用者明確勾選此動態標籤作為婉拒理由，顯示目前不偏好以此為主要活動或互動需求的對象。
-[DISLIKES_TRAIT] 遇到特質「行動至上」的對象。原因：使用者明確勾選為婉拒理由，不偏好過度強調行動而可能忽略情感交流的作風。
-[DISLIKES_TRAIT] 遇到特質「極度嚴謹」的對象。原因：使用者明確勾選為婉拒理由，不偏好過於嚴肅、缺乏彈性或給人壓力的性格。
-[DISLIKES_TRAIT] 遇到特質「效率至上」的對象。原因：使用者明確勾選為婉拒理由，不偏好在人際互動中過度追求效率的模式。
-[DISLIKES_TRAIT] 遇到特質「過度自主」的對象。原因：使用者明確勾選為婉拒理由，可能偏好較多情感連結或相互依賴的關係。
-[DISLIKES_TRAIT] 遇到特質「籃球運動」的對象。原因：使用者明確勾選「近期有籃球運動需求」作為婉拒理由
-[DISLIKES_TRAIT] 遇到特質「極強行動力」的對象。原因：使用者婉拒行動力極強且不喜歡受嚴謹束縛的對象
-[DISLIKES_TRAIT] 遇到特質「不喜束縛」的對象。原因：使用者婉拒不喜歡過於嚴謹束縛的對象
-[DISLIKES_TRAIT] 遇到特質「探索性格」的對象。原因：使用者婉拒追求自我成長與新鮮體驗的探索型人格
-[DISLIKES_TRAIT] 遇到特質「探索性格」的對象。原因：使用者婉拒了追求自我成長與新鮮體驗的探索型人格
-[DISLIKES_TRAIT] 遇到特質「強行動力」的對象。原因：使用者婉拒了行動力極強且不喜歡嚴謹束縛的對象
-[DISLIKES_TRAIT] 遇到特質「正面衝突」的對象。原因：明確勾選不喜歡面對偏見與欺凌會直接正面回擊的特質
-[DISLIKES_TRAIT] 遇到特質「社交能量」的對象。原因：明確勾選不喜歡性格活潑且具備極高社交能量的對象
-[DISLIKES_TRAIT] 遇到特質「重視可靠與誠實」的對象。原因：使用者明確勾選此標籤作為婉拒原因，表示不喜歡對方過於強調可靠與誠實
-[DISLIKES_TRAIT] 遇到特質「週末去圖書館」的對象。原因：使用者明確勾選此標籤作為婉拒原因，表示不喜歡對方週末去圖書館的習慣
-[DISLIKES_TRAIT] 遇到特質「深思熟慮」的對象。原因：使用者明確勾選此標籤作為婉拒原因，表示不喜歡對方過於深思熟慮的風格
-[DISLIKES_TRAIT] 遇到特質「抽菸」的對象。原因：None
-✅ [Neo4j 全域法則] 連線驗證成功
-[TIMING][9001 /api/match] Neo4j global rules: 0.673s rules=3
-[TIMING][9001 /api/match] get_global_rules wrapper: 0.676s
-🌐 全域法則：
-- [相似型] 高盡責性且內向特質的人，在面對非正式或具幽默感的情境時，傾向與同樣具備高組織力且性格穩健的對象建立穩定連結。 (信心度：1)
-- [互補型] 內斂且具備高親和力的穩定型人格，在尋求具備特定目標的活動時，適合與外向、具備高行動力且能主導溝通的探索型人格配對，形成穩定的「執行-引領」互補關係。 (信心度：1)
-- [互補型] 外向且情感表達豐富的人，在面臨情感波動或展現脆弱性的情境時，適合與內斂、高責任感且具備穩定傾聽特質的人配對，以形成情感表達與承接的互補關係。 (信心度：1)
-🧠 媒婆正在閱讀卷宗與圖譜記憶、進行多維度思考中...
-[TIMING][MatchmakerAgent.match] before LLM system_chars=3221 payload_chars=4134 candidates=5
-[TIMING][MatchmakerAgent.match] LLM call: 197.637s output_chars=547
-[TIMING][MatchmakerAgent.match] total: 197.651s
-[TIMING][9001 /api/match] agent.match LLM wrapper: 197.651s raw_chars=547
-Agent matched ids: ['seed_user_01']
-[TIMING][9001 /api/match] parse/return matches: 0.000s
-[TIMING][9001 /api/match] total: 199.234s
-INFO:     127.0.0.1:38258 - "POST /api/match HTTP/1.1" 200 OK
-INFO:     127.0.0.1:26257 - "POST /api/memory/observe HTTP/1.1" 404 Not Found
-INFO:     127.0.0.1:36278 - "POST /api/memory/observe HTTP/1.1" 404 Not Found
-INFO:     127.0.0.1:33642 - "POST /api/memory/observe HTTP/1.1" 404 Not Found
-INFO:     127.0.0.1:30017 - "POST /api/memory/observe HTTP/1.1" 404 Not Found
-INFO:     127.0.0.1:44662 - "POST /api/memory/observe HTTP/1.1" 404 Not Found
-INFO:     127.0.0.1:51431 - "POST /api/memory/observe HTTP/1.1" 404 Not Found
-INFO:     127.0.0.1:53150 - "POST /api/memory/observe HTTP/1.1" 404 Not Found
-INFO:     127.0.0.1:40989 - "POST /api/memory/observe HTTP/1.1" 404 Not Found
-INFO:     127.0.0.1:48297 - "POST /api/memory/observe HTTP/1.1" 404 Not Found
-INFO:     127.0.0.1:59520 - "POST /api/memory/observe HTTP/1.1" 404 Not Found
-INFO:     127.0.0.1:5856 - "POST /api/memory/observe HTTP/1.1" 404 Not Found
-INFO:     127.0.0.1:5857 - "POST /api/memory/observe HTTP/1.1" 404 Not Found
-INFO:     127.0.0.1:26907 - "POST /api/memory/observe HTTP/1.1" 404 Not Found
-INFO:     127.0.0.1:54239 - "POST /api/memory/observe HTTP/1.1" 404 Not Found
-INFO:     127.0.0.1:2055 - "POST /api/memory/observe HTTP/1.1" 404 Not Found
-INFO:     127.0.0.1:24339 - "POST /api/memory/observe HTTP/1.1" 404 Not Found
-INFO:     127.0.0.1:45541 - "POST /api/memory/observe HTTP/1.1" 404 Not Found
-INFO:     127.0.0.1:4987 - "POST /api/memory/observe HTTP/1.1" 404 Not Found
-INFO:     127.0.0.1:10125 - "POST /api/memory/observe HTTP/1.1" 404 Not Found
-INFO:     127.0.0.1:40325 - "POST /api/memory/action HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:9678 - "GET /openapi.json HTTP/1.1" 200 OK
 [TIMING][9001 /api/match] start target=seed_user_02 candidates=5
 📥 收到 V1 系統傳來的配對請求！
 🧠 媒婆正在閱讀卷宗與圖譜記憶、進行多維度思考中...
 ✅ [Neo4j 讀取] 連線驗證成功 (user=seed_user_02)
-[TIMING][9001 /api/match] Neo4j user memory: 0.637s lines=1
-[TIMING][9001 /api/match] get_user_graph_memory wrapper: 0.638s
+[TIMING][9001 /api/match] Neo4j user memory: 1.172s lines=3
+[TIMING][9001 /api/match] get_user_graph_memory wrapper: 1.173s
 📂 提煉出的記憶：
-[LIKES_TRAIT] 遇到特質「日本旅遊」的對象。原因：None
+[DISLIKES_TRAIT] 遇到特質「抽菸」的對象。原因：
+[LIKES_TRAIT] 遇到特質「喜好潮牌」的對象。原因：
+[LIKES_TRAIT] 遇到特質「喜歡狗」的對象。原因：
+✅ [Neo4j 讀取] 連線驗證成功 (user=seed_user_07)
+[TIMING][9001 /api/match] Neo4j user memory: 0.662s lines=4
+✅ [Neo4j 讀取] 連線驗證成功 (user=seed_user_01)
+[TIMING][9001 /api/match] Neo4j user memory: 0.613s lines=0
+✅ [Neo4j 讀取] 連線驗證成功 (user=seed_user_10)
+[TIMING][9001 /api/match] Neo4j user memory: 0.673s lines=5
+✅ [Neo4j 讀取] 連線驗證成功 (user=seed_user_08)
+[TIMING][9001 /api/match] Neo4j user memory: 0.650s lines=1
+✅ [Neo4j 讀取] 連線驗證成功 (user=seed_user_04)
+[TIMING][9001 /api/match] Neo4j user memory: 0.622s lines=4
 ✅ [Neo4j 全域法則] 連線驗證成功
-[TIMING][9001 /api/match] Neo4j global rules: 0.611s rules=3
-[TIMING][9001 /api/match] get_global_rules wrapper: 0.612s
+[TIMING][9001 /api/match] Neo4j global rules: 0.704s rules=3
+[TIMING][9001 /api/match] get_global_rules wrapper: 0.704s
 🌐 全域法則：
 - [相似型] 高盡責性且內向特質的人，在面對非正式或具幽默感的情境時，傾向與同樣具備高組織力且性格穩健的對象建立穩定連結。 (信心度：1)
 - [互補型] 內斂且具備高親和力的穩定型人格，在尋求具備特定目標的活動時，適合與外向、具備高行動力且能主導溝通的探索型人格配對，形成穩定的「執行-引領」互補關係。 (信心度：1)
 - [互補型] 外向且情感表達豐富的人，在面臨情感波動或展現脆弱性的情境時，適合與內斂、高責任感且具備穩定傾聽特質的人配對，以形成情感表達與承接的互補關係。 (信心度：1)
 🧠 媒婆正在閱讀卷宗與圖譜記憶、進行多維度思考中...
-[TIMING][MatchmakerAgent.match] before LLM system_chars=2304 payload_chars=4084 candidates=5
-[TIMING][MatchmakerAgent.match] LLM call: 15.503s output_chars=579
-[TIMING][MatchmakerAgent.match] total: 15.515s
-[TIMING][9001 /api/match] agent.match LLM wrapper: 15.516s raw_chars=579
+[TIMING][MatchmakerAgent.match] before LLM system_chars=2950 payload_chars=4315 candidates=5
+[TIMING][MatchmakerAgent.match] LLM call: 15.094s output_chars=998
+[TIMING][MatchmakerAgent.match] total: 15.095s
+[TIMING][9001 /api/match] agent.match LLM wrapper: 15.096s raw_chars=998
 Agent matched ids: ['seed_user_07']
 [TIMING][9001 /api/match] parse/return matches: 0.001s
-[TIMING][9001 /api/match] total: 16.770s
-INFO:     127.0.0.1:40329 - "POST /api/match HTTP/1.1" 200 OK
-INFO:     127.0.0.1:4533 - "POST /api/memory/observe HTTP/1.1" 404 Not Found
-INFO:     127.0.0.1:4537 - "POST /api/memory/observe HTTP/1.1" 404 Not Found
+[TIMING][9001 /api/match] total: 20.199s
+INFO:     127.0.0.1:32853 - "POST /api/match HTTP/1.1" 200 OK
+INFO:     127.0.0.1:26202 - "POST /api/memory/observe HTTP/1.1" 200 OK
+INFO:     127.0.0.1:26203 - "POST /api/memory/observe HTTP/1.1" 200 OK
+INFO:     127.0.0.1:21018 - "POST /api/memory/observe HTTP/1.1" 200 OK
+INFO:     127.0.0.1:16133 - "POST /api/memory/observe HTTP/1.1" 200 OK
 🌐 收到全域反思請求！正在從成功配對中歸納通用法則...
 🧠 媒婆正在從成功配對中歸納全域法則...
 🧠 全域反思原始回覆:
 {
-    "abstract_rule": "高开放性与高宜人性的人，在寻求新鲜体验时，适合与高尽责性、低外向性的人配对，因为前者提供探索的动力与包容，后者提供稳定的规划与安静的环境，形成相互补充的平衡。",
+    "abstract_rule": "高神經質、情感強烈且追求真實的發起者，在尋求刺激與陪伴的情境下，適合與高嚴謹性、低神經質、偏好穩定環境的接受者配對，以形成情緒穩定與行動支持的互補",
     "category": "互補型"
 }
-✨ 歸納出法則：[互補型] 高开放性与高宜人性的人，在寻求新鲜体验时，适合与高尽责性、低外向性的人配对，因为前者提供探索的动力与包容，后者提供稳定的规划与安静的环境，形成相互补充的平衡。
+✨ 歸納出法則：[互補型] 高神經質、情感強烈且追求真實的發起者，在尋求刺激與陪伴的情境下，適合與高嚴謹性、低神經質、偏好穩定環境的接受者配對，以形成情緒穩定與行動支持的互補
 ✅ [Neo4j 全域法則寫入] 連線驗證成功！
-✅ 全域法則已寫入/更新：[互補型] 高开放性与高宜人性的人，在寻求新鲜体验时，适合与高尽责性、低外向性的人配对，因为前者提供探索的动力与包容，后者提供稳定的规划与安静的环境，形成相互补充的平衡。
-INFO:     127.0.0.1:47273 - "POST /api/global_reflection HTTP/1.1" 200 OK
-INFO:     127.0.0.1:13217 - "POST /api/memory/observe HTTP/1.1" 404 Not Found
-INFO:     127.0.0.1:10647 - "POST /api/memory/observe HTTP/1.1" 404 Not Found
-INFO:     127.0.0.1:57538 - "POST /api/memory/observe HTTP/1.1" 404 Not Found
-INFO:     127.0.0.1:53722 - "POST /api/memory/observe HTTP/1.1" 404 Not Found
-INFO:     127.0.0.1:40073 - "POST /api/memory/observe HTTP/1.1" 404 Not Found
-INFO:     127.0.0.1:57347 - "POST /api/memory/observe HTTP/1.1" 404 Not Found
-INFO:     127.0.0.1:52902 - "POST /api/memory/observe HTTP/1.1" 404 Not Found
-INFO:     127.0.0.1:1976 - "POST /api/memory/observe HTTP/1.1" 404 Not Found
-INFO:     127.0.0.1:26821 - "POST /api/memory/observe HTTP/1.1" 404 Not Found
-INFO:     127.0.0.1:39804 - "POST /api/memory/observe HTTP/1.1" 404 Not Found
-INFO:     127.0.0.1:10196 - "POST /api/memory/observe HTTP/1.1" 404 Not Found
-INFO:     127.0.0.1:58071 - "POST /api/memory/observe HTTP/1.1" 404 Not Found
-INFO:     127.0.0.1:4174 - "POST /api/memory/observe HTTP/1.1" 404 Not Found
-INFO:     127.0.0.1:63617 - "POST /api/memory/observe HTTP/1.1" 404 Not Found
-INFO:     127.0.0.1:21856 - "POST /api/memory/observe HTTP/1.1" 404 Not Found
-INFO:     127.0.0.1:15632 - "POST /api/memory/observe HTTP/1.1" 404 Not Found
-INFO:     127.0.0.1:15634 - "POST /api/memory/observe HTTP/1.1" 404 Not Found
-INFO:     127.0.0.1:40974 - "POST /api/memory/observe HTTP/1.1" 404 Not Found
-INFO:     127.0.0.1:37161 - "POST /api/memory/observe HTTP/1.1" 404 Not Found
-INFO:     127.0.0.1:31061 - "POST /api/memory/observe HTTP/1.1" 404 Not Found
-INFO:     127.0.0.1:49396 - "POST /api/memory/observe HTTP/1.1" 404 Not Found
-INFO:     127.0.0.1:61098 - "POST /api/memory/observe HTTP/1.1" 404 Not Found
-INFO:     127.0.0.1:4468 - "POST /api/memory/observe HTTP/1.1" 404 Not Found
-INFO:     127.0.0.1:5803 - "POST /api/memory/observe HTTP/1.1" 404 Not Found
-INFO:     127.0.0.1:49225 - "POST /api/memory/observe HTTP/1.1" 404 Not Found
-INFO:     127.0.0.1:39806 - "POST /api/memory/observe HTTP/1.1" 404 Not Found
+✅ 全域法則已寫入/更新：[互補型] 高神經質、情感強烈且追求真實的發起者，在尋求刺激與陪伴的情境下，適合與高嚴謹性、低神經質、偏好穩定環境的接受者配對，以形成情緒穩定與行動支持的互補
+INFO:     127.0.0.1:6161 - "POST /api/global_reflection HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60181 - "POST /api/memory/observe HTTP/1.1" 200 OK
+INFO:     127.0.0.1:37100 - "POST /api/memory/observe HTTP/1.1" 200 OK
+INFO:     127.0.0.1:16319 - "POST /api/memory/observe HTTP/1.1" 200 OK
+INFO:     127.0.0.1:11764 - "POST /api/memory/observe HTTP/1.1" 200 OK
+INFO:     127.0.0.1:28246 - "POST /api/memory/observe HTTP/1.1" 200 OK
+INFO:     127.0.0.1:26024 - "POST /api/memory/observe HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61726 - "POST /api/memory/observe HTTP/1.1" 200 OK
+INFO:     127.0.0.1:2453 - "POST /api/memory/observe HTTP/1.1" 200 OK
+📥 媒婆收到回報：seed_user_02 對 seed_user_07 選擇了 decline
+🤔 媒婆正在翻閱歷史紀錄，進行深度反思...
+📋 [Debug] user_id=seed_user_02, history_count=1, explicit_reasons=[]
+📋 [Debug] latest_explicit_reasons 傳入 LLM: []
+🧠 [Debug] generate_graph_reflection called with explicit_reasons=[]
+🧠 大腦正在將流水帳轉換為知識圖譜結構...
+🧠 大腦萃取出的原始 JSON:
+{
+    "relationships": [
+        {
+            "user_id": "user_placeholder",
+            "relation_type": "DISLIKES_TRAIT",
+            "trait": "嚴謹",
+            "reason": "拒絕配對，不喜歡對方嚴謹踏實的作風"
+        },
+        {
+            "user_id": "user_placeholder",
+            "relation_type": "DISLIKES_TRAIT",
+            "trait": "穩健",
+            "reason": "拒絕配對，不喜歡對方作風穩健的性格"
+        },
+        {
+            "user_id": "user_placeholder",
+            "relation_type": "DISLIKES_TRAIT",
+            "trait": "安靜內向",
+            "reason": "拒絕配對，不喜歡對方偏好安靜的環境"
+        }
+    ]
+}
+
+🔍 [Debug] 正在檢查 Neo4j 連線金鑰...
+   - URI 狀態: neo4j+s://378c3ab4.databases.neo4j.io
+   - USERNAME 狀態: 378c3ab4
+   - DATABASE 狀態: 378c3ab4
+   - ✅ PASSWORD 讀取成功，字元長度: 43
+==================================
+
+✅ [Neo4j 寫入] 連線驗證成功！
+   🔹 準備寫入: user_id=seed_user_02, trait=嚴謹, rel_type=DISLIKES_TRAIT, reason=拒絕配對，不喜歡對方嚴謹踏實的作風
+✨ 成功在資料庫畫出泡泡：(seed_user_02) -[DISLIKES_TRAIT]-> (嚴謹)
+   🔹 準備寫入: user_id=seed_user_02, trait=穩健, rel_type=DISLIKES_TRAIT, reason=拒絕配對，不喜歡對方作風穩健的性格
+✨ 成功在資料庫畫出泡泡：(seed_user_02) -[DISLIKES_TRAIT]-> (穩健)
+   🔹 準備寫入: user_id=seed_user_02, trait=安靜內向, rel_type=DISLIKES_TRAIT, reason=拒絕配對，不喜歡對方偏好安靜的環境
+✨ 成功在資料庫畫出泡泡：(seed_user_02) -[DISLIKES_TRAIT]-> (安靜內向)
+INFO:     127.0.0.1:57483 - "POST /api/feedback HTTP/1.1" 200 OK
+[TIMING][9001 /api/match] start target=seed_user_02 candidates=5
+📥 收到 V1 系統傳來的配對請求！
+🧠 媒婆正在閱讀卷宗與圖譜記憶、進行多維度思考中...
+✅ [Neo4j 讀取] 連線驗證成功 (user=seed_user_02)
+[TIMING][9001 /api/match] Neo4j user memory: 0.664s lines=6
+[TIMING][9001 /api/match] get_user_graph_memory wrapper: 0.665s
+📂 提煉出的記憶：
+[DISLIKES_TRAIT] 遇到特質「抽菸」的對象。原因：
+[LIKES_TRAIT] 遇到特質「喜好潮牌」的對象。原因：
+[LIKES_TRAIT] 遇到特質「喜歡狗」的對象。原因：
+[DISLIKES_TRAIT] 遇到特質「嚴謹」的對象。原因：拒絕配對，不喜歡對方嚴謹踏實的作風
+[DISLIKES_TRAIT] 遇到特質「穩健」的對象。原因：拒絕配對，不喜歡對方作風穩健的性格
+[DISLIKES_TRAIT] 遇到特質「安靜內向」的對象。原因：拒絕配對，不喜歡對方偏好安靜的環境
+✅ [Neo4j 讀取] 連線驗證成功 (user=seed_user_01)
+[TIMING][9001 /api/match] Neo4j user memory: 0.653s lines=0
+✅ [Neo4j 讀取] 連線驗證成功 (user=seed_user_10)
+[TIMING][9001 /api/match] Neo4j user memory: 0.701s lines=5
+✅ [Neo4j 讀取] 連線驗證成功 (user=seed_user_08)
+[TIMING][9001 /api/match] Neo4j user memory: 0.644s lines=1
+✅ [Neo4j 讀取] 連線驗證成功 (user=seed_user_04)
+[TIMING][9001 /api/match] Neo4j user memory: 0.655s lines=4
+✅ [Neo4j 讀取] 連線驗證成功 (user=seed_user_09)
+[TIMING][9001 /api/match] Neo4j user memory: 0.680s lines=0
+✅ [Neo4j 全域法則] 連線驗證成功
+[TIMING][9001 /api/match] Neo4j global rules: 0.653s rules=3
+[TIMING][9001 /api/match] get_global_rules wrapper: 0.653s
+🌐 全域法則：
+- [相似型] 高盡責性且內向特質的人，在面對非正式或具幽默感的情境時，傾向與同樣具備高組織力且性格穩健的對象建立穩定連結。 (信心度：1)
+- [互補型] 內斂且具備高親和力的穩定型人格，在尋求具備特定目標的活動時，適合與外向、具備高行動力且能主導溝通的探索型人格配對，形成穩定的「執行-引領」互補關係。 (信心度：1)
+- [互補型] 外向且情感表達豐富的人，在面臨情感波動或展現脆弱性的情境時，適合與內斂、高責任感且具備穩定傾聽特質的人配對，以形成情感表達與承接的互補關係。 (信心度：1)
+🧠 媒婆正在閱讀卷宗與圖譜記憶、進行多維度思考中...
+[TIMING][MatchmakerAgent.match] before LLM system_chars=3102 payload_chars=3717 candidates=5
+[TIMING][MatchmakerAgent.match] LLM call: 62.795s output_chars=1020
+[TIMING][MatchmakerAgent.match] total: 62.795s
+[TIMING][9001 /api/match] agent.match LLM wrapper: 62.795s raw_chars=1020
+Agent matched ids: ['seed_user_08']
+[TIMING][9001 /api/match] parse/return matches: 0.001s
+[TIMING][9001 /api/match] total: 67.452s
+INFO:     127.0.0.1:48271 - "POST /api/match HTTP/1.1" 200 OK
+INFO:     127.0.0.1:30422 - "POST /api/memory/observe HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43086 - "POST /api/memory/observe HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43087 - "POST /api/memory/observe HTTP/1.1" 200 OK
+INFO:     127.0.0.1:20304 - "POST /api/memory/observe HTTP/1.1" 200 OK
+INFO:     127.0.0.1:17175 - "POST /api/memory/observe HTTP/1.1" 200 OK
+INFO:     127.0.0.1:20679 - "POST /api/memory/observe HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54275 - "POST /api/memory/observe HTTP/1.1" 200 OK
+INFO:     127.0.0.1:19373 - "POST /api/memory/observe HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46834 - "POST /api/memory/observe HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46836 - "POST /api/memory/observe HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46838 - "POST /api/memory/observe HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46840 - "POST /api/memory/observe HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46841 - "POST /api/memory/observe HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61457 - "POST /api/memory/observe HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61459 - "POST /api/memory/observe HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63453 - "POST /api/memory/observe HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48672 - "POST /api/memory/observe HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54193 - "POST /api/memory/observe HTTP/1.1" 200 OK
+INFO:     127.0.0.1:31222 - "POST /api/memory/observe HTTP/1.1" 200 OK
+INFO:     127.0.0.1:17937 - "POST /api/memory/observe HTTP/1.1" 200 OK
+[TIMING][9001 /api/match] start target=demo_user candidates=5
+📥 收到 V1 系統傳來的配對請求！
+🧠 媒婆正在閱讀卷宗與圖譜記憶、進行多維度思考中...
+✅ [Neo4j 讀取] 連線驗證成功 (user=demo_user)
+[TIMING][9001 /api/match] Neo4j user memory: 1.016s lines=19
+[TIMING][9001 /api/match] get_user_graph_memory wrapper: 1.016s
+📂 提煉出的記憶：
+[DISLIKES_TRAIT] 遇到特質「創意探索」的對象。原因：使用者明確勾選此特質作為婉拒理由
+[DISLIKES_TRAIT] 遇到特質「愛打籃球」的對象。原因：使用者明確勾選此動態標籤作為婉拒理由，顯示目前不偏好以此為主要活動或互動需求的對象。
+[DISLIKES_TRAIT] 遇到特質「行動至上」的對象。原因：使用者明確勾選為婉拒理由，不偏好過度強調行動而可能忽略情感交流的作風。
+[DISLIKES_TRAIT] 遇到特質「極度嚴謹」的對象。原因：使用者明確勾選為婉拒理由，不偏好過於嚴肅、缺乏彈性或給人壓力的性格。
+[DISLIKES_TRAIT] 遇到特質「效率至上」的對象。原因：使用者明確勾選為婉拒理由，不偏好在人際互動中過度追求效率的模式。
+[DISLIKES_TRAIT] 遇到特質「過度自主」的對象。原因：使用者明確勾選為婉拒理由，可能偏好較多情感連結或相互依賴的關係。
+[DISLIKES_TRAIT] 遇到特質「籃球運動」的對象。原因：使用者明確勾選「近期有籃球運動需求」作為婉拒理由
+[DISLIKES_TRAIT] 遇到特質「極強行動力」的對象。原因：使用者婉拒行動力極強且不喜歡受嚴謹束縛的對象
+[DISLIKES_TRAIT] 遇到特質「不喜束縛」的對象。原因：使用者婉拒不喜歡過於嚴謹束縛的對象
+[DISLIKES_TRAIT] 遇到特質「探索性格」的對象。原因：使用者婉拒追求自我成長與新鮮體驗的探索型人格
+[DISLIKES_TRAIT] 遇到特質「探索性格」的對象。原因：使用者婉拒了追求自我成長與新鮮體驗的探索型人格
+[DISLIKES_TRAIT] 遇到特質「強行動力」的對象。原因：使用者婉拒了行動力極強且不喜歡嚴謹束縛的對象
+[DISLIKES_TRAIT] 遇到特質「正面衝突」的對象。原因：明確勾選不喜歡面對偏見與欺凌會直接正面回擊的特質
+[DISLIKES_TRAIT] 遇到特質「社交能量」的對象。原因：明確勾選不喜歡性格活潑且具備極高社交能量的對象
+[DISLIKES_TRAIT] 遇到特質「重視可靠與誠實」的對象。原因：使用者明確勾選此標籤作為婉拒原因，表示不喜歡對方過於強調可靠與誠實
+[DISLIKES_TRAIT] 遇到特質「週末去圖書館」的對象。原因：使用者明確勾選此標籤作為婉拒原因，表示不喜歡對方週末去圖書館的習慣
+[DISLIKES_TRAIT] 遇到特質「深思熟慮」的對象。原因：使用者明確勾選此標籤作為婉拒原因，表示不喜歡對方過於深思熟慮的風格
+[LIKES_TRAIT] 遇到特質「喜歡帥哥」的對象。原因：
+[DISLIKES_TRAIT] 遇到特質「討厭抽菸」的對象。原因：
+✅ [Neo4j 讀取] 連線驗證成功 (user=seed_user_09)
+[TIMING][9001 /api/match] Neo4j user memory: 0.641s lines=0
+✅ [Neo4j 讀取] 連線驗證成功 (user=seed_user_05)
+[TIMING][9001 /api/match] Neo4j user memory: 0.630s lines=0
+✅ [Neo4j 讀取] 連線驗證成功 (user=seed_user_04)
+[TIMING][9001 /api/match] Neo4j user memory: 0.606s lines=4
+✅ [Neo4j 讀取] 連線驗證成功 (user=seed_user_03)
+[TIMING][9001 /api/match] Neo4j user memory: 0.616s lines=2
+✅ [Neo4j 讀取] 連線驗證成功 (user=seed_user_08)
+[TIMING][9001 /api/match] Neo4j user memory: 0.635s lines=1
+✅ [Neo4j 全域法則] 連線驗證成功
+[TIMING][9001 /api/match] Neo4j global rules: 0.674s rules=3
+[TIMING][9001 /api/match] get_global_rules wrapper: 0.675s
+🌐 全域法則：
+- [相似型] 高盡責性且內向特質的人，在面對非正式或具幽默感的情境時，傾向與同樣具備高組織力且性格穩健的對象建立穩定連結。 (信心度：1)
+- [互補型] 內斂且具備高親和力的穩定型人格，在尋求具備特定目標的活動時，適合與外向、具備高行動力且能主導溝通的探索型人格配對，形成穩定的「執行-引領」互補關係。 (信心度：1)
+- [互補型] 外向且情感表達豐富的人，在面臨情感波動或展現脆弱性的情境時，適合與內斂、高責任感且具備穩定傾聽特質的人配對，以形成情感表達與承接的互補關係。 (信心度：1)
+🧠 媒婆正在閱讀卷宗與圖譜記憶、進行多維度思考中...
+[TIMING][MatchmakerAgent.match] before LLM system_chars=3848 payload_chars=4521 candidates=5
+[TIMING][MatchmakerAgent.match] LLM call: 45.041s output_chars=940
+[TIMING][MatchmakerAgent.match] total: 45.046s
+[TIMING][9001 /api/match] agent.match LLM wrapper: 45.046s raw_chars=940
+Agent matched ids: ['seed_user_04']
+[TIMING][9001 /api/match] parse/return matches: 0.000s
+[TIMING][9001 /api/match] total: 49.866s
+INFO:     127.0.0.1:60916 - "POST /api/match HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45376 - "POST /api/memory/observe HTTP/1.1" 200 OK
+[TIMING][9001 /api/match] start target=seed_user_01 candidates=5
+📥 收到 V1 系統傳來的配對請求！
+🧠 媒婆正在閱讀卷宗與圖譜記憶、進行多維度思考中...
+✅ [Neo4j 讀取] 連線驗證成功 (user=seed_user_01)
+[TIMING][9001 /api/match] Neo4j user memory: 0.679s lines=0
+[TIMING][9001 /api/match] get_user_graph_memory wrapper: 0.679s
+📂 提煉出的記憶：
+目前圖庫中尚無該使用者的偏好或地雷紀錄。
+✅ [Neo4j 讀取] 連線驗證成功 (user=seed_user_08)
+[TIMING][9001 /api/match] Neo4j user memory: 0.654s lines=1
+✅ [Neo4j 讀取] 連線驗證成功 (user=seed_user_03)
+[TIMING][9001 /api/match] Neo4j user memory: 0.640s lines=2
+✅ [Neo4j 讀取] 連線驗證成功 (user=seed_user_02)
+[TIMING][9001 /api/match] Neo4j user memory: 0.644s lines=6
+✅ [Neo4j 讀取] 連線驗證成功 (user=seed_user_06)
+[TIMING][9001 /api/match] Neo4j user memory: 0.636s lines=3
+✅ [Neo4j 讀取] 連線驗證成功 (user=seed_user_04)
+[TIMING][9001 /api/match] Neo4j user memory: 0.665s lines=4
+[TIMING][9001 /api/match] Neo4j global rules failed after 0.180s
+Neo4j global rules failed: Unable to retrieve routing information
+[TIMING][9001 /api/match] get_global_rules wrapper: 0.180s
+🧠 媒婆正在閱讀卷宗與圖譜記憶、進行多維度思考中...
+[TIMING][MatchmakerAgent.match] before LLM system_chars=2639 payload_chars=3955 candidates=5
+[TIMING][MatchmakerAgent.match] LLM call: 22.168s output_chars=952
+[TIMING][MatchmakerAgent.match] total: 22.169s
+[TIMING][9001 /api/match] agent.match LLM wrapper: 22.169s raw_chars=952
+Agent matched ids: ['seed_user_08']
+[TIMING][9001 /api/match] parse/return matches: 0.000s
+[TIMING][9001 /api/match] total: 26.271s
+INFO:     127.0.0.1:54447 - "POST /api/match HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54448 - "POST /api/memory/observe HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49150 - "POST /api/memory/observe HTTP/1.1" 200 OK
+INFO:     127.0.0.1:15587 - "POST /api/memory/observe HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54413 - "POST /api/memory/observe HTTP/1.1" 200 OK
+🌐 收到全域反思請求！正在從成功配對中歸納通用法則...
+🧠 媒婆正在從成功配對中歸納全域法則...
+🧠 全域反思原始回覆:
+{
+    "abstract_rule": "追求即興冒險的行動派適合與謹慎務實的規劃者配對，兩者能互補短長、平衡風險與樂趣",
+    "category": "互補型"
+}
+✨ 歸納出法則：[互補型] 追求即興冒險的行動派適合與謹慎務實的規劃者配對，兩者能互補短長、平衡風險與樂趣
+✅ [Neo4j 全域法則寫入] 連線驗證成功！
+✅ 全域法則已寫入/更新：[互補型] 追求即興冒險的行動派適合與謹慎務實的規劃者配對，兩者能互補短長、平衡風險與樂趣
+INFO:     127.0.0.1:17098 - "POST /api/global_reflection HTTP/1.1" 200 OK
+INFO:     127.0.0.1:17100 - "POST /api/memory/observe HTTP/1.1" 200 OK
+INFO:     127.0.0.1:28870 - "POST /api/memory/observe HTTP/1.1" 200 OK
+INFO:     127.0.0.1:5841 - "POST /api/memory/observe HTTP/1.1" 200 OK
+INFO:     127.0.0.1:14781 - "POST /api/memory/observe HTTP/1.1" 200 OK
+[TIMING][9001 /api/match] start target=demo_user candidates=5
+📥 收到 V1 系統傳來的配對請求！
+🧠 媒婆正在閱讀卷宗與圖譜記憶、進行多維度思考中...
+✅ [Neo4j 讀取] 連線驗證成功 (user=demo_user)
+[TIMING][9001 /api/match] Neo4j user memory: 0.976s lines=19
+[TIMING][9001 /api/match] get_user_graph_memory wrapper: 0.977s
+📂 提煉出的記憶：
+[DISLIKES_TRAIT] 遇到特質「創意探索」的對象。原因：使用者明確勾選此特質作為婉拒理由
+[DISLIKES_TRAIT] 遇到特質「愛打籃球」的對象。原因：使用者明確勾選此動態標籤作為婉拒理由，顯示目前不偏好以此為主要活動或互動需求的對象。
+[DISLIKES_TRAIT] 遇到特質「行動至上」的對象。原因：使用者明確勾選為婉拒理由，不偏好過度強調行動而可能忽略情感交流的作風。
+[DISLIKES_TRAIT] 遇到特質「極度嚴謹」的對象。原因：使用者明確勾選為婉拒理由，不偏好過於嚴肅、缺乏彈性或給人壓力的性格。
+[DISLIKES_TRAIT] 遇到特質「效率至上」的對象。原因：使用者明確勾選為婉拒理由，不偏好在人際互動中過度追求效率的模式。
+[DISLIKES_TRAIT] 遇到特質「過度自主」的對象。原因：使用者明確勾選為婉拒理由，可能偏好較多情感連結或相互依賴的關係。
+[DISLIKES_TRAIT] 遇到特質「籃球運動」的對象。原因：使用者明確勾選「近期有籃球運動需求」作為婉拒理由
+[DISLIKES_TRAIT] 遇到特質「極強行動力」的對象。原因：使用者婉拒行動力極強且不喜歡受嚴謹束縛的對象
+[DISLIKES_TRAIT] 遇到特質「不喜束縛」的對象。原因：使用者婉拒不喜歡過於嚴謹束縛的對象
+[DISLIKES_TRAIT] 遇到特質「探索性格」的對象。原因：使用者婉拒追求自我成長與新鮮體驗的探索型人格
+[DISLIKES_TRAIT] 遇到特質「探索性格」的對象。原因：使用者婉拒了追求自我成長與新鮮體驗的探索型人格
+[DISLIKES_TRAIT] 遇到特質「強行動力」的對象。原因：使用者婉拒了行動力極強且不喜歡嚴謹束縛的對象
+[DISLIKES_TRAIT] 遇到特質「正面衝突」的對象。原因：明確勾選不喜歡面對偏見與欺凌會直接正面回擊的特質
+[DISLIKES_TRAIT] 遇到特質「社交能量」的對象。原因：明確勾選不喜歡性格活潑且具備極高社交能量的對象
+[DISLIKES_TRAIT] 遇到特質「重視可靠與誠實」的對象。原因：使用者明確勾選此標籤作為婉拒原因，表示不喜歡對方過於強調可靠與誠實
+[DISLIKES_TRAIT] 遇到特質「週末去圖書館」的對象。原因：使用者明確勾選此標籤作為婉拒原因，表示不喜歡對方週末去圖書館的習慣
+[DISLIKES_TRAIT] 遇到特質「深思熟慮」的對象。原因：使用者明確勾選此標籤作為婉拒原因，表示不喜歡對方過於深思熟慮的風格
+[LIKES_TRAIT] 遇到特質「喜歡帥哥」的對象。原因：
+[DISLIKES_TRAIT] 遇到特質「討厭抽菸」的對象。原因：
+✅ [Neo4j 讀取] 連線驗證成功 (user=seed_user_06)
+[TIMING][9001 /api/match] Neo4j user memory: 0.793s lines=3
+✅ [Neo4j 讀取] 連線驗證成功 (user=seed_user_10)
+[TIMING][9001 /api/match] Neo4j user memory: 0.700s lines=5
+✅ [Neo4j 讀取] 連線驗證成功 (user=seed_user_09)
+[TIMING][9001 /api/match] Neo4j user memory: 0.630s lines=0
+✅ [Neo4j 讀取] 連線驗證成功 (user=seed_user_07)
+[TIMING][9001 /api/match] Neo4j user memory: 0.642s lines=4
+✅ [Neo4j 讀取] 連線驗證成功 (user=seed_user_05)
+[TIMING][9001 /api/match] Neo4j user memory: 0.652s lines=0
+✅ [Neo4j 全域法則] 連線驗證成功
+[TIMING][9001 /api/match] Neo4j global rules: 0.771s rules=3
+[TIMING][9001 /api/match] get_global_rules wrapper: 0.773s
+🌐 全域法則：
+- [相似型] 高盡責性且內向特質的人，在面對非正式或具幽默感的情境時，傾向與同樣具備高組織力且性格穩健的對象建立穩定連結。 (信心度：1)
+- [互補型] 內斂且具備高親和力的穩定型人格，在尋求具備特定目標的活動時，適合與外向、具備高行動力且能主導溝通的探索型人格配對，形成穩定的「執行-引領」互補關係。 (信心度：1)
+- [互補型] 外向且情感表達豐富的人，在面臨情感波動或展現脆弱性的情境時，適合與內斂、高責任感且具備穩定傾聽特質的人配對，以形成情感表達與承接的互補關係。 (信心度：1)
+🧠 媒婆正在閱讀卷宗與圖譜記憶、進行多維度思考中...
+[TIMING][MatchmakerAgent.match] before LLM system_chars=3848 payload_chars=4861 candidates=5
+[TIMING][MatchmakerAgent.match] LLM call: 72.761s output_chars=963
+[TIMING][MatchmakerAgent.match] total: 72.761s
+[TIMING][9001 /api/match] agent.match LLM wrapper: 72.761s raw_chars=963
+Agent matched ids: ['seed_user_06']
+[TIMING][9001 /api/match] parse/return matches: 0.000s
+[TIMING][9001 /api/match] total: 77.932s
+INFO:     127.0.0.1:46370 - "POST /api/match HTTP/1.1" 200 OK
+INFO:     127.0.0.1:7576 - "POST /api/memory/observe HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58086 - "POST /api/memory/observe HTTP/1.1" 200 OK
+INFO:     127.0.0.1:30220 - "POST /api/memory/observe HTTP/1.1" 200 OK
+🌐 收到全域反思請求！正在從成功配對中歸納通用法則...
+🧠 媒婆正在從成功配對中歸納全域法則...
+🧠 全域反思原始回覆:
+{
+    "abstract_rule": "高外向性、低盡責性的行動派，適合與高盡責性、低外向性的穩健派配對，因為行動派能激發穩健派嘗試新體驗，而穩健派能提供穩定與安全感。",
+    "category": "互補型"
+}
+✨ 歸納出法則：[互補型] 高外向性、低盡責性的行動派，適合與高盡責性、低外向性的穩健派配對，因為行動派能激發穩健派嘗試新體驗，而穩健派能提供穩定與安全感。
+✅ [Neo4j 全域法則寫入] 連線驗證成功！
+✅ 全域法則已寫入/更新：[互補型] 高外向性、低盡責性的行動派，適合與高盡責性、低外向性的穩健派配對，因為行動派能激發穩健派嘗試新體驗，而穩健派能提供穩定與安全感。
+INFO:     127.0.0.1:11866 - "POST /api/global_reflection HTTP/1.1" 200 OK
+INFO:     127.0.0.1:29965 - "POST /api/memory/observe HTTP/1.1" 200 OK
+INFO:     127.0.0.1:17440 - "POST /api/memory/observe HTTP/1.1" 200 OK
+INFO:     127.0.0.1:28140 - "POST /api/memory/observe HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55744 - "POST /api/memory/observe HTTP/1.1" 200 OK
+INFO:     127.0.0.1:21450 - "POST /api/memory/observe HTTP/1.1" 200 OK
+INFO:     127.0.0.1:28680 - "POST /api/memory/observe HTTP/1.1" 200 OK
+INFO:     127.0.0.1:37795 - "POST /api/memory/observe HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34941 - "POST /api/memory/observe HTTP/1.1" 200 OK
+INFO:     127.0.0.1:27389 - "POST /api/memory/observe HTTP/1.1" 200 OK
+INFO:     127.0.0.1:24140 - "POST /api/memory/observe HTTP/1.1" 200 OK
+INFO:     127.0.0.1:15906 - "POST /api/memory/observe HTTP/1.1" 200 OK
+INFO:     127.0.0.1:18391 - "POST /api/memory/observe HTTP/1.1" 200 OK
+INFO:     127.0.0.1:18393 - "POST /api/memory/observe HTTP/1.1" 200 OK

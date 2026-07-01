@@ -1,4 +1,5 @@
-INFO:     Started server process [27448]
+INFO:     Started server process [30148]
 INFO:     Waiting for application startup.
 INFO:     Application startup complete.
 INFO:     Uvicorn running on http://127.0.0.1:9001 (Press CTRL+C to quit)
+Unable to retrieve routing information

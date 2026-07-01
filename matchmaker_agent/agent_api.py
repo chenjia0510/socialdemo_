@@ -1,5 +1,6 @@
 import json
 import os
+import re
 import sys
 import time
 from neo4j import GraphDatabase
@@ -114,6 +115,13 @@ async def match_endpoint(req: MatchRequest):
     graph_memory = get_user_graph_memory(req.target_user.get("user_id"))
     print(f"[TIMING][9001 /api/match] get_user_graph_memory wrapper: {time.perf_counter() - step_start:.3f}s")
     print(f"📂 提煉出的記憶：\n{graph_memory}")
+
+    # 阿月要同時理解雙方，而不是只拿發起者的地雷去猜候選人。
+    enriched_candidates = []
+    for candidate in req.candidates:
+        enriched = dict(candidate)
+        enriched["graph_memory"] = get_user_graph_memory(candidate.get("user_id"))
+        enriched_candidates.append(enriched)
     
     # 2. 喚醒全域經驗法則
     step_start = time.perf_counter()
@@ -124,7 +132,10 @@ async def match_endpoint(req: MatchRequest):
     
     # 3. 交給 Agent 決策（傳入 graph_memory + global_heuristics）
     step_start = time.perf_counter()
-    raw_response = agent.match(req.target_user, req.candidates, graph_memory, global_heuristics, req.target_deep_profile)
+    raw_response = agent.match(
+        req.target_user, enriched_candidates, graph_memory,
+        global_heuristics, req.target_deep_profile
+    )
     print(f"[TIMING][9001 /api/match] agent.match LLM wrapper: {time.perf_counter() - step_start:.3f}s raw_chars={len(raw_response) if raw_response else 0}")
     
     try:
@@ -411,8 +422,7 @@ async def observe_memory(req: MemoryObserveRequest):
         response = agent.client.chat.completions.create(model=agent.model, messages=[
             {"role": "system", "content": "你是保守、精準的偏好抽取器，只輸出 JSON。"},
             {"role": "user", "content": prompt}], temperature=0.0)
-        raw = response.choices[0].message.content.strip(chr(96) + " 
-")
+        raw = response.choices[0].message.content.strip(chr(96) + " \n")
         if raw.lower().startswith("json"):
             raw = raw[4:].strip()
         items = json.loads(raw).get("memories", [])
@@ -427,7 +437,11 @@ async def observe_memory(req: MemoryObserveRequest):
             with driver.session(database=DATABASE) as session:
                 for item in items[:3]:
                     key = str(item.get("key", "")).strip().lower().replace(" ", "_")
-                    label, stance = str(item.get("label", "")).strip()[:40], item.get("stance")
+                    label = re.sub(
+                        r"^(?:喜歡|不喜歡|避免|需要|偏好|討厭)\s*[：:、，,]?\s*",
+                        "", str(item.get("label", "")).strip()
+                    )[:40]
+                    stance = item.get("stance")
                     confidence = float(item.get("confidence", 0))
                     if not key or not label or stance not in allowed_stances or confidence < 0.85:
                         continue

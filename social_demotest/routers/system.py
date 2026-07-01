@@ -25,6 +25,7 @@ def init_system(user_id: str):
     profile_memories = []
     context_revision = 0
     match_search = {"status": "idle"}
+    onboarding_completed = False
     
     for p in profiles:
         uid = p.get("user_id")
@@ -62,6 +63,7 @@ def init_system(user_id: str):
         profile_memories = my_doc.get("profile_memory_preview", [])
         context_revision = int(my_doc.get("current_context_revision", 0))
         match_search = my_doc.get("match_search", {"status": "idle"})
+        onboarding_completed = bool(my_doc.get("onboarding_completed", False))
         my_initial_interest = my_doc.get("initial_interest", None)
                 
     return {
@@ -81,7 +83,8 @@ def init_system(user_id: str):
         "probe_mode": probe_mode,
         "profile_memories": profile_memories,
         "current_context_revision": context_revision,
-        "match_search": match_search
+        "match_search": match_search,
+        "onboarding_completed": onboarding_completed
     }
 
 @router.post("/seed")
@@ -168,6 +171,15 @@ def update_mediator_tone(req: MediatorToneRequest):
         update["probe_mode"] = req.probe_mode
     profiles_coll.update_one({"user_id": req.user_id}, {"$set": update}, upsert=True)
     return {"status": "success", "mediator_tone": tone, "probe_mode": update.get("probe_mode")}
+
+@router.post("/onboarding/complete")
+def complete_onboarding(req: ClearRequest):
+    profiles_coll.update_one(
+        {"user_id": req.user_id},
+        {"$set": {"onboarding_completed": True}},
+        upsert=True
+    )
+    return {"status": "success", "onboarding_completed": True}
 
 @router.post("/context/undo")
 def undo_recent_context(req: ClearRequest):
