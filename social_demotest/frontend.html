@@ -1747,6 +1747,9 @@
             const container = document.getElementById("mediator-private-messages");
             const bubble = document.createElement("div");
             bubble.className = "chat-bubble " + (isUser ? 'bubble-user' : 'bubble-other') + " text-sm";
+            if (messageData.timestamp) {
+                bubble.dataset.timestamp = messageData.timestamp;
+            }
             const eventType = messageData.event_type || (messageData.metadata && messageData.metadata.event_type);
             if (!isUser && eventType && eventType !== "text") {
                 const label = document.createElement("div");
@@ -1828,8 +1831,25 @@
             if (!card) {
                 card = document.createElement("div");
                 card.id = "relationship-game-card";
-                card.className = "mx-3 my-2 p-3 bg-[#fff3e9] border border-[#e7c9b7] text-sm rounded-lg shadow-sm fade-in";
-                container.appendChild(card);
+                card.className = "chat-bubble bubble-other text-sm mt-2 flex flex-col gap-2";
+                
+                // 找出正確的插入位置（依據 timestamp）
+                let inserted = false;
+                if (state.started_at) {
+                    card.dataset.timestamp = state.started_at;
+                    const siblings = Array.from(container.children);
+                    for (let i = 0; i < siblings.length; i++) {
+                        const ts = parseFloat(siblings[i].dataset.timestamp);
+                        if (ts && ts > state.started_at) {
+                            container.insertBefore(card, siblings[i]);
+                            inserted = true;
+                            break;
+                        }
+                    }
+                }
+                if (!inserted) {
+                    container.appendChild(card);
+                }
             }
 
             if (state.status !== previousRelationshipQuizStatus) {
@@ -1838,25 +1858,10 @@
             }
             card.innerHTML = "";
 
-            const header = document.createElement("div");
-            header.className = "flex items-center gap-2";
             const title = document.createElement("div");
-            title.className = "font-bold text-[#6f4f43] flex-1";
-            title.textContent = "🎲 阿月的默契小測驗";
-            header.appendChild(title);
-            if (state.status === "completed") {
-                const toggle = document.createElement("button");
-                toggle.type = "button";
-                toggle.className = "px-2 py-1 text-xs text-[#8b7063] hover:text-[#6f4f43]";
-                toggle.setAttribute("aria-label", relationshipQuizExpanded ? "收合默契測驗" : "展開默契測驗");
-                toggle.textContent = relationshipQuizExpanded ? "收合 ▲" : "查看 ▼";
-                toggle.onclick = () => {
-                    relationshipQuizExpanded = !relationshipQuizExpanded;
-                    renderRelationshipFun(currentRelationshipFunState);
-                };
-                header.appendChild(toggle);
-            }
-            card.appendChild(header);
+            title.className = "font-bold text-[#8b7063]";
+            title.textContent = "來玩個默契小測驗吧！";
+            card.appendChild(title);
 
             if (state.status === "active" && state.my_completed) {
                 const text = document.createElement("p");
