@@ -1623,40 +1623,6 @@
                 }
                 card.appendChild(body);
 
-                if (proposal) {
-                    const contextCompare = document.createElement("div");
-                    contextCompare.className = "proposal-contexts";
-                    const targetContext = proposal.target_context || currentUserContext || "尚無近期情境";
-                    const candidateContext = proposal.current_context || "尚無近期情境";
-                    const candidateId = proposal.matched_user_id || metadata.other_id || "對方";
-                    const ownRow = document.createElement("div");
-                    ownRow.textContent = `你的近期｜${targetContext}`;
-                    const otherRow = document.createElement("div");
-                    otherRow.textContent = `@${candidateId}｜${candidateContext}`;
-                    contextCompare.append(ownRow, otherRow);
-                    card.appendChild(contextCompare);
-
-                    const reasonItems = (proposal.reason_items || [])
-                        .filter(item => item.kind !== "context_pair" && item.text)
-                        .map(item => item.text);
-                    const reasons = (reasonItems.length ? reasonItems : (proposal.top_reasons || []))
-                        .filter(reason => reason && !reason.includes("最近提到"))
-                        .slice(0, 2);
-                    if (reasons.length) {
-                        const reasonBox = document.createElement("div");
-                        reasonBox.className = "proposal-reasons";
-                        reasonBox.textContent = `阿月看中的點｜${reasons.join("・")}`;
-                        card.appendChild(reasonBox);
-                    }
-                }
-                if (proposal && proposal.score_breakdown) {
-                    const score = document.createElement("div");
-                    score.className = "proposal-score";
-                    const total = Math.round(Number(proposal.score_breakdown.total || 0));
-                    score.textContent = `相配度 ${total}%`;
-                    card.appendChild(score);
-                }
-
                 const actions = document.createElement("div");
                 actions.className = "mediator-card-actions";
                 if (isProposal) {
@@ -2143,7 +2109,7 @@
         async function refreshMatchStatus() {
             if (!currentUserId) return;
             try {
-                const response = await fetch(`/api/match/status?user_id=${encodeURIComponent(currentUserId)}`);
+                const response = await fetch(`/api/match/status?user_id=${encodeURIComponent(currentUserId)}&_t=${Date.now()}`);
                 const data = await response.json();
                 const search = data.match_search || {status: "idle"};
                 const stage = search.status || "idle";
@@ -2169,7 +2135,10 @@
                 );
                 const activeStages = ["queued", "searching", "loading_profile", "vector_search", "graph_check", "writing_reason"];
                 if (activeStages.includes(stage)) {
-                    if (!matchStatusTimer) matchStatusTimer = setInterval(refreshMatchStatus, 2000);
+                    if (!matchStatusTimer) {
+                        matchStatusTimer = setInterval(refreshMatchStatus, 1000);
+                        setTimeout(refreshMatchStatus, 500);
+                    }
                 } else if (matchStatusTimer) {
                     clearInterval(matchStatusTimer);
                     matchStatusTimer = null;
@@ -2238,6 +2207,10 @@
             const data = await res.json();
             if (data.status === "queued") {
                 appendRoomMessage("好，我現在真的開始翻名單；有沒有找到都會回來說。", false);
+                if (!matchStatusTimer) {
+                    matchStatusTimer = setInterval(refreshMatchStatus, 1000);
+                    setTimeout(refreshMatchStatus, 500);
+                }
             } else if (data.status === "already_active") {
                 appendRoomMessage("手上已經有一條線，我們先處理那位。", false);
             }

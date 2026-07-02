@@ -75,10 +75,7 @@ def reconcile_match_state(user_id: str):
     return matches_coll.find_one({
         "$or": [
             {"status": "draft", "from_user": user_id},
-            {
-                "status": "pending",
-                "$or": [{"from_user": user_id}, {"to_user": user_id}],
-            },
+            {"status": "pending", "to_user": user_id},
         ],
     })
 
@@ -136,8 +133,9 @@ def build_active_proposal_card(match_doc: dict, user_id: str):
         "other_context": other_snapshot.get("current_context") or "尚無近期情境",
         "reasons": reasons,
         "score": round(float(score.get("total", 0) or 0)),
+        "recommendation_reason": match_doc.get("reason", ""),
+        "receiver_reason": match_doc.get("receiver_reason", ""),
     }
-
 def strip_agent_payload(doc):
     """Return a copy safe to send to the LLM agent without large vector fields."""
     if not isinstance(doc, dict):
@@ -717,6 +715,7 @@ def accept_match(req: AcceptRequest, background_tasks: BackgroundTasks):
                 "contrast_label": match_doc.get("contrast_label", ""),
                 "distinctive_tags": match_doc.get("distinctive_tags", []),
                 "recommendation_reason": receiver_reason,
+                "receiver_reason": receiver_reason,
                 "score_breakdown": match_doc.get("receiver_score_breakdown", {}),
                 "reason_items": match_doc.get("receiver_reason_items", []),
                 "top_reasons": [
